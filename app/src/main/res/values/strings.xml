@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">GetApp</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_main">GetApp</string>
+    <string name="main_navigation_home_label">Home</string>
+    <string name="main_navigation_buscador_label">Buscador</string>
+    <string name="main_navigation_instrucciones_label">Instrucciones</string>
+    <string name="main_button_IDMC_label">Ir al DEA mas cercano</string>
+    <string name="main_button_IDMC_description">Muestra la ruta al DEA mas cercano</string>
+    <string name="main_button_VOD_label">Ver otros DEAs</string>
+    <string name="main_button_VOD_description">Muestra en un mapa los DEAs mas cercanos</string>
 </resources>
