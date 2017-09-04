@@ -29,17 +29,18 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
                     mgr.beginTransaction()
                             .replace(R.id.content, HomeFragment.newInstance("Home", ""))
                             .commit();
-                    //mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_buscador:
                     mgr = getFragmentManager();
                     mgr.beginTransaction()
                             .replace(R.id.content, SearchFragment.newInstance("Search", ""))
                             .commit();
-                    //mTextMessage.setText(R.string.title_dashboard);
                     return true;
                 case R.id.navigation_instrucciones:
-                    //mTextMessage.setText(R.string.title_notifications);
+                    mgr = getFragmentManager();
+                    mgr.beginTransaction()
+                            .replace(R.id.content, InformationFragment.newInstance("Information",""))
+                            .commit();
                     return true;
             }
             return false;

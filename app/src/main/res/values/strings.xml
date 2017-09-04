@@ -11,5 +11,6 @@
     <string name="main_button_VOD_description">Muestra en un mapa los DEAs mas cercanos</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="main_information_title">Instrucciones para el uso del DEA\n1...\n2...</string>
+    <string name="main_information_info">1...\n2...</string>
 </resources>
