@@ -1,0 +1,26 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ar.com.vittal.getapp.HomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <Button
+        android:id="@+id/goToNearestDEA"
+        android:layout_width="match_parent"
+        android:layout_height="104dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/main_button_IDMC_description"
+        android:text="@string/main_button_IDMC_label"
+        android:onClick="goToNearestDEA"/>
+
+    <Button
+        android:id="@+id/listAllNearestDEAS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:contentDescription="@string/main_button_VOD_description"
+        android:text="@string/main_button_VOD_label"
+        android:onClick="listAllNearestDEAS"/>
+
+</FrameLayout>

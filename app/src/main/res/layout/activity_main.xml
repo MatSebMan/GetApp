@@ -13,35 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-
-        <!--TextView
-            android:id="@+id/message"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/title_home" /-->
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="104dp"
-            android:layout_gravity="center_vertical"
-            android:contentDescription="@string/main_button_IDMC_description"
-            android:text="@string/main_button_IDMC_label"
-            android:onClick="goToNearestDEA"/>
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:contentDescription="@string/main_button_VOD_description"
-            android:text="@string/main_button_VOD_label"
-            android:onClick="listAllNearestDEAS"/>
-
     </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
