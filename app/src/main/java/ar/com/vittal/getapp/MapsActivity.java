@@ -1,6 +1,7 @@
 package ar.com.vittal.getapp;
 
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -18,9 +19,23 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.maps.DirectionsApi;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.android.PolyUtil;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
+
+import org.joda.time.DateTime;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -44,6 +59,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
+    private GeoApiContext getGeoContext() {
+        GeoApiContext geoApiContext = new GeoApiContext();
+        return geoApiContext.setQueryRateLimit(3)
+                .setApiKey(getResources().getString(R.string.google_directions_key))
+                .setConnectTimeout(10, TimeUnit.SECONDS)
+                .setReadTimeout(10, TimeUnit.SECONDS)
+                .setWriteTimeout(10, TimeUnit.SECONDS);
+    }
 
     /**
      * Manipulates the map once available.
@@ -58,9 +81,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera}
-        //mMap.addMarker(new MarkerOptions().position(mDefaultLocation).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(mDefaultLocation));
         // Prompt the user for permission.
         getLocationPermission();
 
@@ -69,6 +89,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
+
+    }
+
+    private void addMarkersToMap(DirectionsResult results, GoogleMap mMap) {
+        if (results.routes.length != 0)
+        {
+            /*mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng))
+                    .title(results.routes[0].legs[0].startAddress));*/
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(results.routes[0].legs[0].endLocation.lat,results.routes[0].legs[0].endLocation.lng))
+                    .title(results.routes[0].legs[0].startAddress)
+                    .snippet(getEndLocationTitle(results))).showInfoWindow();
+        }
+    }
+
+    private String getEndLocationTitle(DirectionsResult results){
+        String cadena = "";
+        if (results.routes.length != 0)
+        {
+            cadena = "Tiempo: "+ results.routes[0].legs[0].duration.humanReadable + ", Distancia: " + results.routes[0].legs[0].distance.humanReadable;
+        }
+        return cadena;
+    }
+
+    private void addPolyline(DirectionsResult results, GoogleMap mMap) {
+        if (results.routes.length != 0)
+        {
+            List<LatLng> decodedPath = PolyUtil.decode(results.routes[0].overviewPolyline.getEncodedPath());
+            mMap.addPolyline(new PolylineOptions().addAll(decodedPath).color(Color.BLUE).width(10.0f));
+        }
     }
 
     /**
@@ -111,11 +162,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            try {
+                                DirectionsApiRequest request = DirectionsApi.newRequest(getGeoContext())
+                                        .mode(TravelMode.WALKING)
+                                        .origin(new com.google.maps.model.LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()))
+                                        .destination(new com.google.maps.model.LatLng(-34.589690, -58.459044))
+                                        .departureTime(new DateTime());
+                                DirectionsResult result = request.await();
+                                if (result.routes.length != 0)
+                                {
+                                    addMarkersToMap(result, mMap);
+                                    addPolyline(result, mMap);
+                                    //mMap.setContentDescription(getEndLocationTitle(result));
+                                }
+                            } catch (ApiException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             Log.d("Location", "Current location is null. Using defaults.");
                             Log.e("Location", "Exception: %s", task.getException());
-                            mMap.moveCamera(CameraUpdateFactory
-                                    .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
                             mMap.getUiSettings().setMyLocationButtonEnabled(false);
                         }
                     }
