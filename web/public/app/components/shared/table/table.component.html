@@ -1,0 +1,113 @@
+<div *ngIf="isDataAvailable" class="col-md-12">
+    <div class="card">
+        <div class="card-header" [attr.data-background-color]="getColor()">
+            <h4 class="title">{{title}}</h4>
+            <p class="category">{{subtitle}}</p>
+        </div>
+        <div class="card-content table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th [attr.colspan]="keys.length">
+                            <button *ngIf="addItemOption"  _ngcontent-c4="" class="btn btn-simple btn-sm" 
+                            [ngClass]='buttonType()'
+                             (click)="toogleModal($event,'crear')"
+                            rel="tooltip" [attr.title]="createTitleTooltip?createTitleTooltip:createTitle" type="button">
+                                <i _ngcontent-c4="" class="material-icons">add</i>
+                                    {{createTitle}}
+                            </button>
+                            <button *ngIf="exportableOption" _ngcontent-c4="" class="btn btn-simple btn-sm" 
+                            [ngClass]='buttonType()'
+                            rel="tooltip" title="Exportar a CSV" type="button"
+                            (click)="export()">
+                                <i _ngcontent-c4="" class="material-icons">archive</i>
+                                    Exportar
+                            </button>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th *ngIf="editableRows"  style="border-top-style: hidden; width: 50px!important"></th>
+                        <th class="touchable" *ngFor="let key of keys; let i = index"  style="border-top-style: hidden;" (click)="sortBy(key)">
+                            <b>{{key}}</b>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of data">
+                        <td *ngIf="editableRows" style="width: 50px!important"><i class="material-icons touchable" (click)="toogleModal($event, 'editar', row)">mode_edit</i></td>
+                        <td *ngFor="let key of keys; let i = index">
+                            {{row[key]}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<div *ngIf="camposEdicion && isDataAvailable" class="swal2-container swal2-fade swal2-shown" [ngClass]="{'hidden': showModalEdicion==false}" style="overflow-y: auto;" (click)="toogleModal($event,'editar')">
+    <div role="dialog" aria-labelledby="modalTitleId" aria-describedby="modalContentId" class="swal2-modal swal2-show" tabindex="-1"
+        style="width: 80%; padding: 20px; background: rgb(255, 255, 255); display: block; min-height: 263px;">
+        <h2 class="swal2-title" id="modalTitleId">{{editTitle}}</h2>
+        <div id="modalContentId" class="swal2-content" style="display: block;">
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-4 pull-left" *ngFor="let key of keysEdicion; let i = index">
+                    <div *ngIf="!isCombo(camposEdicion.types[key]) && camposEdicion.types[key] != 'boolean'" class="form-group form-black label-floating" [ngClass]="{'is-empty': !editData[key]}" >
+                        <label class="control-label">{{camposEdicion.text[key]}}</label>
+                        <input [attr.type]="camposEdicion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="editData[key]">
+                    </div>
+                    <div *ngIf="!isCombo(camposEdicion.types[key]) && camposEdicion.types[key] == 'boolean'" class="form-group form-black" style="margin-top: 25px; margin-bottom: 10px">
+                        <div class="checkbox">
+                            <label>
+                                <input name="optionsCheckboxes" type="checkbox" [(ngModel)]="editData[key]"><span class="checkbox-material"></span> {{camposEdicion.text[key]}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group form-black" *ngIf="isCombo(camposEdicion.types[key])" style="margin-top: 10px; margin-bottom: 17px">
+                        <dropdown-cmp *ngIf="isCombo(camposEdicion.types[key])" [id]="key" 
+                        [title]="camposEdicion.text[key]" [url]="camposEdicion.types[key].url_get"
+                        (selectionChanged)="handleSelection($event, 'editar')" [selectedItem]="this.editData[key]"></dropdown-cmp>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <hr class="swal2-spacer" style="display: block;">
+        <button type="button"
+            role="button" tabindex="0" class="swal2-cancel btn btn-danger" style="display: inline-block;" (click)="toogleModal($event, 'editar')" >Cancelar</button>
+        <button type="button" role="button" tabindex="0" class="swal2-confirm btn btn-success" (click)="editar($event)" >Aceptar</button>
+    </div>
+</div>
+
+<div *ngIf="camposCreacion && isDataAvailable" class="swal2-container swal2-fade swal2-shown" [ngClass]="{'hidden': showModalCreacion==false}" style="overflow-y: auto;" (click)="toogleModal($event,'crear')">
+    <div role="dialog" aria-labelledby="modalTitleId" aria-describedby="modalContentId" class="swal2-modal swal2-show" tabindex="-1"
+        style="width: 80%; padding: 20px; background: rgb(255, 255, 255); display: block; min-height: 263px;">
+        <h2 class="swal2-title" id="modalTitleId">{{createTitle}}</h2>
+        <div id="modalContentId" class="swal2-content" style="display: block;">
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-4 pull-left" *ngFor="let key of keysCreacion; let i = index">
+                    <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] != 'boolean'" class="form-group form-black label-floating is-empty" >
+                        <label class="control-label">{{camposCreacion.text[key]}}</label>
+                        <input [attr.type]="camposCreacion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="createData[key]">
+                    </div>
+                    <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] == 'boolean'" class="form-group form-black" style="margin-top: 25px; margin-bottom: 10px">
+                        <div class="checkbox">
+                            <label>
+                                <input name="optionsCheckboxes" type="checkbox" [(ngModel)]="createData[key]"><span class="checkbox-material"></span> {{camposCreacion.text[key]}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group form-black" *ngIf="isCombo(camposCreacion.types[key])" style="margin-top: 10px; margin-bottom: 17px">
+                        <dropdown-cmp *ngIf="isCombo(camposCreacion.types[key])" [id]="key"
+                        [title]="camposCreacion.text[key]" [url]="camposCreacion.types[key].url_get"
+                        (selectionChanged)="handleSelection($event, 'crear')"></dropdown-cmp>
+                        
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <hr class="swal2-spacer" style="display: block;">
+        <button type="button"
+            role="button" tabindex="0" class="swal2-cancel btn btn-danger" style="display: inline-block;" (click)="toogleModal($event,'crear')" >Cancelar</button>
+        <button type="button" role="button" tabindex="0" class="swal2-confirm btn btn-success" (click)="crear($event)" >Aceptar</button>
+    </div>
+</div>

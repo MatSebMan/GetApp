@@ -1,0 +1,104 @@
+.touchable {
+    cursor: pointer;
+}
+
+.swal2-show {
+    -webkit-animation: showSweetAlert .3s;
+    animation: showSweetAlert .3s;
+}
+
+.swal2-modal {
+    background-color: #fff;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-align: center;
+    margin: auto;
+    margin-top: 60px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: none;
+    position: relative;
+}
+
+.swal2-container.swal2-shown {
+    background-color: rgba(0,0,0,.4);
+    height: 1000%;
+}
+.swal2-container.swal2-fade {
+    transition: background-color .1s;
+}
+.swal2-container.swal2-shown {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.swal2-container.swal2-fade {
+    -webkit-transition: background-color .1s;
+    transition: background-color .1s;
+}
+[class^=swal2] {
+    -webkit-tap-highlight-color: transparent;
+}
+.swal2-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    padding: 10px;
+    background-color: transparent;
+    z-index: 1060;
+}
+
+.swal2-container, body.swal2-iosfix {
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+[class^=swal2] {
+    -webkit-tap-highlight-color: transparent;
+}
+.swal2-container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    padding: 10px;
+    background-color: transparent;
+    z-index: 1060;
+}
+.swal2-container, body.swal2-iosfix {
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+
+.swal2-spacer {
+    padding-top: 40px;
+}
+
+.form-group.label-floating label.control-label, .form-group.label-placeholder label.control-label
+ {
+    left: 15px;
+}
+
+.form-group.is-focused
+ {
+    left: 0px;
+}
+
+.form-group.has-error .form-control {
+    background-image: linear-gradient(#f44336, #f44336), linear-gradient(#D2D2D2, #D2D2D2);
+    background-size: 100% 2px, 100% 1px;
+    transition-duration: 0.3s;
+}
+
+.form-group.has-error label.control-label, .form-group.has-error .help-block {
+    color: #f44336;
+}
