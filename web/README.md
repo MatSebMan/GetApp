@@ -1,5 +1,4 @@
-# SLA
-SLA y Sistema de Estadisticas Tecnored
+# Vittal
 
 # Componetes requeridos
 1. Descargar e instalar node.js (Ultima version que viene con npm)
