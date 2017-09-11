@@ -1,8 +1,6 @@
 package ar.com.vittal.getapp;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -125,14 +123,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void goToNearestDEA(View view)
     {
         if (mListener != null) {
-            mListener.onGoToNearestDEAPressed(view, MapsActivity.class);
+            mListener.onGoToNearestDEAPressed(view, DEARouteActivity.class);
         }
     }
 
     public void listAllNearestDEAS(View view)
     {
         if (mListener != null) {
-            mListener.onListAllNearestDEASPressed(view, MapsActivity.class);
+            mListener.onListAllNearestDEASPressed(view, DEARouteActivity.class);
         }
     }
 }
