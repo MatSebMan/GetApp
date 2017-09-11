@@ -1,0 +1,236 @@
+﻿</html>
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <!--<meta name="description" content="Responsive Bootstrap Landing Page Template">
+    <meta name="keywords" content="Bootstrap, Landing page, Template, Registration, Landing">-->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!--<meta name="author" content="Grayrids">-->
+  <title>Vittal DEA Admin</title>
+
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="assets/fonts/font-awesome.min.css" type="text/css" media="screen">
+  <!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
+  <link href="assets/css/material.css" rel="stylesheet">
+  <!-- <link href="assets/css/ripples.min.css" rel="stylesheet"> -->
+  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/responsive.css" rel="stylesheet">
+  <link href="assets/css/animate.min.css" rel="stylesheet">
+
+  <link rel="icon" type="image/png" href="https://www.vittal.com.ar/wp-content/themes/vittal/images/favicon.png">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="assets/img/favicon/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+
+  <style>
+    /****** LOGIN MODAL ******/
+
+    .loginmodal-container {
+      padding: 30px;
+      max-width: 350px;
+      width: 100% !important;
+      background-color: #F7F7F7;
+      margin: 0 auto;
+      border-radius: 2px;
+      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      font-family: roboto;
+    }
+
+    .loginmodal-container h1 {
+      text-align: center;
+      font-size: 1.8em;
+      font-family: roboto;
+    }
+
+    .loginmodal-container input[type=submit] {
+      width: 100%;
+      display: block;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .loginmodal-container input[type=text],
+    input[type=password] {
+      height: 44px;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 10px;
+      -webkit-appearance: none;
+      background: #fff;
+      border: 1px solid #d9d9d9;
+      border-top: 1px solid #c0c0c0;
+      /* border-radius: 2px; */
+      padding: 0 8px;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+    }
+
+    .loginmodal-container input[type=text]:hover,
+    input[type=password]:hover {
+      border: 1px solid #b9b9b9;
+      border-top: 1px solid #a0a0a0;
+      -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+      -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .loginmodal {
+      text-align: center;
+      font-size: 14px;
+      font-family: 'Arial', sans-serif;
+      font-weight: 700;
+      height: 36px;
+      padding: 0 8px;
+    }
+
+    .loginmodal-submit {
+      border: 0px;
+      color: #fff;
+      text-shadow: 0 1px rgba(0, 0, 0, 0.1);
+      background-color: rgb(51, 177, 166);
+      padding: 17px 0px;
+      font-family: roboto;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    .loginmodal-submit:hover {
+      border: 0px;
+      text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+      background-color: rgb(51, 177, 166);
+    }
+
+    .loginmodal-container a {
+      text-decoration: none;
+      color: #666;
+      font-weight: 400;
+      text-align: center;
+      display: inline-block;
+      opacity: 0.6;
+      transition: opacity ease 0.5s;
+    }
+
+    .login-help {
+      font-size: 12px;
+    }
+
+    .loginmodal {
+      padding-right: 0 !important;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="content-wrap">
+    <header class="hero-area" id="home" >
+      <div class="container">
+        <div class="col-md-12">
+          <div class="navbar navbar-inverse sticky-navigation navbar-fixed-top" role="navigation" data-spy="affix" data-offset-top="200" style="background-color: #FFFFFF">
+            <div class="container">
+
+              <div class="navbar-header navbar-left">
+                <img class="img-responsive header__logo wow fadeIn" data-wow-duration="4000ms" src="https://www.vittal.com.ar/wp-content/uploads/2016/01/logo-vittal.png" alt="vittal Emergencias médicas y Ambulancias" title="vittal Emergencias médicas y Ambulancias" width="145" height="50" style="">
+              </div>
+              <div class="navbar-header navbar-right">
+                <button type="button" class="btn btn-border" data-toggle="modal" data-target="#login-modal">
+                  Iniciar Sesi&oacute;n
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contents text-right">
+          <h1 class="wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms" style="color: #FFFFFF" ><b>VITTAL</b> Mobile Admin</h1>
+          <p class="wow fadeInUp" data-wow-duration="3000ms" data-wow-delay="400ms" style="color: #FFFFFF">SOFTWARE DE ADMINISTRACI&Oacute;n de DEAs</p>
+        </div>
+      </div>
+    </header>
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="loginmodal-container">
+        <h1>Iniciar Sesi&oacute;n</h1><br>
+        <form action "/login">
+          <input id="username" type="text" name="username" placeholder="Usuario">
+          <input id="password" type="password" name="password" placeholder="Contraseña">
+          <input id="loginButton" type="button" class="login loginmodal-submit button" value="Ingresar">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/jquery-2.1.4.min.js"></script>
+  <script src="assets/js/bootstrap.min.js"></script>
+  <script src="assets/js/ripples.min.js"></script>
+  <script src="assets/js/material.min.js"></script>
+  <script src="assets/js/wow.js"></script>
+  <script src="assets/js/jquery.mmenu.min.all.js"></script>
+  <script src="assets/js/count-to.js"></script>
+  <script src="assets/js/jquery.inview.min.js"></script>
+  <script src="assets/js/classie.js"></script>
+  <script src="assets/js/jquery.nav.js"></script>
+  <script src="assets/js/smooth-on-scroll.js"></script>
+  <script src="assets/js/smooth-scroll.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return;
+      };
+      $.material.init();
+      if (getCookie("access_token")) {
+        console.log(getCookie("access_token"));
+        $.ajax({
+          type: "GET",
+          url: "/app",
+          success: function (response) {
+            window.location.replace("/app")
+          },
+          error: function (xhr, textStatus, errorThrown) {
+            alert(errorThrown);
+          }
+        });
+      }
+    });
+    document.getElementById("loginButton").addEventListener("click", function () {
+      console.log("Click");
+      $.ajax({
+        type: "POST",
+        url: "/login",
+        data: { username: document.getElementById("username").value, password: document.getElementById("password").value },
+        success: function (msg) {
+          console.log(msg);
+          document.cookie = 'access_token=' + msg.token;
+          document.cookie = 'user=' + msg.user.name + ' ' + msg.user.surname;
+          window.location.replace("/app");
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          alert(errorThrown);
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

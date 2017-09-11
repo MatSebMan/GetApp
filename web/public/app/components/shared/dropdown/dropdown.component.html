@@ -1,0 +1,16 @@
+<style>
+    .dropdown-menu {
+        height: auto;
+        max-height: 300px;
+        overflow-x: hidden;
+    }
+</style>    
+
+<div class="form-control" *ngIf="isDataAvailable" style="background-image: none">
+    <a href="" class="dropdown-toggle" data-toggle="dropdown">
+    <button style="padding-right: 10px;" class="btn btn-danger btn-block" [ngClass]='(loading)?"disabled":""'><i class="material-icons"></i> {{loading?loadingText:(selectedItem?selectedItem.value:title)}} <i style="padding-left: 20px;" class="material-icons pull-right">keyboard_arrow_down</i></button>
+    </a>
+    <ul class="dropdown-menu" *ngIf="data && data.length > 0">
+        <li class="touchable" *ngFor="let item of data; let i = index" (click)="select(item)"><a>{{item.value}}</a></li>
+    </ul>
+</div>

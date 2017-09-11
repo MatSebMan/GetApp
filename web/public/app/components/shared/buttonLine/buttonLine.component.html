@@ -1,0 +1,5 @@
+<div class="col-md-12">
+    <div class="col-sm-12 col-md-4 col-lg-2" *ngFor="let item of data; let i = index">
+        <button _ngcontent-c7="" class="btn btn-block" [ngClass]="getColor(item)" (click)="select(item.id)">{{item.nombre}}</button>
+    </div>
+</div>
