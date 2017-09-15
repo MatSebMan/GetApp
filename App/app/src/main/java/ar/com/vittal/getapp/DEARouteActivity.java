@@ -92,7 +92,7 @@ public class DEARouteActivity extends MapListenerActivity implements OnMapReadyC
         if (result != null)
         {
             utilities.drawResult(result, mMap);
-            utilities.centerCamera(mMap, this.destination);
+            utilities.centerCamera(mMap);
         }
     }
 }

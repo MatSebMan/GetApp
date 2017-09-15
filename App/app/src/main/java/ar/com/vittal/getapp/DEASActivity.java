@@ -3,6 +3,8 @@ package ar.com.vittal.getapp;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,11 +27,16 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_deas);
 
         Intent intent = getIntent();
         this.destinations = intent.getParcelableArrayListExtra(LIST_OF_DEAS);
 
+        String a[]={"hello","world"};
+        ArrayAdapter<String> at=new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1,a);
+
+        ListView list = (ListView) findViewById(R.id.listaDeDeas);
+        list.setAdapter(at);
         utilities = LocationUtilities.getInstance(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -60,7 +67,7 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
         if (result != null)
         {
             utilities.drawResult(result, mMap);
-            utilities.centerCamera(mMap, this.destinations);
+            utilities.centerCamera(mMap);
         }
     }
 }

@@ -135,6 +135,7 @@ public final class LocationUtilities {
         }
     }
 
+    /*Centra la cámara en el punto medio entre mi ubicación y la posicion media de todos los DEAs
     public void centerCamera(GoogleMap mMap, ArrayList<LatLng> destination)
     {
         double latitude = 0.0;
@@ -148,7 +149,8 @@ public final class LocationUtilities {
         longitude = longitude / destination.size();
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng((latitude + mLastKnownLocation.getLatitude())/2, (longitude + mLastKnownLocation.getLongitude())/2), DEFAULT_ZOOM));
+                // new LatLng((latitude + mLastKnownLocation.getLatitude())/2, (longitude + mLastKnownLocation.getLongitude())/2)
+                new LatLng(latitude, longitude), DEFAULT_ZOOM));
     }
 
     public void centerCamera(GoogleMap mMap, com.google.maps.model.LatLng destination)
@@ -156,6 +158,14 @@ public final class LocationUtilities {
         ArrayList<LatLng> lista = new ArrayList<>();
         lista.add(new LatLng(destination.lat, destination.lng));
         centerCamera(mMap, lista);
+    }
+    */
+
+    // Centra la cámara a mi ubicación
+    public void centerCamera(GoogleMap mMap)
+    {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
     }
 
     public DirectionsResult getRouteFromCurrentLocation(com.google.maps.model.LatLng destination)
