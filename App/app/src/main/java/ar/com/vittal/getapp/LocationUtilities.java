@@ -273,4 +273,15 @@ public final class LocationUtilities {
         list.add(result);
         drawResult(list, mMap);
     }
+
+    public ArrayList<LatLng> getNearestDEAS()
+    {
+        ArrayList<LatLng> listaDeDeas = new ArrayList<>();
+        listaDeDeas.add(new LatLng(-34.589690, -58.459044));
+        listaDeDeas.add(new LatLng(-34.588690, -58.459044));
+        listaDeDeas.add(new LatLng(-34.589690, -58.458044));
+        listaDeDeas.add(new LatLng(-34.589690, -58.460044));
+        listaDeDeas.add(new LatLng(-34.589190, -58.459544));
+        return listaDeDeas;
+    }
 }

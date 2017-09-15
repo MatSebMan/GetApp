@@ -18,6 +18,10 @@ import com.google.android.gms.maps.model.LatLng;
 import android.location.Location;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -35,10 +39,11 @@ import com.google.maps.model.TravelMode;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class DEARouteActivity extends MapListenerActivity implements OnMapReadyCallback {
+public class DEARouteActivity extends MapListenerActivity implements OnMapReadyCallback, View.OnClickListener{
 
     private GoogleMap mMap;
     private Boolean mLocationPermissionGranted;
@@ -59,6 +64,9 @@ public class DEARouteActivity extends MapListenerActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        Button button = (Button) findViewById(R.id.listAllNearestDEAS);
+        button.setOnClickListener(this);
 
         Intent intent = getIntent();
         this.destination = new com.google.maps.model.LatLng(intent.getDoubleExtra(NEAREST_DEA_LATITUDE, -34.6131500), intent.getDoubleExtra(NEAREST_DEA_LONGITUDE, -58.3772300));
@@ -93,6 +101,33 @@ public class DEARouteActivity extends MapListenerActivity implements OnMapReadyC
         {
             utilities.drawResult(result, mMap);
             utilities.centerCamera(mMap);
+        }
+    }
+
+    public void listAllNearestDEAS(View view) {
+        Intent intent = new Intent(this, DEASActivity.class);
+        intent.putParcelableArrayListExtra(DEASActivity.LIST_OF_DEAS, getNearestDEAS());
+        startActivity(intent);
+    }
+
+    private ArrayList<LatLng> getNearestDEAS()
+    {
+        ArrayList<LatLng> listaDeDeas = new ArrayList<>();
+        //listaDeDeas.add(new LatLng(-34.578465, -58.457882));
+        listaDeDeas.add(new LatLng(-34.576465, -58.455882));
+        listaDeDeas.add(new LatLng(-34.583465, -58.457882));
+        listaDeDeas.add(new LatLng(-34.573465, -58.457882));
+        listaDeDeas.add(new LatLng(-34.578465, -58.462882));
+        listaDeDeas.add(new LatLng(-34.578465, -58.452882));
+        return listaDeDeas;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.listAllNearestDEAS:
+                listAllNearestDEAS(v);
+                break;
         }
     }
 }

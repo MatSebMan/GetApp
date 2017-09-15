@@ -14,13 +14,13 @@
         android:text="@string/main_button_IDMC_label"
         android:onClick="goToNearestDEA"/>
 
-    <Button
+    <!--Button
         android:id="@+id/listAllNearestDEAS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:contentDescription="@string/main_button_VOD_description"
         android:text="@string/main_button_VOD_label"
-        android:onClick="listAllNearestDEAS"/>
+        android:onClick="listAllNearestDEAS"/-->
 
 </FrameLayout>

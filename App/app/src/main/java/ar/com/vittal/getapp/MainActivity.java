@@ -103,12 +103,13 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         displayLocationSettingsRequest(this);
     }
 
+    /*
     @Override
     public void onListAllNearestDEASPressed(View view, Class clas) {
         this.intent = new Intent(this, DEASActivity.class);
         this.intent.putParcelableArrayListExtra(DEASActivity.LIST_OF_DEAS, getNearestDEAS());
         displayLocationSettingsRequest(this);
-    }
+    }*/
 
     private void displayLocationSettingsRequest(Context context) {
         GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)

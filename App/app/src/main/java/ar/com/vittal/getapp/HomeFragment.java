@@ -69,8 +69,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         Button button = (Button) view.findViewById(R.id.goToNearestDEA);
         button.setOnClickListener(this);
-        button = (Button) view.findViewById(R.id.listAllNearestDEAS);
-        button.setOnClickListener(this);
+        /*button = (Button) view.findViewById(R.id.listAllNearestDEAS);
+        button.setOnClickListener(this);*/
         return view;
     }
 
@@ -97,9 +97,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.goToNearestDEA:
                 goToNearestDEA(v);
                 break;
-            case R.id.listAllNearestDEAS:
+            /*case R.id.listAllNearestDEAS:
                 listAllNearestDEAS(v);
-                break;
+                break;*/
         }
     }
 
@@ -116,7 +116,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public interface OnFragmentInteractionListener {
 
         void onGoToNearestDEAPressed(View view, Class clas);
-        void onListAllNearestDEASPressed(View view, Class clas);
+        //void onListAllNearestDEASPressed(View view, Class clas);
 
     }
 
@@ -127,10 +127,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void listAllNearestDEAS(View view)
+    /*public void listAllNearestDEAS(View view)
     {
         if (mListener != null) {
             mListener.onListAllNearestDEASPressed(view, DEARouteActivity.class);
         }
-    }
+    }*/
 }
