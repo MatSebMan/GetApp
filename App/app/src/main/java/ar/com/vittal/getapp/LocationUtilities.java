@@ -130,7 +130,7 @@ public final class LocationUtilities {
                     }
                 });
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
@@ -222,37 +222,52 @@ public final class LocationUtilities {
         }
     }
 
-    private void addMarkersToMap(DirectionsResult results, GoogleMap mMap) {
-        if (results.routes.length != 0)
+    public String getAddress(DirectionsResult results)
+    {
+        // Maty \
+        String address = "";
+        for (String s : results.routes[0].legs[0].endAddress.split(","))
         {
-            // Maty \
-            String title = "";
-            for (String s : results.routes[0].legs[0].endAddress.split(","))
+            if (s.contains("CABA"))
             {
-                if (s.contains("CABA"))
-                {
-                    title += "CABA, ";
-                }
-                else
-                {
-                    title += s + ", ";
-                }
+                address += "CABA, ";
             }
-            title = title.substring(0, title.lastIndexOf(", "));
-            // Maty / - Fix para sacarle el código postal a la dirección
+            else
+            {
+                address += s + ", ";
+            }
+        }
+        address = address.substring(0, address.lastIndexOf(", "));
+        // Maty / - Fix para sacarle el código postal a la dirección
 
+        return address;
+    }
+
+    public String getTimeToDestination(DirectionsResult result)
+    {
+        return result.routes[0].legs[0].duration.humanReadable;
+    }
+
+    public String getDistanceToDestination(DirectionsResult result)
+    {
+        return result.routes[0].legs[0].distance.humanReadable;
+    }
+
+    private void addMarkersToMap(DirectionsResult result, GoogleMap mMap) {
+        if (result.routes.length != 0)
+        {
             mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(results.routes[0].legs[0].endLocation.lat,results.routes[0].legs[0].endLocation.lng))
-                    .title(title)
-                    .snippet(getEndLocationTitle(results))).showInfoWindow();
+                    .position(new LatLng(result.routes[0].legs[0].endLocation.lat,result.routes[0].legs[0].endLocation.lng))
+                    .title(getAddress(result))
+                    .snippet(getEndLocationTitle(result))).showInfoWindow();
         }
     }
 
-    private String getEndLocationTitle(DirectionsResult results){
+    private String getEndLocationTitle(DirectionsResult result){
         String cadena = "";
-        if (results.routes.length != 0)
+        if (result.routes.length != 0)
         {
-            cadena = "Tiempo: "+ results.routes[0].legs[0].duration.humanReadable + ", Distancia: " + results.routes[0].legs[0].distance.humanReadable;
+            cadena = "Tiempo: "+ getTimeToDestination(result) + ", Distancia: " + getDistanceToDestination(result);
         }
         return cadena;
     }

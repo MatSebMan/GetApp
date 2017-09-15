@@ -32,11 +32,6 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
         Intent intent = getIntent();
         this.destinations = intent.getParcelableArrayListExtra(LIST_OF_DEAS);
 
-        String a[]={"hello","world"};
-        ArrayAdapter<String> at=new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1,a);
-
-        ListView list = (ListView) findViewById(R.id.listaDeDeas);
-        list.setAdapter(at);
         utilities = LocationUtilities.getInstance(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -66,6 +61,15 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
         ArrayList<DirectionsResult> result = utilities.getRouteFromCurrentLocation(this.destinations);
         if (result != null)
         {
+            ArrayList<String> addresses = new ArrayList<>();
+            for (DirectionsResult r : result)
+            {
+                addresses.add(utilities.getAddress(r));
+            }
+            ArrayAdapter<String> at=new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1,addresses);
+
+            ListView list = (ListView) findViewById(R.id.listaDeDeas);
+            list.setAdapter(at);
             utilities.drawResult(result, mMap);
             utilities.centerCamera(mMap);
         }
