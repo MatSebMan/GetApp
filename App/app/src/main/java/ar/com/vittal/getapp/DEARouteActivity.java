@@ -113,7 +113,6 @@ public class DEARouteActivity extends MapListenerActivity implements OnMapReadyC
     private ArrayList<LatLng> getNearestDEAS()
     {
         ArrayList<LatLng> listaDeDeas = new ArrayList<>();
-        //listaDeDeas.add(new LatLng(-34.578465, -58.457882));
         listaDeDeas.add(new LatLng(-34.576465, -58.455882));
         listaDeDeas.add(new LatLng(-34.583465, -58.457882));
         listaDeDeas.add(new LatLng(-34.573465, -58.457882));

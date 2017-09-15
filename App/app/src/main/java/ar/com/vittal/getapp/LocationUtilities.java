@@ -225,12 +225,25 @@ public final class LocationUtilities {
     private void addMarkersToMap(DirectionsResult results, GoogleMap mMap) {
         if (results.routes.length != 0)
         {
-            /*mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(results.routes[0].legs[0].startLocation.lat,results.routes[0].legs[0].startLocation.lng))
-                    .title(results.routes[0].legs[0].startAddress));*/
+            // Maty \
+            String title = "";
+            for (String s : results.routes[0].legs[0].endAddress.split(","))
+            {
+                if (s.contains("CABA"))
+                {
+                    title += "CABA, ";
+                }
+                else
+                {
+                    title += s + ", ";
+                }
+            }
+            title = title.substring(0, title.lastIndexOf(", "));
+            // Maty / - Fix para sacarle el código postal a la dirección
+
             mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(results.routes[0].legs[0].endLocation.lat,results.routes[0].legs[0].endLocation.lng))
-                    .title(results.routes[0].legs[0].startAddress)
+                    .title(title)
                     .snippet(getEndLocationTitle(results))).showInfoWindow();
         }
     }
