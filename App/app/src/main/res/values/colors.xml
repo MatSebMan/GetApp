@@ -3,5 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorListOfDEAsBackground">#FFFFFF</color>
+    <color name="colorListDEABackground">#FFFFFF</color>
+    <color name="colorListDEADireccion">#000000</color>
+    <color name="colorListDEADistancia">#7D7D7D</color>
+    <color name="colorListDEARazonSocial">#7D7D7D</color>
 </resources>

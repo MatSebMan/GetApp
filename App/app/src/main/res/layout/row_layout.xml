@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/ListaDEAS">
+
+    <TextView
+        style="@style/ListaDEASDirecion"
+        android:id="@+id/direccion"/>
+
+    <TextView
+        style="@style/ListaDEASDistancia"
+        android:id="@+id/distancia" />
+
+    <TextView
+        style="@style/ListaDEASRazonSocial"
+        android:id="@+id/razonSocial"/>
+</LinearLayout>

@@ -8,4 +8,34 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ListaDEAS">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:weightSum">3</item>
+    </style>
+
+    <style name="ListaDEASDirecion">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">50px</item>
+        <item name="android:textColor">@color/colorListDEADireccion</item>
+    </style>
+
+    <style name="ListaDEASDistancia">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">50px</item>
+        <item name="android:textColor">@color/colorListDEADistancia</item>
+    </style>
+
+    <style name="ListaDEASRazonSocial">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">50px</item>
+        <item name="android:textColor">@color/colorListDEARazonSocial</item>
+    </style>
 </resources>

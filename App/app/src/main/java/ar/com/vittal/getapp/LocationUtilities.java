@@ -306,10 +306,10 @@ public final class LocationUtilities {
     {
         ArrayList<LatLng> listaDeDeas = new ArrayList<>();
         listaDeDeas.add(new LatLng(-34.589690, -58.459044));
-        listaDeDeas.add(new LatLng(-34.588690, -58.459044));
-        listaDeDeas.add(new LatLng(-34.589690, -58.458044));
         listaDeDeas.add(new LatLng(-34.589690, -58.460044));
         listaDeDeas.add(new LatLng(-34.589190, -58.459544));
+        listaDeDeas.add(new LatLng(-34.588690, -58.459044));
+        listaDeDeas.add(new LatLng(-34.589690, -58.458044));
         return listaDeDeas;
     }
 }
