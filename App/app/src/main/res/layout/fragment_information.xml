@@ -4,10 +4,27 @@
     android:layout_height="match_parent"
     tools:context="ar.com.vittal.getapp.InformationFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/informationTitle"
+        style="@style/InformationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/main_information_title" />
+
+    <TextView
+        android:id="@+id/informationStep1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/informationTitle"
+        android:paddingTop="60dp"
+        android:text="@string/main_information_step1" />
+
+    <TextView
+        android:id="@+id/informationStep2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/main_information_title" />
+        android:layout_below="@id/informationStep1"
+        android:paddingTop="80dp"
+        android:text="@string/main_information_step2" />
 
 </FrameLayout>

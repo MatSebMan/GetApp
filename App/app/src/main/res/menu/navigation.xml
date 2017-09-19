@@ -6,10 +6,10 @@
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/main_navigation_home_label" />
 
-    <item
+    <!--item
         android:id="@+id/navigation_buscador"
         android:icon="@drawable/ic_local_hospital_black_24dp"
-        android:title="@string/main_navigation_buscador_label" />
+        android:title="@string/main_navigation_buscador_label" /-->
 
     <item
         android:id="@+id/navigation_instrucciones"

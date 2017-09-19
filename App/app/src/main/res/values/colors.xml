@@ -7,4 +7,5 @@
     <color name="colorListDEADireccion">#000000</color>
     <color name="colorListDEADistancia">#7D7D7D</color>
     <color name="colorListDEARazonSocial">#7D7D7D</color>
+    <color name="colorInstructionsTitle">#000000</color>
 </resources>

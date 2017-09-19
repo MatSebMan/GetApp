@@ -11,8 +11,9 @@
     <string name="main_button_VOD_description">Muestra en un mapa los DEAs mas cercanos</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="main_information_title">Instrucciones para el uso del DEA\n1...\n2...</string>
-    <string name="main_information_info">1...\n2...</string>
+    <string name="main_information_title">¿Que hacer en caso de observar un infarto?</string>
+    <string name="main_information_step1">1 Llamar a SAME 107</string>
+    <string name="main_information_step2">2 Iniciar masajes cardíacos</string>
 
     <string name="google_maps_key">AIzaSyAxm5ziuKwuf93BR2GQ_TmlQY19ubdybAo</string>
     <string name="google_directions_key">AIzaSyDi4whs1INWEBhFQ4bdB7ptIT1K7GrViRg</string>

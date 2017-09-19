@@ -38,4 +38,10 @@
         <item name="android:textSize">50px</item>
         <item name="android:textColor">@color/colorListDEARazonSocial</item>
     </style>
+
+    <style name="InformationTitle">
+        <item name="android:textColor">@color/colorInstructionsTitle</item>
+        <item name="android:textSize">24dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

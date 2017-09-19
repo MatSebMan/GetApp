@@ -51,12 +51,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
                             .replace(R.id.content, HomeFragment.newInstance("Home", ""))
                             .commit();
                     return true;
-                case R.id.navigation_buscador:
+                /*case R.id.navigation_buscador:
                     mgr = getFragmentManager();
                     mgr.beginTransaction()
                             .replace(R.id.content, SearchFragment.newInstance("Search", ""))
                             .commit();
-                    return true;
+                    return true;*/
                 case R.id.navigation_instrucciones:
                     mgr = getFragmentManager();
                     mgr.beginTransaction()
@@ -86,11 +86,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
     private ArrayList<LatLng> getNearestDEAS()
     {
         ArrayList<LatLng> listaDeDeas = new ArrayList<>();
-        listaDeDeas.add(new LatLng(-34.589690, -58.459044));
-        listaDeDeas.add(new LatLng(-34.589690, -58.460044));
-        listaDeDeas.add(new LatLng(-34.589190, -58.459544));
-        listaDeDeas.add(new LatLng(-34.588690, -58.459044));
-        listaDeDeas.add(new LatLng(-34.589690, -58.458044));
+        listaDeDeas.add(new LatLng(-34.576465, -58.455882));
+        listaDeDeas.add(new LatLng(-34.578465, -58.462882));
+        listaDeDeas.add(new LatLng(-34.578465, -58.452882));
+        listaDeDeas.add(new LatLng(-34.583465, -58.457882));
+        listaDeDeas.add(new LatLng(-34.573465, -58.457882));
         return listaDeDeas;
     }
 
