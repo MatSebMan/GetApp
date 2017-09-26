@@ -10,3 +10,13 @@ exports.findAll = function(req, res) {
     ]
     res.status(200).jsonp(deas);
 };
+
+exports.findLocations = function(req, res) {
+    var deas = [
+        {id: 1, nombre: 'Gimnasio Anabolic', latitud: -34.594171, longitud: -58.4561782},
+        {id: 2, nombre: 'Facultad de Ingenieria UBA', latitud: -34.5931761, longitud: -58.4618553},
+        {id: 3, nombre: 'Hospital Álvarez', latitud: -34.5922679, longitud: -58.4640788},
+        {id: 4, nombre: 'Hospital Churruca', latitud: -34.5893298, longitud: -58.4643988},
+    ]
+    res.status(200).jsonp(deas);
+};

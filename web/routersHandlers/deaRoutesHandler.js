@@ -7,5 +7,8 @@ exports.getRoutesHandler = function(express){
 	routesHandler.route('/deaList')
 		.get(controller.findAll);
 
+	routesHandler.route('/deaLocation')
+		.get(controller.findLocations);
+
 	return routesHandler;  
 }
