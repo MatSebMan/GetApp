@@ -3,6 +3,16 @@
         <div class="card-header" [attr.data-background-color]="getColor()">
             <h4 class="title">{{title}}</h4>
             <p class="category">{{subtitle}}</p>
+            <div style="position: absolute; width:100%;">
+                <div *ngIf='headerButtons' class="pull-right" style="margin-right: 60px">
+                    <button *ngFor="let button of headerButtons" 
+                    class="btn btn-round btn-sm" type="button" 
+                    [ngStyle]="{ 'background-color': getOverlayButtonColor(), 'margin-top': 0}"
+                    (click)="emitSelect(button.event)">
+                        <i class="material-icons">{{button.icon_left}}</i> {{button.title}} <i class="material-icons">{{button.icon_right}}</i>
+                    </button>
+                </div>
+            </div>
         </div>
         <div class="card-content table-responsive">
             <table class="table table-hover">
@@ -23,6 +33,13 @@
                                 <i _ngcontent-c4="" class="material-icons">archive</i>
                                     Exportar
                             </button>
+                            <span *ngIf='bodyButtons'>
+                                <button *ngFor="let button of bodyButtons" 
+                                class="btn btn-simple btn-sm" type="button"  [ngClass]='buttonType()'
+                                (click)="emitSelect(button.event)" rel="tooltip" [attr.title]="button.title">
+                                    <i class="material-icons">{{button.icon_left}}</i> {{button.title}} <i class="material-icons">{{button.icon_right}}</i>
+                                </button>
+                            </span>
                         </th>
                     </tr>
                     <tr>
@@ -52,9 +69,16 @@
         <div id="modalContentId" class="swal2-content" style="display: block;">
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-4 pull-left" *ngFor="let key of keysEdicion; let i = index">
-                    <div *ngIf="!isCombo(camposEdicion.types[key]) && camposEdicion.types[key] != 'boolean'" class="form-group form-black label-floating" [ngClass]="{'is-empty': !editData[key]}" >
+                    <div *ngIf="!isCombo(camposEdicion.types[key]) && camposEdicion.types[key] != 'boolean' && camposEdicion.types[key] != 'date' && camposEdicion.types[key] != 'month'" class="form-group form-black label-floating" [ngClass]="{'is-empty': (!editData[key])}" >
                         <label class="control-label">{{camposEdicion.text[key]}}</label>
                         <input [attr.type]="camposEdicion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="editData[key]">
+                    </div>
+                    <div *ngIf="!isCombo(camposEdicion.types[key]) && (camposEdicion.types[key] == 'date' || camposEdicion.types[key] == 'month')" 
+                            class="form-group form-black label-floating" >
+                        <label class="col-xs-3" style="padding-top:10px;">{{camposEdicion.text[key]}}:</label>
+                        <div class="col-xs-9">
+                            <input [attr.type]="camposEdicion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="editData[key]">
+                        </div>
                     </div>
                     <div *ngIf="!isCombo(camposEdicion.types[key]) && camposEdicion.types[key] == 'boolean'" class="form-group form-black" style="margin-top: 25px; margin-bottom: 10px">
                         <div class="checkbox">
@@ -65,7 +89,7 @@
                     </div>
                     <div class="form-group form-black" *ngIf="isCombo(camposEdicion.types[key])" style="margin-top: 10px; margin-bottom: 17px">
                         <dropdown-cmp *ngIf="isCombo(camposEdicion.types[key])" [id]="key" 
-                        [title]="camposEdicion.text[key]" [url]="camposEdicion.types[key].url_get"
+                        [title]="camposEdicion.text[key]" [url]="camposEdicion.types[key].url_get" [data]="camposEdicion.types[key].data"
                         (selectionChanged)="handleSelection($event, 'editar')" [selectedItem]="this.editData[key]"></dropdown-cmp>
                     </div>
                 </div>
@@ -89,6 +113,13 @@
                         <label class="control-label">{{camposCreacion.text[key]}}</label>
                         <input [attr.type]="camposCreacion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="createData[key]">
                     </div>
+                    <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] != 'boolean' && (camposCreacion.types[key] == 'date' || camposCreacion.types[key] == 'month')" 
+                            class="form-group form-black label-floating" >
+                        <label class="col-xs-3" style="padding-top:10px;">{{camposCreacion.text[key]}}:</label>
+                        <div class="col-xs-9">
+                            <input [attr.type]="camposCreacion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="createData[key]">
+                        </div>
+                    </div>
                     <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] == 'boolean'" class="form-group form-black" style="margin-top: 25px; margin-bottom: 10px">
                         <div class="checkbox">
                             <label>
@@ -98,7 +129,7 @@
                     </div>
                     <div class="form-group form-black" *ngIf="isCombo(camposCreacion.types[key])" style="margin-top: 10px; margin-bottom: 17px">
                         <dropdown-cmp *ngIf="isCombo(camposCreacion.types[key])" [id]="key"
-                        [title]="camposCreacion.text[key]" [url]="camposCreacion.types[key].url_get"
+                        [title]="camposCreacion.text[key]" [url]="camposCreacion.types[key].url_get" [data]="camposCreacion.types[key].data"
                         (selectionChanged)="handleSelection($event, 'crear')"></dropdown-cmp>
                         
                     </div>

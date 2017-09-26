@@ -54,7 +54,7 @@ export class DropdownComponent{
             });
         }
 
-        if(changes.url && changes.url.currentValue != '') {
+        if(changes.url && changes.url.currentValue != null && changes.url.currentValue != '') {
             this.selectedItem = undefined;
             this.loading = true;
             this.url = changes.url.currentValue;

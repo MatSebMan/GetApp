@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChange } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { NgZone } from '@angular/core'
 import { DefaultServices } from '../defaultServices/defaultServices'
 
@@ -16,6 +16,7 @@ export class TableComponent {
     @Input() subtitle:string;
     @Input() data:any;
     @Input() urlGet:any;
+    @Input() urlGetParameters:any;
     @Input() urlPost:any;
     @Input() editableRows:boolean = false;
     @Input() editTitle: string = "Editar";
@@ -26,6 +27,10 @@ export class TableComponent {
     @Input() color;
     @Input() addItemOption:boolean = false;
     @Input() exportableOption:boolean = true;
+    @Input() headerButtons:any;
+    @Input() bodyButtons:any;
+    @Input() fillEdit:boolean = true;
+    @Output() event = new EventEmitter();
     public keys:string[];
     public keysEdicion:string[];
     public keysCreacion:string[];
@@ -68,7 +73,7 @@ export class TableComponent {
     }
 
     loadURLData() {
-        this.defaultService.getData(this.urlGet).subscribe(
+        this.defaultService.getData(this.urlGet+(this.urlGetParameters?this.urlGetParameters:'')).subscribe(
             (data) => {
                 this.data = data.splice(0);
                 if(this.data && this.data.length > 0)
@@ -87,6 +92,10 @@ export class TableComponent {
             },
             err => console.error("EL ERROR FUE: ", err)
         );
+    }
+
+    emitSelect(event) {
+        this.event.emit(event);
     }
 
     handleSelection(event, modo) {
@@ -108,21 +117,25 @@ export class TableComponent {
         if (event.currentTarget === event.target) {
             if(accion=='editar') {
                 if(row && row.Id) {
-                    var keys = Object.keys(row);
-                    var keysInverse = Object.keys(this.camposEdicion.text);
-                    
-                    this.defaultService.getData(this.urlGet+'/'+row.Id).subscribe(
-                        (data) => {
-                            keys.forEach(key => {
-                                keysInverse.forEach(keyInv => {
-                                    if(key == this.camposEdicion.text[keyInv])
-                                        this.editData[keyInv] = data[0][key];
+                    if(this.fillEdit) {
+                        var keysInverse = Object.keys(this.camposEdicion.text);
+                        this.editData = {};
+                        this.defaultService.getData(this.urlGet+'/'+row.Id).subscribe(
+                            (data) => {
+                                var keys = Object.keys(data[0]);
+                                keys.forEach(key => {
+                                    keysInverse.forEach(keyInv => {
+                                        if(key == this.camposEdicion.text[keyInv])
+                                            this.editData[keyInv] = data[0][key];
+                                    });
                                 });
-                            });
-                            this.editData.id = row.Id;           
-                        },
-                        err => console.error("EL ERROR FUE: ", err)
-                    );
+                                this.editData.id = row.Id;
+                            },
+                            err => console.error("EL ERROR FUE: ", err)
+                        );
+                    } else {
+                        this.editData.id = row.Id;
+                    }
                 }
                 this.showModalEdicion= !this.showModalEdicion;
             }
@@ -161,8 +174,12 @@ export class TableComponent {
             );
             this.toogleModal(event, 'editar');
         }
-        // console.log(this.editData);
-        // this.toogleModal(event, 'editar');
+    }
+
+    ngOnChanges(changes: any) {        
+        if(changes.urlGet || changes.urlGetParameters) {
+            this.loadURLData();            
+        }
     }
 
     isCombo(item) {
@@ -255,5 +272,23 @@ export class TableComponent {
 
     export() {
         this.download_as_file(this.json_to_csv(), this.title+'.csv');
+    }
+
+    getOverlayButtonColor() {
+        if(this.color=='red')
+            return '#e53935';
+        if(this.color=='purple')
+            return '#8e24aa';
+        if(this.color=='green')
+            return '#43a047';
+        if(this.color=='yellow')
+            return '#8e24aa';
+        // if(this.color=='vittal')
+        //     return 'rgb(51, 177, 166)';
+        return '#e53935';
+    }
+
+    isEmpty(key) {           
+        return ((!this.editData[key]) && (this.camposEdicion.types[key] != 'date'));
     }
 }
