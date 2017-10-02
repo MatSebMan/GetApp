@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -25,9 +24,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.maps.model.LatLng;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener{
 
@@ -74,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mgr = getFragmentManager();
@@ -83,33 +78,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
                 .commit();
     }
 
-    private ArrayList<LatLng> getNearestDEAS()
-    {
-        ArrayList<LatLng> listaDeDeas = new ArrayList<>();
-        listaDeDeas.add(new LatLng(-34.576465, -58.455882));
-        listaDeDeas.add(new LatLng(-34.578465, -58.462882));
-        listaDeDeas.add(new LatLng(-34.578465, -58.452882));
-        listaDeDeas.add(new LatLng(-34.583465, -58.457882));
-        listaDeDeas.add(new LatLng(-34.573465, -58.457882));
-        return listaDeDeas;
-    }
-
     @Override
     public void onGoToNearestDEAPressed(View view, Class clas) {
         this.intent = new Intent(this, DEARouteActivity.class);
-        ArrayList<LatLng> lista = getNearestDEAS();
-        this.intent.putExtra(DEARouteActivity.NEAREST_DEA_LATITUDE, lista.get(0).latitude);
-        this.intent.putExtra(DEARouteActivity.NEAREST_DEA_LONGITUDE, lista.get(0).longitude);
         displayLocationSettingsRequest(this);
     }
-
-    /*
-    @Override
-    public void onListAllNearestDEASPressed(View view, Class clas) {
-        this.intent = new Intent(this, DEASActivity.class);
-        this.intent.putParcelableArrayListExtra(DEASActivity.LIST_OF_DEAS, getNearestDEAS());
-        displayLocationSettingsRequest(this);
-    }*/
 
     private void displayLocationSettingsRequest(Context context) {
         GoogleApiClient googleApiClient = new GoogleApiClient.Builder(context)

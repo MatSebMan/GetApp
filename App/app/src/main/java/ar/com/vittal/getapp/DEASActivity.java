@@ -29,7 +29,6 @@ import java.util.List;
 public class DEASActivity extends MapListenerActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private ArrayList<LatLng> destinations;
     private LocationUtilities utilities;
 
     public static String LIST_OF_DEAS = "LIST_OF_DEAS";
@@ -38,9 +37,6 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deas);
-
-        Intent intent = getIntent();
-        this.destinations = intent.getParcelableArrayListExtra(LIST_OF_DEAS);
 
         utilities = LocationUtilities.getInstance(this);
 
@@ -68,16 +64,19 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
 
     @Override
     public void locationReady() {
-        ArrayList<DirectionsResult> result = utilities.getRouteFromCurrentLocation(this.destinations);
+        this.utilities.lookupDEAS(LocationUtilities.DEAS_CANT_MAX);
+    }
+
+    @Override
+    public void lookupReady(GetAppLatLng[] latng) {
+        ArrayList<LatLng> destinations = new ArrayList<>();
+        for (GetAppLatLng gall : latng)
+        {
+            destinations.add(new LatLng(gall.getLatitud(),gall.getLongitud()));
+        }
+        ArrayList<DirectionsResult> result = utilities.getRouteFromCurrentLocation(destinations);
         if (result != null)
         {
-            /*ArrayList<String> addresses = new ArrayList<>();
-            for (DirectionsResult r : result)
-            {
-                addresses.add(utilities.getAddress(r));
-            }
-            ArrayAdapter<String> at=new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1,addresses);*/
-
             ListView list = (ListView) findViewById(R.id.listaDeDeas);
             list.setAdapter(new DEASArrayAdapter(this, R.layout.row_layout, result));
             utilities.drawResult(result, mMap);

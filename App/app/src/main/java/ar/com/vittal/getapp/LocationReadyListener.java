@@ -7,4 +7,6 @@ package ar.com.vittal.getapp;
 public interface LocationReadyListener
 {
     public void locationReady();
+
+    public void lookupReady(GetAppLatLng[] latng);
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -27,6 +28,8 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
 
 import org.joda.time.DateTime;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,6 +53,9 @@ public final class LocationUtilities {
     private static final int DEFAULT_ZOOM = 15;
     private static final String GOOGLE_DIRECTIONS_KEY = "AIzaSyDi4whs1INWEBhFQ4bdB7ptIT1K7GrViRg";
     private static final Integer TIMEOUT_TIME = 10;
+
+    public static final int DEAS_CANT_MAX = 5;
+    public static final int DEAS_CANT_MIN = 1;
 
     private LocationUtilities() {}
 
@@ -302,14 +308,32 @@ public final class LocationUtilities {
         drawResult(list, mMap);
     }
 
-    public ArrayList<LatLng> getNearestDEAS()
+    public void lookupDEAS(Integer ammount)
     {
-        ArrayList<LatLng> listaDeDeas = new ArrayList<>();
-        listaDeDeas.add(new LatLng(-34.589690, -58.459044));
-        listaDeDeas.add(new LatLng(-34.589690, -58.460044));
-        listaDeDeas.add(new LatLng(-34.589190, -58.459544));
-        listaDeDeas.add(new LatLng(-34.588690, -58.459044));
-        listaDeDeas.add(new LatLng(-34.589690, -58.458044));
-        return listaDeDeas;
+        new HttpRequestTask().execute();
+    }
+
+    private class HttpRequestTask extends AsyncTask<Void, Void, GetAppLatLng[]> {
+        @Override
+        protected GetAppLatLng[] doInBackground(Void... params) {
+            try {
+                final String url = "http://190.210.8.137:4003/api/v1/deaLocation";
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                GetAppLatLng getAppLatLng[] = restTemplate.getForObject(url, GetAppLatLng[].class);
+                return getAppLatLng;
+            } catch (Exception e) {
+                Log.e("MainActivity", e.getMessage(), e);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(GetAppLatLng[] latLng)
+        {
+            _activity.lookupReady(latLng);
+        }
+
     }
 }

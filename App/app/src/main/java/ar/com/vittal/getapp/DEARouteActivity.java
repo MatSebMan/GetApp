@@ -52,6 +52,7 @@ public class DEARouteActivity extends MapListenerActivity implements OnMapReadyC
     private final LatLng mDefaultLocation = new LatLng(-34.6131500, -58.3772300);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private static final int MAX_DEAS_CANT = 5;
 
     public static final String NEAREST_DEA_LATITUDE = "NEAREST_DEA_LATITUDE";
     public static final String NEAREST_DEA_LONGITUDE = "NEAREST_DEA_LONGITUDE";
@@ -67,9 +68,6 @@ public class DEARouteActivity extends MapListenerActivity implements OnMapReadyC
 
         Button button = (Button) findViewById(R.id.listAllNearestDEAS);
         button.setOnClickListener(this);
-
-        Intent intent = getIntent();
-        this.destination = new com.google.maps.model.LatLng(intent.getDoubleExtra(NEAREST_DEA_LATITUDE, -34.6131500), intent.getDoubleExtra(NEAREST_DEA_LONGITUDE, -58.3772300));
 
         utilities = LocationUtilities.getInstance(this);
 
@@ -96,7 +94,13 @@ public class DEARouteActivity extends MapListenerActivity implements OnMapReadyC
 
     @Override
     public void locationReady() {
-        DirectionsResult result = utilities.getRouteFromCurrentLocation(this.destination);
+        utilities.lookupDEAS(LocationUtilities.DEAS_CANT_MIN);
+    }
+
+    @Override
+    public void lookupReady(GetAppLatLng[] latLng)
+    {
+        DirectionsResult result = utilities.getRouteFromCurrentLocation(new com.google.maps.model.LatLng(latLng[0].getLatitud(),latLng[0].getLongitud()));
         if (result != null)
         {
             utilities.drawResult(result, mMap);
@@ -106,19 +110,7 @@ public class DEARouteActivity extends MapListenerActivity implements OnMapReadyC
 
     public void listAllNearestDEAS(View view) {
         Intent intent = new Intent(this, DEASActivity.class);
-        intent.putParcelableArrayListExtra(DEASActivity.LIST_OF_DEAS, getNearestDEAS());
         startActivity(intent);
-    }
-
-    private ArrayList<LatLng> getNearestDEAS()
-    {
-        ArrayList<LatLng> listaDeDeas = new ArrayList<>();
-        listaDeDeas.add(new LatLng(-34.576465, -58.455882));
-        listaDeDeas.add(new LatLng(-34.578465, -58.462882));
-        listaDeDeas.add(new LatLng(-34.578465, -58.452882));
-        listaDeDeas.add(new LatLng(-34.583465, -58.457882));
-        listaDeDeas.add(new LatLng(-34.573465, -58.457882));
-        return listaDeDeas;
     }
 
     @Override

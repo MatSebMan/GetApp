@@ -3,7 +3,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_main">GetApp</string>
     <string name="main_navigation_home_label">Home</string>
-    <string name="main_navigation_buscador_label">Buscador</string>
     <string name="main_navigation_instrucciones_label">Instrucciones</string>
     <string name="main_button_IDMC_label">Ir al DEA mas cercano</string>
     <string name="main_button_IDMC_description">Muestra la ruta al DEA mas cercano</string>
@@ -16,9 +15,7 @@
     <string name="main_information_step2">2 Iniciar masajes cardíacos</string>
 
     <string name="google_maps_key">AIzaSyAxm5ziuKwuf93BR2GQ_TmlQY19ubdybAo</string>
-    <string name="google_directions_key">AIzaSyDi4whs1INWEBhFQ4bdB7ptIT1K7GrViRg</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_deas">Map</string>
 </resources>

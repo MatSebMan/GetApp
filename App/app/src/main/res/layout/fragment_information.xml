@@ -20,7 +20,6 @@
         android:text="@string/main_information_step1" />
 
     <TextView
-        android:id="@+id/informationStep2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/informationStep1"
