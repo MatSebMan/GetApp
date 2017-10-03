@@ -29,6 +29,7 @@ import com.google.maps.model.TravelMode;
 
 import org.joda.time.DateTime;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -132,7 +133,8 @@ public final class LocationUtilities {
                         } else {
                             mLastKnownLocation = null;
                         }
-                        _activity.locationReady();
+                        _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_OK, "refreshDeviceLocation", mLastKnownLocation));
+                        //_activity.locationReady();
                     }
                 });
             }
@@ -322,8 +324,13 @@ public final class LocationUtilities {
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 GetAppLatLng getAppLatLng[] = restTemplate.getForObject(url, GetAppLatLng[].class);
                 return getAppLatLng;
-            } catch (Exception e) {
-                Log.e("MainActivity", e.getMessage(), e);
+            } catch (ResourceAccessException rae) {
+                _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "lookupDEAS", "Servidor inaccesible"));
+                //Log.e("LocationUtilities", rae.getMessage(), rae);
+            } catch (Exception e)
+            {
+                _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "Error inesperado"));
+                //Log.e("LocationUtilities", e.getMessage(), e);
             }
 
             return null;
@@ -332,7 +339,15 @@ public final class LocationUtilities {
         @Override
         protected void onPostExecute(GetAppLatLng[] latLng)
         {
-            _activity.lookupReady(latLng);
+            if (latLng == null || latLng.length == 0)
+            {
+                _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "lookupDEAS", null, "No se encontraron DEAS cerca"));
+            }
+            else
+            {
+                _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_OK, "lookupDEAS", latLng, "No se encontraron DEAS cerca"));
+                //_activity.lookupReady(latLng);
+            }
         }
 
     }

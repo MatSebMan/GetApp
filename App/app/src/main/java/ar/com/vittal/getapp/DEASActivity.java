@@ -2,24 +2,22 @@ package ar.com.vittal.getapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.model.DirectionsResult;
 
 import java.util.ArrayList;
@@ -31,11 +29,14 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
     private GoogleMap mMap;
     private LocationUtilities utilities;
 
+    private MapListenerActivity _activity;
+
     public static String LIST_OF_DEAS = "LIST_OF_DEAS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this._activity = this;
         setContentView(R.layout.activity_deas);
 
         utilities = LocationUtilities.getInstance(this);
@@ -81,6 +82,47 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
             list.setAdapter(new DEASArrayAdapter(this, R.layout.row_layout, result));
             utilities.drawResult(result, mMap);
             utilities.centerCamera(mMap);
+        }
+    }
+
+    @Override
+    public void sendResponse(final ResponseObject ro) {
+        if (ro.getStatus() == ResponseObject.STATUS_ERROR)
+        {
+            this.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(_activity, ro.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+            Intent intent = new Intent(this, MainActivity.class);
+            this.startActivity(intent);
+        }
+        else
+        {
+            switch (ro.getMethod())
+            {
+                case "refreshDeviceLocation":
+                    utilities.lookupDEAS(LocationUtilities.DEAS_CANT_MAX);
+                    break;
+                case "lookupDEAS":
+                    GetAppLatLng[] latLng = (GetAppLatLng[])ro.getObject();
+                    ArrayList<LatLng> destinations = new ArrayList<>();
+                    for (GetAppLatLng gall : latLng)
+                    {
+                        destinations.add(new LatLng(gall.getLatitud(),gall.getLongitud()));
+                    }
+                    ArrayList<DirectionsResult> result = utilities.getRouteFromCurrentLocation(destinations);
+                    if (result != null)
+                    {
+                        ListView list = (ListView) findViewById(R.id.listaDeDeas);
+                        list.setAdapter(new DEASArrayAdapter(this, R.layout.row_layout, result));
+                        utilities.drawResult(result, mMap);
+                        utilities.centerCamera(mMap);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

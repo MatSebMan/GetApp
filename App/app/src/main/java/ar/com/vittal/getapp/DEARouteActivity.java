@@ -1,47 +1,18 @@
 package ar.com.vittal.getapp;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
-import android.support.annotation.NonNull;
-
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import android.location.Location;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.maps.DirectionsApi;
-import com.google.maps.DirectionsApiRequest;
-import com.google.maps.GeoApiContext;
-import com.google.maps.android.PolyUtil;
-import com.google.maps.errors.ApiException;
 import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.TravelMode;
-
-import org.joda.time.DateTime;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class DEARouteActivity extends MapListenerActivity implements OnMapReadyCallback, View.OnClickListener{
 
@@ -61,9 +32,12 @@ public class DEARouteActivity extends MapListenerActivity implements OnMapReadyC
 
     private LocationUtilities utilities;
 
+    private MapListenerActivity _activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this._activity = this;
         setContentView(R.layout.activity_maps);
 
         Button button = (Button) findViewById(R.id.listAllNearestDEAS);
@@ -105,6 +79,40 @@ public class DEARouteActivity extends MapListenerActivity implements OnMapReadyC
         {
             utilities.drawResult(result, mMap);
             utilities.centerCamera(mMap);
+        }
+    }
+
+    @Override
+    public void sendResponse(final ResponseObject ro) {
+        if (ro.getStatus() == ResponseObject.STATUS_ERROR)
+        {
+            this.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(_activity, ro.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+            Intent intent = new Intent(this, MainActivity.class);
+            this.startActivity(intent);
+        }
+        else
+        {
+            switch (ro.getMethod())
+            {
+                case "refreshDeviceLocation":
+                    utilities.lookupDEAS(LocationUtilities.DEAS_CANT_MIN);
+                    break;
+                case "lookupDEAS":
+                    GetAppLatLng[] latLng = (GetAppLatLng[])ro.getObject();
+                    DirectionsResult result = utilities.getRouteFromCurrentLocation(new com.google.maps.model.LatLng(latLng[0].getLatitud(),latLng[0].getLongitud()));
+                    if (result != null)
+                    {
+                        utilities.drawResult(result, mMap);
+                        utilities.centerCamera(mMap);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

@@ -9,4 +9,6 @@ public interface LocationReadyListener
     public void locationReady();
 
     public void lookupReady(GetAppLatLng[] latng);
+
+    public void sendResponse(final ResponseObject ro);
 }
