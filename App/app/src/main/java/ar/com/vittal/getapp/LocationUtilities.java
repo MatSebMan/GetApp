@@ -1,4 +1,4 @@
-package ar.com.vittal.getapp;
+﻿package ar.com.vittal.getapp;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
@@ -319,7 +319,7 @@ public final class LocationUtilities {
         @Override
         protected GetAppLatLng[] doInBackground(Void... params) {
             try {
-                final String url = "http://190.210.8.137:4003/api/v1/deaLocation";
+                final String url = "http://190.245.173.230:4000/api/v1/deaLocation";
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 GetAppLatLng getAppLatLng[] = restTemplate.getForObject(url, GetAppLatLng[].class);
