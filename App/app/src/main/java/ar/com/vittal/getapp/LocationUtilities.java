@@ -1,4 +1,4 @@
-﻿package ar.com.vittal.getapp;
+package ar.com.vittal.getapp;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
@@ -62,10 +62,10 @@ public final class LocationUtilities {
 
     public static final LocationUtilities getInstance(MapListenerActivity activity)
     {
-        if (_instance == null || !_instance._activity.equals(activity))
+        if (_instance == null || _activity == null || !_activity.equals(activity))
         {
             _instance = new LocationUtilities();
-            _instance._activity = activity;
+            _activity = activity;
         }
         return _instance;
     }
