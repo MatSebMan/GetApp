@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">GetApp</string>
+    <string name="app_name">vittalGetApp</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_main">GetApp</string>
+    <string name="title_activity_main">vittalGetApp</string>
     <string name="main_navigation_home_label">Home</string>
     <string name="main_navigation_instrucciones_label">Instrucciones</string>
     <string name="main_button_IDMC_label">Ir al DEA mas cercano</string>

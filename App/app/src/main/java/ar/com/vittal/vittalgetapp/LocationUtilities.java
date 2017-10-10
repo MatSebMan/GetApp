@@ -1,6 +1,5 @@
-package ar.com.vittal.getapp;
+package ar.com.vittal.vittalgetapp;
 
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;

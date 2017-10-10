@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ar.com.vittal.getapp.MainActivity">
+    tools:context="ar.com.vittal.vittalgetapp.ar.com.vittal.vittalgetapp.MainActivity">
 
     <FrameLayout
         android:id="@+id/content"

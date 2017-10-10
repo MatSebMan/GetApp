@@ -1,4 +1,4 @@
-package ar.com.vittal.getapp;
+package ar.com.vittal.vittalgetapp;
 
 import org.junit.Test;
 

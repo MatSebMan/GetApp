@@ -1,4 +1,4 @@
-package ar.com.vittal.getapp;
+package ar.com.vittal.vittalgetapp;
 
 /**
  * Created by mmanzano on 02/10/2017.

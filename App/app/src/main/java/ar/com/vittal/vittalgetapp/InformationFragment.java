@@ -1,4 +1,4 @@
-package ar.com.vittal.getapp;
+package ar.com.vittal.vittalgetapp;
 
 import android.app.Fragment;
 import android.content.Context;

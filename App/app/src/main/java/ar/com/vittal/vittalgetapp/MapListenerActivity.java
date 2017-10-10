@@ -1,4 +1,4 @@
-package ar.com.vittal.getapp;
+package ar.com.vittal.vittalgetapp;
 
 import android.support.v4.app.FragmentActivity;
 

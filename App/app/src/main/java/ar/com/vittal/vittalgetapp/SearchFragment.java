@@ -1,4 +1,4 @@
-package ar.com.vittal.getapp;
+package ar.com.vittal.vittalgetapp;
 
 import android.content.Context;
 import android.net.Uri;

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ar.com.vittal.getapp.SearchFragment">
+    tools:context="ar.com.vittal.vittalgetapp.ar.com.vittal.vittalgetapp.SearchFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
