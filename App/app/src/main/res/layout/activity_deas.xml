@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="3"
-    tools:context="ar.com.vittal.vittalgetapp.ar.com.vittal.vittalgetapp.DEASActivity">
+    tools:context="ar.com.vittal.vittalgetapp.DEASActivity">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"

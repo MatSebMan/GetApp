@@ -18,4 +18,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_deas">Map</string>
+    <string name="title_activity_disclaimer">Recuerde que...</string>
+    <string name="disclaimer_button_text">Continuar</string>
+    <string name="disclaimer_terms_agreement">Acepto los</string>
+    <string name="disclaimer_terms_link">terminos y condiciones</string>
+    <string name="disclaimer_text_page_1">Bla bla bla 1</string>
+    <string name="disclaimer_text_page_2">Bla bla bla 2</string>
+    <string name="disclaimer_text_page_3">Bla bla bla 3</string>
 </resources>

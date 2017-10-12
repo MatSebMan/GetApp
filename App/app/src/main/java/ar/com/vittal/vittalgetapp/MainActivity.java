@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
                 .build();
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
         mgr = getFragmentManager();
         mgr.beginTransaction()
                 .add(R.id.content, HomeFragment.newInstance("home", ""))
@@ -155,6 +156,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onBackPressed(){
 
     }
 }

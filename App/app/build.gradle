@@ -25,22 +25,7 @@ android {
         exclude 'META-INF/NOTICE'
     }
     productFlavors {
-        demo {
-            minSdkVersion 15
-            applicationId 'ar.com.vittal.vittalgetapp'
-            targetSdkVersion 25
-            testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 1
-            versionName '1.0'
-        }
-        full {
-            minSdkVersion 15
-            applicationId 'ar.com.vittal.vittalgetapp'
-            targetSdkVersion 25
-            testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 1
-            versionName '1.0'
-        }
+
     }
 }
 

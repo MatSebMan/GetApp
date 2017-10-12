@@ -31,22 +31,33 @@
 
         <activity
             android:name=".DEARouteActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.vittal.vittalgetapp.MainActivity" />
         <activity
-            android:name="ar.com.vittal.vittalgetapp.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/title_activity_main">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.vittal.vittalgetapp.DisclaimerActivity" />
+        </activity>
+        <activity
+            android:name=".DEASActivity"
+            android:label="@string/title_activity_deas">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.vittal.vittalgetapp.DEARouteActivity" />
+        </activity>
+        <activity
+            android:name=".DisclaimerActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="ar.com.vittal.vittalgetapp.DEASActivity"
-            android:label="@string/title_activity_deas">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="ar.com.vittal.vittalgetapp.MainActivity" />
         </activity>
     </application>
 
