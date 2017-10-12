@@ -1,6 +1,7 @@
 package ar.com.vittal.vittalgetapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -36,6 +37,9 @@ public class DisclaimerActivity extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private static final int NUM_PAGES = 3;
+    private static final String SHAPRE_NAME = "ar.com.vittal.vittalgetapp";
+    private static final String LEGAL_KEY = "disclaimerAgreementAccepted";
+    private static SharedPreferences shaPre;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -45,6 +49,14 @@ public class DisclaimerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.shaPre = getSharedPreferences(SHAPRE_NAME, MODE_PRIVATE);
+        if (this.shaPre.contains(LEGAL_KEY))
+        {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+
         setContentView(R.layout.activity_disclaimer);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -151,6 +163,9 @@ public class DisclaimerActivity extends AppCompatActivity {
                     }
                     break;
                 case R.id.disclaimer_button:
+                    SharedPreferences.Editor editor = shaPre.edit();
+                    editor.putBoolean(LEGAL_KEY, Boolean.TRUE);
+                    editor.apply();
                     Intent intent = new Intent(_activity, MainActivity.class);
                     startActivity(intent);
                     break;
