@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,15 +15,24 @@
         android:id="@+id/informationStep1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/informationTitle"
         android:paddingTop="60dp"
         android:text="@string/main_information_step1" />
+
+    <TextView
+        android:id="@+id/informationCallLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/informationStep1"
+        android:layout_toRightOf="@id/informationStep1"
+        android:layout_alignBaseline="@id/informationStep1"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:linksClickable="true" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/informationStep1"
-        android:paddingTop="80dp"
         android:text="@string/main_information_step2" />
 
-</FrameLayout>
+</RelativeLayout>

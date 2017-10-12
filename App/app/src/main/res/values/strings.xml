@@ -11,18 +11,19 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="main_information_title">¿Que hacer en caso de observar un infarto?</string>
-    <string name="main_information_step1">1 Llamar a SAME 107</string>
+    <string name="main_information_step1">1 Llamar a SAME</string>
+    <string name="main_information_call_link">107</string>
     <string name="main_information_step2">2 Iniciar masajes cardíacos</string>
 
     <string name="google_maps_key">AIzaSyAxm5ziuKwuf93BR2GQ_TmlQY19ubdybAo</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_deas">Map</string>
-    <string name="title_activity_disclaimer">Recuerde que...</string>
+    <string name="title_activity_disclaimer">Recuerde que…</string>
     <string name="disclaimer_button_text">Continuar</string>
     <string name="disclaimer_terms_agreement">Acepto los</string>
     <string name="disclaimer_terms_link">terminos y condiciones</string>
-    <string name="disclaimer_text_page_1">Bla bla bla 1</string>
-    <string name="disclaimer_text_page_2">Bla bla bla 2</string>
-    <string name="disclaimer_text_page_3">Bla bla bla 3</string>
+    <string name="disclaimer_text_page_1">Terminos y condiciones 1</string>
+    <string name="disclaimer_text_page_2">Terminos y condiciones 2</string>
+    <string name="disclaimer_text_page_3">Terminos y condiciones 3</string>
 </resources>

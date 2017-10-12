@@ -3,9 +3,12 @@ package ar.com.vittal.vittalgetapp;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 /**
@@ -58,7 +61,17 @@ public class InformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_information, container, false);
+        View view = inflater.inflate(R.layout.fragment_information, container, false);
+        TextView linkText = (TextView) view.findViewById(R.id.informationCallLink);
+        linkText.setMovementMethod(LinkMovementMethod.getInstance());
+        String text = "<a href='tel:107'> " + getString(R.string.main_information_call_link) + " </a>";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            linkText.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            linkText.setText(Html.fromHtml(text));
+        }
+        linkText.setVisibility(TextView.VISIBLE);
+        return view;
     }
 
     @Override

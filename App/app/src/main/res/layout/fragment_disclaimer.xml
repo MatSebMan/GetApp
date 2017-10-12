@@ -26,8 +26,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/disclaimer_checkbox"
+        android:layout_toEndOf="@id/disclaimer_checkbox"
         android:layout_alignBaseline="@id/disclaimer_checkbox"
-        android:paddingLeft="10dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
         android:linksClickable="true"
         android:text="@string/disclaimer_terms_link"
         android:visibility="invisible"/>
@@ -35,11 +37,10 @@
     <Button
         android:id="@+id/disclaimer_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_height="50dp"
         android:layout_below="@id/disclaimer_checkbox"
+        android:layout_centerHorizontal="true"
         android:text="@string/disclaimer_button_text"
-        android:onClick="continue"
         android:visibility="invisible"/>
 
 </RelativeLayout>
