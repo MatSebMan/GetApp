@@ -318,7 +318,7 @@ public final class LocationUtilities {
         @Override
         protected GetAppLatLng[] doInBackground(Void... params) {
             try {
-                final String url = "http://190.245.173.230:4000/api/v1/deaLocation";
+                final String url = _activity.getString(R.string.webAPI_address);
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
                 GetAppLatLng getAppLatLng[] = restTemplate.getForObject(url, GetAppLatLng[].class);
