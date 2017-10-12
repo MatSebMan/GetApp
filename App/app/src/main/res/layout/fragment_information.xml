@@ -18,16 +18,11 @@
         android:paddingTop="60dp"
         android:text="@string/main_information_step1" />
 
-    <TextView
+    <TextView style="@style/LinedText"
         android:id="@+id/informationCallLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_toEndOf="@id/informationStep1"
         android:layout_toRightOf="@id/informationStep1"
-        android:layout_alignBaseline="@id/informationStep1"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:linksClickable="true" />
+        android:layout_alignBaseline="@id/informationStep1" />
 
     <TextView
         android:layout_width="match_parent"

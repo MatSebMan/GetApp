@@ -21,16 +21,11 @@
         android:text="@string/disclaimer_terms_agreement"
         android:visibility="invisible"/>
 
-    <TextView
+    <TextView style="@style/LinedText"
         android:id="@+id/disclaimer_terms_link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_toRightOf="@id/disclaimer_checkbox"
         android:layout_toEndOf="@id/disclaimer_checkbox"
         android:layout_alignBaseline="@id/disclaimer_checkbox"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        android:linksClickable="true"
         android:text="@string/disclaimer_terms_link"
         android:visibility="invisible"/>
 
