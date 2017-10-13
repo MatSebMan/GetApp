@@ -31,8 +31,6 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
 
     private MapListenerActivity _activity;
 
-    public static String LIST_OF_DEAS = "LIST_OF_DEAS";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,23 +67,6 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
     }
 
     @Override
-    public void lookupReady(GetAppLatLng[] latng) {
-        ArrayList<LatLng> destinations = new ArrayList<>();
-        for (GetAppLatLng gall : latng)
-        {
-            destinations.add(new LatLng(gall.getLatitud(),gall.getLongitud()));
-        }
-        ArrayList<DirectionsResult> result = utilities.getRouteFromCurrentLocation(destinations);
-        if (result != null)
-        {
-            ListView list = (ListView) findViewById(R.id.listaDeDeas);
-            list.setAdapter(new DEASArrayAdapter(this, R.layout.row_layout, result));
-            utilities.drawResult(result, mMap);
-            utilities.centerCamera(mMap);
-        }
-    }
-
-    @Override
     public void sendResponse(final ResponseObject ro) {
         if (ro.getStatus() == ResponseObject.STATUS_ERROR)
         {
@@ -115,7 +96,12 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
                     if (result != null)
                     {
                         ListView list = (ListView) findViewById(R.id.listaDeDeas);
-                        list.setAdapter(new DEASArrayAdapter(this, R.layout.row_layout, result));
+                        ArrayList<DEASListObject> lista = new ArrayList<>();
+                        for (int i = 0; i < result.size(); i++)
+                        {
+                            lista.add(new DEASListObject(result.get(i), latLng[i]));
+                        }
+                        list.setAdapter(new DEASArrayAdapter(this, R.layout.row_layout, lista));
                         utilities.drawResult(result, mMap);
                         utilities.centerCamera(mMap);
                     }
@@ -126,21 +112,21 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
         }
     }
 
-    private class DEASArrayAdapter extends ArrayAdapter<DirectionsResult>
+    private class DEASArrayAdapter extends ArrayAdapter<DEASListObject>
     {
 
         private final Context context;
 
         private HashMap<Integer, String> latLongMap = new HashMap<>();
-        private HashMap<Integer, DirectionsResult> results = new HashMap<>();
+        private HashMap<Integer, DEASListObject> results = new HashMap<>();
 
-        public DEASArrayAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<DirectionsResult> objects) {
+        public DEASArrayAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<DEASListObject> objects) {
 
             super(context, resource, objects);
             this.context = context;
             for (int i = 0; i < objects.size(); i++)
             {
-                this.latLongMap.put(i, utilities.getAddress(objects.get(i)));
+                this.latLongMap.put(i, utilities.getAddress(objects.get(i).getDirResult()));
                 this.results.put(i, objects.get(i));
             }
         }
@@ -154,9 +140,9 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
             TextView direccion = (TextView) rowView.findViewById(R.id.direccion);
             direccion.setText(latLongMap.get(position));
             TextView distancia = (TextView) rowView.findViewById(R.id.distancia);
-            distancia.setText("Tiempo: " + utilities.getTimeToDestination(this.results.get(position)) + ", Distancia: " + utilities.getDistanceToDestination(this.results.get(position)));
+            distancia.setText("Tiempo: " + utilities.getTimeToDestination(this.results.get(position).getDirResult()) + ", Distancia: " + utilities.getDistanceToDestination(this.results.get(position).getDirResult()));
             TextView razonSocial = (TextView) rowView.findViewById(R.id.razonSocial);
-            razonSocial.setText("Farmacity");
+            razonSocial.setText(this.results.get(position).getgALL().getNombre());
             return rowView;
         }
     }

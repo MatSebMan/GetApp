@@ -17,18 +17,6 @@ import com.google.maps.model.DirectionsResult;
 public class DEARouteActivity extends MapListenerActivity implements OnMapReadyCallback, View.OnClickListener{
 
     private GoogleMap mMap;
-    private Boolean mLocationPermissionGranted;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
-    private Location mLastKnownLocation;
-    private final LatLng mDefaultLocation = new LatLng(-34.6131500, -58.3772300);
-    private static final int DEFAULT_ZOOM = 15;
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private static final int MAX_DEAS_CANT = 5;
-
-    public static final String NEAREST_DEA_LATITUDE = "NEAREST_DEA_LATITUDE";
-    public static final String NEAREST_DEA_LONGITUDE = "NEAREST_DEA_LONGITUDE";
-
-    private com.google.maps.model.LatLng destination;
 
     private LocationUtilities utilities;
 
@@ -69,17 +57,6 @@ public class DEARouteActivity extends MapListenerActivity implements OnMapReadyC
     @Override
     public void locationReady() {
         utilities.lookupDEAS(LocationUtilities.DEAS_CANT_MIN);
-    }
-
-    @Override
-    public void lookupReady(GetAppLatLng[] latLng)
-    {
-        DirectionsResult result = utilities.getRouteFromCurrentLocation(new com.google.maps.model.LatLng(latLng[0].getLatitud(),latLng[0].getLongitud()));
-        if (result != null)
-        {
-            utilities.drawResult(result, mMap);
-            utilities.centerCamera(mMap);
-        }
     }
 
     @Override

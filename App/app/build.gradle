@@ -2,7 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        release {
+        signature {
+            keyAlias 'vittalgetappkey'
+            keyPassword 'p28eR$cZ94'
+            storeFile file('D:/Users/mmanzano/.android/keystores/vittalkeystore.jks')
+            storePassword 'W3Mk6sJ#'
         }
     }
     compileSdkVersion 25

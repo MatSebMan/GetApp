@@ -129,10 +129,11 @@ public final class LocationUtilities {
                         if (task.isSuccessful()) {
                             // Set the map's camera position to the current location of the device.
                             mLastKnownLocation = task.getResult();
+                            _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_OK, "refreshDeviceLocation", mLastKnownLocation));
                         } else {
                             mLastKnownLocation = null;
+                            _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "refreshDeviceLocation", "Error al obtener su ubicación"));
                         }
-                        _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_OK, "refreshDeviceLocation", mLastKnownLocation));
                         //_activity.locationReady();
                     }
                 });
@@ -189,11 +190,11 @@ public final class LocationUtilities {
                 result = request.await();
             }
         } catch (ApiException e) {
-            e.printStackTrace();
+            _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "getRouteFromCurrentLocation", e.getMessage()));
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "getRouteFromCurrentLocation", e.getMessage()));
         } catch (IOException e) {
-            e.printStackTrace();
+            _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "getRouteFromCurrentLocation", e.getMessage()));
         }
         return result;
     }
@@ -328,7 +329,7 @@ public final class LocationUtilities {
                 //Log.e("LocationUtilities", rae.getMessage(), rae);
             } catch (Exception e)
             {
-                _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "Error inesperado"));
+                _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "lookupDEAS", e.getMessage()));
                 //Log.e("LocationUtilities", e.getMessage(), e);
             }
 
@@ -344,7 +345,7 @@ public final class LocationUtilities {
             }
             else
             {
-                _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_OK, "lookupDEAS", latLng, "No se encontraron DEAS cerca"));
+                _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_OK, "lookupDEAS", latLng));
                 //_activity.lookupReady(latLng);
             }
         }
