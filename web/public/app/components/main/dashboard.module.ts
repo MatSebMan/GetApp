@@ -1,26 +1,30 @@
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { DeasComponent } from './adminDeas/deas.component';
 import { HomeComponent } from './home/home.component';
 
-import { AdminDeasModule } from './adminDeas/adminDeas.module';
+import { DeasAdminModule } from './deas/admin/deas-admin.module';
+import { DeasAdminComponent } from './deas/admin/deas-admin.component';
+
+import { DeasEventsModule } from './deas/events/deas-events.module';
+import { DeasEventsComponent } from './deas/events/deas-events.component';
 
 @NgModule({
     imports: [
-        AdminDeasModule,
+        DeasAdminModule,
+        DeasEventsModule,
         CommonModule,
         RouterModule.forChild(
             [
                 { path: 'home', component: HomeComponent },
-                { path: 'adminDea', component: DeasComponent },
+                { path: 'deas/admin', component: DeasAdminComponent },
+                { path: 'deas/events', component: DeasEventsComponent },
                 { path: '', redirectTo: 'home', pathMatch: 'full' }
             ]
         )
     ],
     declarations: [
         HomeComponent,
-        DeasComponent,
     ]
 })
 

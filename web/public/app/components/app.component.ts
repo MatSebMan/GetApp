@@ -10,14 +10,17 @@ declare var $:any;
 })
 
 export class AppComponent implements OnInit{
+    
     location: Location;
     constructor(location:Location) {
         this.location = location;
     }
+
     ngOnInit(){
         $.getScript('../assets/js/material-dashboard.js');
         $.getScript('../assets/js/initMenu.js');
     }
+
     public isMaps(path){
         var titlee = this.location.prepareExternalUrl(this.location.path());
         titlee = titlee.slice( 1 );
