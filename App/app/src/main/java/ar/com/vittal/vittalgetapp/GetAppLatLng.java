@@ -1,5 +1,7 @@
 package ar.com.vittal.vittalgetapp;
 
+import java.io.Serializable;
+
 /**
  * Created by mmanzano on 02/10/2017.
  */
