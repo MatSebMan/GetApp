@@ -109,7 +109,7 @@
         <div id="modalContentId" class="swal2-content" style="display: block;">
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-lg-4 pull-left" *ngFor="let key of keysCreacion; let i = index">
-                    <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] != 'boolean'" class="form-group form-black label-floating is-empty" >
+                    <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] != 'boolean' && camposCreacion.types[key] != 'date' && camposCreacion.types[key] != 'month'" class="form-group form-black label-floating is-empty" >
                         <label class="control-label">{{camposCreacion.text[key]}}</label>
                         <input [attr.type]="camposCreacion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="createData[key]">
                     </div>

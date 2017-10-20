@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TableComponent } from '../../../shared/table/table.component'
 import { DeasAdminServices } from './deas-admin.services';
 import { URL_LISTA_DEAS } from '../../../rutas';
+import { creacionDea } from './campos-creacion-deas'
 
 declare var jQuery:any;
 
@@ -18,6 +19,6 @@ export class DeasAdminComponent {
 
     public ListadoDEAsURL:string = URL_LISTA_DEAS
     public camposEdicionDEA:any = {}
-    public camposCreacionDEA:any = {}
+    public camposCreacionDEA:any = creacionDea;
     
 }

@@ -14,8 +14,6 @@
     "jsreport": "^1.2.0",
     "jwt-simple": "^0.2.0",
     "method-override": "^2.3.7",
-    "ng2-bs3-modal": "^0.10.4",
-    "pg": "^7.1.2",
-    "socket.io": "^2.0.3"
+    "pg": "^7.1.2"
   }
 }

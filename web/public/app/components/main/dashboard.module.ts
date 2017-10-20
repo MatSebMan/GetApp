@@ -17,8 +17,8 @@ import { DeasEventsComponent } from './deas/events/deas-events.component';
         RouterModule.forChild(
             [
                 { path: 'home', component: HomeComponent },
-                { path: 'deas/admin', component: DeasAdminComponent },
-                { path: 'deas/events', component: DeasEventsComponent },
+                { path: 'admin', component: DeasAdminComponent },
+                { path: 'events', component: DeasEventsComponent },
                 { path: '', redirectTo: 'home', pathMatch: 'full' }
             ]
         )
