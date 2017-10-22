@@ -31,11 +31,12 @@ exports.findNearestDeas = function(req, res) {
         if(!req.query.cantidad || !req.query.latitud || !req.query.longitud )
             res.send(500, "Parametros incorrectos");
         var queryString = 
-        'SELECT id,zona_protegida as nombre, ST_Y(location) as latitud, ST_X(location) as longitud FROM dea ORDER BY location <-> st_makepoint($3,$2) LIMIT $1;';
+        'SELECT id,zona_protegida as nombre, ST_Y(location) as latitud, ST_X(location) as longitud FROM dea ORDER BY location <-> st_makepoint($2,$1) LIMIT $3';
+        console.log(queryString);
         const values = [];
-        values.push(req.body.cantidad);
-        values.push(req.body.latitud);
-        values.push(req.body.longitud);
+        values.push(req.query.latitud);
+        values.push(req.query.longitud);
+        values.push(req.query.cantidad);
         client.query(queryString, values).then(dbRes => {
             db.disconnect(client)
             res.status(200).json(dbRes.rows);
