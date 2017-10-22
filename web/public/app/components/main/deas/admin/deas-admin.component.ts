@@ -18,7 +18,7 @@ export class DeasAdminComponent {
     constructor( deasAdminServices: DeasAdminServices) { }
 
     public ListadoDEAsURL:string = URL_LISTA_DEAS
-    public camposEdicionDEA:any = {}
+    public camposEdicionDEA:any = creacionDea;
     public camposCreacionDEA:any = creacionDea;
     
 }

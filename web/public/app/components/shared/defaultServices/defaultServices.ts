@@ -15,6 +15,12 @@ export class DefaultServices{
     return this.http.get(URL).map((response) => response.json());
   }
 
+  deleteData(URL:string, id:any): Observable<any> {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.delete(URL+'/'+id, {headers: headers});
+  }
+
   postJsonData(URL:string, data:any): Observable<any> {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -24,7 +30,7 @@ export class DefaultServices{
   putJsonData(URL:string, data:any): Observable<any> {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.put(URL, data, {headers: headers});
+    return this.http.put(URL+'/'+data.id, data, {headers: headers});
   }
 
   postGenerateXLS(json: Object): Observable<Response> {

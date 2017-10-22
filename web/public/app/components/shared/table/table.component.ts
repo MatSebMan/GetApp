@@ -19,6 +19,7 @@ export class TableComponent {
     @Input() urlGetParameters:any;
     @Input() urlPost:any;
     @Input() editableRows:boolean = false;
+    @Input() deletableRows:boolean = false;
     @Input() editTitle: string = "Editar";
     @Input() createTitle: string = "Crear Nuevo";
     @Input() createTitleTooltip: string;
@@ -36,10 +37,12 @@ export class TableComponent {
     public keysCreacion:string[];
     showModalEdicion:boolean = false;
     showModalCreacion:boolean = false;
+    showModalEliminar:boolean = false;
     isDataAvailable: boolean = false;
     reverseSort = false;
     createData:any = {};
     editData:any = {};
+    deleteId:any;
 
     constructor(private defaultService: DefaultServices) {}
 
@@ -53,6 +56,7 @@ export class TableComponent {
         this.reverseSort = false;
         this.createData = {};
         this.editData = {};
+        this.isDataAvailable = false;
         if(this.urlGet) {
             this.loadURLData();
         } else {
@@ -116,7 +120,9 @@ export class TableComponent {
     toogleModal(event, accion, row = undefined) {
         if (event.currentTarget === event.target) {
             if(accion=='editar') {
-                if(row && row.Id) {
+                if(row && row.Id != undefined) {
+                    this.isDataAvailable = false;
+                    this.editData = {};
                     if(this.fillEdit) {
                         var keysInverse = Object.keys(this.camposEdicion.text);
                         this.editData = {};
@@ -126,15 +132,18 @@ export class TableComponent {
                                 keys.forEach(key => {
                                     keysInverse.forEach(keyInv => {
                                         if(key == this.camposEdicion.text[keyInv])
-                                            this.editData[keyInv] = data[0][key];
+                                            {
+                                                this.editData[keyInv] = data[0][key];
+                                            }
                                     });
                                 });
                                 this.editData.id = row.Id;
+                                this.isDataAvailable = true;
                             },
                             err => console.error("EL ERROR FUE: ", err)
                         );
                     } else {
-                        this.editData.id = row.Id;
+                        this.editData.id = undefined;
                     }
                 }
                 this.showModalEdicion= !this.showModalEdicion;
@@ -142,9 +151,33 @@ export class TableComponent {
             if(accion=='crear') {
                 this.showModalCreacion= !this.showModalCreacion;
             }
+            if(accion=='eliminar') {
+                if(row && row.Id != undefined) {
+                    this.deleteId = row.Id;
+                } else {
+                    this.editData.id = undefined;
+                }
+                this.showModalEliminar= !this.showModalEliminar;
+            }
         }
     }
 
+    eliminar(event) {
+        console.log('Eliminando: ' + this.deleteId);
+        if(this.urlPost) {
+            this.defaultService.deleteData(this.urlPost, this.deleteId).subscribe(
+                (res) => {
+                    alert("Elemento eliminado");
+                    this.init();
+                },
+                err => {
+                    alert("Error al eliminar el objeto");
+                    console.error("EL ERROR FUE: ", err)
+                }
+            );
+            this.toogleModal(event, 'eliminar');
+        }
+    }
     crear(event) {
         if(this.urlPost) {
             this.defaultService.postJsonData(this.urlPost, this.createData).subscribe(
