@@ -33,6 +33,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -56,6 +57,10 @@ public final class LocationUtilities {
 
     public static final int DEAS_CANT_MAX = 5;
     public static final int DEAS_CANT_MIN = 1;
+
+    private static final String ATRIBUTO_CANTIDAD = "cantidad";
+    private static final String ATRIBUTO_LATITUD = "latitud";
+    private static final String ATRIBUTO_LONGITUD = "longitud";
 
     private LocationUtilities() {}
 
@@ -312,17 +317,21 @@ public final class LocationUtilities {
 
     public void lookupDEAS(Integer ammount)
     {
-        new HttpRequestTask().execute();
+        HashMap<String, String> mapa = new HashMap<>();
+        mapa.put(ATRIBUTO_CANTIDAD, ammount.toString());
+        mapa.put(ATRIBUTO_LATITUD, String.valueOf(mLastKnownLocation.getLatitude()));
+        mapa.put(ATRIBUTO_LONGITUD, String.valueOf(mLastKnownLocation.getLongitude()));
+        new HttpRequestTask().execute(mapa);
     }
 
-    private class HttpRequestTask extends AsyncTask<Void, Void, GetAppLatLng[]> {
+    private class HttpRequestTask extends AsyncTask<HashMap<String, String>, Void, GetAppLatLng[]> {
         @Override
-        protected GetAppLatLng[] doInBackground(Void... params) {
+        protected GetAppLatLng[] doInBackground(HashMap<String, String>... params) {
             try {
                 final String url = _activity.getString(R.string.webAPI_address);
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                GetAppLatLng getAppLatLng[] = restTemplate.getForObject(url, GetAppLatLng[].class);
+                GetAppLatLng getAppLatLng[] = restTemplate.getForObject(url, GetAppLatLng[].class, params[0]);
                 return getAppLatLng;
             } catch (ResourceAccessException rae) {
                 _activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "lookupDEAS", "Servidor inaccesible"));
