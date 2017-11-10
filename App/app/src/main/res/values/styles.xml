@@ -19,7 +19,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:textSize">50px</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorListDEADireccion</item>
     </style>
 
@@ -27,7 +27,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:textSize">50px</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorListDEADistancia</item>
     </style>
 
@@ -35,14 +35,18 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:textSize">50px</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorListDEARazonSocial</item>
     </style>
 
     <style name="InformationTitle">
         <item name="android:textColor">@color/colorInstructionsTitle</item>
-        <item name="android:textSize">24dp</item>
+        <item name="android:textSize">36sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="InformationText">
+        <item name="android:textSize">24sp</item>
     </style>
 
     <style name="LinedText">

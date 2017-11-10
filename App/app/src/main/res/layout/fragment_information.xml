@@ -4,30 +4,45 @@
     android:layout_height="match_parent"
     tools:context="ar.com.vittal.vittalgetapp.InformationFragment">
 
-    <TextView
+    <TextView style="@style/InformationTitle"
         android:id="@+id/informationTitle"
-        style="@style/InformationTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/main_information_title" />
 
-    <TextView
+    <TextView style="@style/InformationText"
         android:id="@+id/informationStep1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="60dp"
+        android:layout_below="@id/informationTitle"
         android:text="@string/main_information_step1" />
+
+    <TextView style="@style/InformationText"
+        android:id="@+id/informationStep2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/informationStep1"
+        android:text="@string/main_information_step2" />
+
+    <TextView style="@style/InformationText"
+        android:id="@+id/informationStep3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/informationStep2"
+        android:text="@string/main_information_step3" />
 
     <TextView style="@style/LinedText"
         android:id="@+id/informationCallLink"
-        android:layout_toEndOf="@id/informationStep1"
-        android:layout_toRightOf="@id/informationStep1"
-        android:layout_alignBaseline="@id/informationStep1" />
+        android:textSize="24sp"
+        android:layout_toEndOf="@id/informationStep3"
+        android:layout_toRightOf="@id/informationStep3"
+        android:layout_alignBaseline="@id/informationStep3" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/informationStep1"
-        android:text="@string/main_information_step2" />
+    <TextView style="@style/InformationText"
+        android:id="@+id/informationStep4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/informationStep3"
+        android:text="@string/main_information_step4" />
 
 </RelativeLayout>

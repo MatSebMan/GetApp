@@ -8,24 +8,24 @@ import java.io.Serializable;
 
 public class GetAppLatLng {
 
-    private String id;
+    private Integer id;
     private String nombre;
     private Double latitud;
     private Double longitud;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public String getNombre() {
+    String getNombre() {
         return nombre;
     }
 
-    public Double getLatitud() {
+    Double getLatitud() {
         return latitud;
     }
 
-    public Double getLongitud() {
+    Double getLongitud() {
         return longitud;
     }
 }

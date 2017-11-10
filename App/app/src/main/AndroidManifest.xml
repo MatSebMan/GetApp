@@ -32,13 +32,14 @@
         <activity
             android:name=".DEARouteActivity"
             android:label="@string/title_activity_maps" />
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="ar.com.vittal.vittalgetapp.MainActivity" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="ar.com.vittal.vittalgetapp.MainActivity" />
+
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main">
-        </activity>
+            android:label="@string/title_activity_main" />
         <activity
             android:name=".DEASActivity"
             android:label="@string/title_activity_deas">
@@ -56,6 +57,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".LocalService"
+            android:enabled="true"
+            android:exported="false"></service>
     </application>
 
 </manifest>
