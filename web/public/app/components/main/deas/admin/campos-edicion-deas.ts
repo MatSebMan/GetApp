@@ -1,15 +1,19 @@
-export var creacionDea = {
+export var edicionDea = {
     types: {
         provincia: 'text',
         partido: 'text',
         localidad: 'text',
         calle: 'text',
         numero: 'number',
+        // latitud: 'posicion',
+        // longitud: 'posicion',
         zona_protegida: 'text',        
         telefono: 'number',
         horario: 'horario',
         referencia_interna: 'text',
         persona_contacto: 'text',
+        activo: 'boolean',
+        en_uso: 'boolean',
         geolocalizacion: 'geoloc'
     },
     text: {
@@ -25,9 +29,11 @@ export var creacionDea = {
         horario: 'Horario',
         referencia_interna: 'Referencia de ubicación',
         persona_contacto: 'Persona de Contacto',
+        activo: 'Activo',
+        en_uso: 'En Uso',
         geolocalizacion: 'Localización'
-    },
+    },   
     geoloc: {
         geolocalizacion: ['calle', 'numero', 'provincia', 'localidad', 'partido']
-    }
+    } 
 }

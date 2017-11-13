@@ -199,7 +199,8 @@
         return;
       };
       $.material.init();
-      if (getCookie("access_token")) {
+      if (getCookie("access_token") && getCookie("auto_login") == 'true') {
+        document.cookie = 'auto_login=false';
         console.log(getCookie("access_token"));
         $.ajax({
           type: "GET",

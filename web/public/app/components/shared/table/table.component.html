@@ -71,34 +71,61 @@
         <h2 class="swal2-title" id="modalTitleId">{{editTitle}}</h2>
         <div id="modalContentId" class="swal2-content" style="display: block;">
             <div class="row">
-                <div class="col-xs-12 col-md-6 col-lg-4 pull-left" *ngFor="let key of keysEdicion; let i = index">
-                    <div *ngIf="!isCombo(camposEdicion.types[key]) && camposEdicion.types[key] != 'boolean'
-                    && camposEdicion.types[key] != 'posicion' && camposEdicion.types[key] != 'date' && camposEdicion.types[key] != 'month'" class="form-group form-black label-floating" [ngClass]="{'is-empty': (!editData[key])}" >
-                        <label class="control-label">{{camposEdicion.text[key]}}</label>
-                        <input [attr.type]="camposEdicion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="editData[key]">
-                    </div>
-                    <div *ngIf="!isCombo(camposEdicion.types[key]) && (camposEdicion.types[key] == 'date' || camposEdicion.types[key] == 'month')" 
-                            class="form-group form-black label-floating" >
-                        <label class="col-xs-3" style="padding-top:10px;">{{camposEdicion.text[key]}}:</label>
-                        <div class="col-xs-9">
-                            <input [attr.type]="camposEdicion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="editData[key]">
+                <div *ngFor="let key of keysEdicion; let i = index">
+                    <div class="col-xs-12 col-md-6 col-lg-4 pull-left" *ngIf="camposEdicion.types[key] != 'geoloc'" >
+                        <div *ngIf="!isCombo(camposEdicion.types[key]) && camposEdicion.types[key] != 'boolean'
+                        && camposEdicion.types[key] != 'posicion' && camposEdicion.types[key] != 'date' && camposEdicion.types[key] != 'month'" class="form-group form-black label-floating" [ngClass]="{'is-empty': (!editData[key])}" >
+                            <label class="control-label">{{camposEdicion.text[key]}}</label>
+                            <input [attr.type]="camposEdicion.types[key]" class="form-control" [(ngModel)]="editData[key]">
+                        </div>
+                        <div *ngIf="!isCombo(camposEdicion.types[key]) && (camposEdicion.types[key] == 'date' || camposEdicion.types[key] == 'month')" 
+                                class="form-group form-black label-floating" >
+                            <label class="col-xs-3" style="padding-top:10px;">{{camposEdicion.text[key]}}:</label>
+                            <div class="col-xs-9">
+                                <input [attr.type]="camposEdicion.types[key]" class="form-control" [(ngModel)]="editData[key]">
+                            </div>
+                        </div>
+                        <div *ngIf="!isCombo(camposEdicion.types[key]) && camposEdicion.types[key] == 'boolean'" class="form-group form-black" style="margin-top: 25px; margin-bottom: 10px">
+                            <div class="checkbox">
+                                <label>
+                                    <input name="optionsCheckboxes" type="checkbox" [(ngModel)]="editData[key]"><span class="checkbox-material"></span> {{camposEdicion.text[key]}}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group form-black" *ngIf="isCombo(camposEdicion.types[key])" style="margin-top: 10px; margin-bottom: 17px">
+                            <dropdown-cmp *ngIf="isCombo(camposEdicion.types[key])" [id]="key" 
+                            [title]="camposEdicion.text[key]" [url]="camposEdicion.types[key].url_get" [data]="camposEdicion.types[key].data"
+                            (selectionChanged)="handleSelection($event, 'editar')" [selectedItem]="this.editData[key]"></dropdown-cmp>
+                        </div>
+                        <div *ngIf="!isCombo(camposEdicion.types[key]) && camposEdicion.types[key] == 'posicion'" class="form-group form-black label-floating" [ngClass]="{'is-empty': (!editData[key])}" >
+                            <label class="control-label">{{camposEdicion.text[key]}}</label>
+                            <input [attr.type]="number" step='0.0000001' class="form-control" [(ngModel)]="editData[key]">
                         </div>
                     </div>
-                    <div *ngIf="!isCombo(camposEdicion.types[key]) && camposEdicion.types[key] == 'boolean'" class="form-group form-black" style="margin-top: 25px; margin-bottom: 10px">
-                        <div class="checkbox">
-                            <label>
-                                <input name="optionsCheckboxes" type="checkbox" [(ngModel)]="editData[key]"><span class="checkbox-material"></span> {{camposEdicion.text[key]}}
-                            </label>
+                    <div *ngIf="camposEdicion.types[key] == 'geoloc'" >
+                        <hr>
+                        <div class="col-xs-12 col-md-12 col-lg-12" style="margin-top:20px;">
+                            <div class="col-xs-12 col-md-6 col-lg-4 pull-left" style="margin-bottom:0;">
+                                <button type="button" role="button" tabindex="0" class="swal2-confirm btn btn-warning" style="margin-bottom:0;" (click)="geolocalizar(editData, key, camposEdicion);">Geolocalizar</button>
+                            </div>
+                            <div class="col-xs-12 col-md-6 col-lg-4 pull-left">
+                                <div class="form-group form-black label-floating" [ngClass]="{'is-empty': (!editData.latitud)}" >
+                                    <label class="control-label">Latitud</label>
+                                    <input disabled [attr.type]="number" step='0.0000001' class="form-control" [(ngModel)]="editData.latitud">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 col-lg-4 pull-left">
+                                <div class="form-group form-black label-floating" [ngClass]="{'is-empty': (!editData.longitud)}" >
+                                    <label class="control-label">Longitud</label>
+                                    <input disabled [attr.type]="number" step='0.0000001' class="form-control" [(ngModel)]="editData.longitud">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-12 col-lg-12 pull-left">
+                                <div class="form-group form-black" >
+                                    <label class="control-label" *ngIf="editData.geoloc_info"><b>Ubicación encontrada:</b> {{editData.geoloc_info}}</label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group form-black" *ngIf="isCombo(camposEdicion.types[key])" style="margin-top: 10px; margin-bottom: 17px">
-                        <dropdown-cmp *ngIf="isCombo(camposEdicion.types[key])" [id]="key" 
-                        [title]="camposEdicion.text[key]" [url]="camposEdicion.types[key].url_get" [data]="camposEdicion.types[key].data"
-                        (selectionChanged)="handleSelection($event, 'editar')" [selectedItem]="this.editData[key]"></dropdown-cmp>
-                    </div>
-                    <div *ngIf="!isCombo(camposEdicion.types[key]) && camposEdicion.types[key] == 'posicion'" class="form-group form-black label-floating" [ngClass]="{'is-empty': (!editData[key])}" >
-                        <label class="control-label">{{camposEdicion.text[key]}}</label>
-                        <input [attr.type]="number" step='0.0000001' class="form-control" style="text-transform:uppercase" [(ngModel)]="editData[key]">
                     </div>
                 </div>
             </div> 
@@ -116,30 +143,56 @@
         <h2 class="swal2-title" id="modalTitleId">{{createTitle}}</h2>
         <div id="modalContentId" class="swal2-content" style="display: block;">
             <div class="row">
-                <div class="col-xs-12 col-md-6 col-lg-4 pull-left" *ngFor="let key of keysCreacion; let i = index">
-                    <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] != 'boolean' && camposCreacion.types[key] != 'date' && camposCreacion.types[key] != 'month'" class="form-group form-black label-floating is-empty" >
-                        <label class="control-label">{{camposCreacion.text[key]}}</label>
-                        <input [attr.type]="camposCreacion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="createData[key]">
-                    </div>
-                    <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] != 'boolean' && (camposCreacion.types[key] == 'date' || camposCreacion.types[key] == 'month')" 
-                            class="form-group form-black label-floating" >
-                        <label class="col-xs-3" style="padding-top:10px;">{{camposCreacion.text[key]}}:</label>
-                        <div class="col-xs-9">
-                            <input [attr.type]="camposCreacion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="createData[key]">
+                <div *ngFor="let key of keysCreacion; let i = index">
+                    <div class="col-xs-12 col-md-6 col-lg-4 pull-left" *ngIf="camposCreacion.types[key] != 'geoloc'" >
+                        <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] != 'boolean' && camposCreacion.types[key] != 'date' && camposCreacion.types[key] != 'month'" class="form-group form-black label-floating is-empty" >
+                            <label class="control-label">{{camposCreacion.text[key]}}</label>
+                            <input [attr.type]="camposCreacion.types[key]" class="form-control" [(ngModel)]="createData[key]">
+                        </div>
+                        <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] != 'boolean' && (camposCreacion.types[key] == 'date' || camposCreacion.types[key] == 'month')" 
+                                class="form-group form-black label-floating" >
+                            <label class="col-xs-3" style="padding-top:10px;">{{camposCreacion.text[key]}}:</label>
+                            <div class="col-xs-9">
+                                <input [attr.type]="camposCreacion.types[key]" class="form-control" [(ngModel)]="createData[key]">
+                            </div>
+                        </div>
+                        <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] == 'boolean'" class="form-group form-black" style="margin-top: 25px; margin-bottom: 10px">
+                            <div class="checkbox">
+                                <label>
+                                    <input name="optionsCheckboxes" type="checkbox" [(ngModel)]="createData[key]"><span class="checkbox-material"></span> {{camposCreacion.text[key]}}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group form-black" *ngIf="isCombo(camposCreacion.types[key])" style="margin-top: 10px; margin-bottom: 17px">
+                            <dropdown-cmp *ngIf="isCombo(camposCreacion.types[key])" [id]="key"
+                            [title]="camposCreacion.text[key]" [url]="camposCreacion.types[key].url_get" [data]="camposCreacion.types[key].data"
+                            (selectionChanged)="handleSelection($event, 'crear')"></dropdown-cmp>
                         </div>
                     </div>
-                    <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] == 'boolean'" class="form-group form-black" style="margin-top: 25px; margin-bottom: 10px">
-                        <div class="checkbox">
-                            <label>
-                                <input name="optionsCheckboxes" type="checkbox" [(ngModel)]="createData[key]"><span class="checkbox-material"></span> {{camposCreacion.text[key]}}
-                            </label>
+                    <div *ngIf="camposCreacion.types[key] == 'geoloc'" >
+                        <hr>
+                        <div class="col-xs-12 col-md-12 col-lg-12" style="margin-top:20px;">
+                            <div class="col-xs-12 col-md-6 col-lg-4 pull-left" style="margin-bottom:0;">
+                                <button type="button" role="button" tabindex="0" class="swal2-confirm btn btn-warning" style="margin-bottom:0;" (click)="geolocalizar(createData, key, camposCreacion);">Geolocalizar</button>
+                            </div>
+                            <div class="col-xs-12 col-md-6 col-lg-4 pull-left">
+                                <div class="form-group form-black label-floating" [ngClass]="{'is-empty': (!createData.latitud)}" >
+                                    <label class="control-label">Latitud</label>
+                                    <input disabled [attr.type]="number" step='0.0000001' class="form-control" [(ngModel)]="createData.latitud">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6 col-lg-4 pull-left">
+                                <div class="form-group form-black label-floating" [ngClass]="{'is-empty': (!createData.longitud)}" >
+                                    <label class="control-label">Longitud</label>
+                                    <input disabled [attr.type]="number" step='0.0000001' class="form-control" [(ngModel)]="createData.longitud">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-12 col-lg-12 pull-left">
+                                <div class="form-group form-black" >
+                                    <label class="control-label" *ngIf="createData.geoloc_info"><b>Ubicación encontrada:</b> {{createData.geoloc_info}}</label>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group form-black" *ngIf="isCombo(camposCreacion.types[key])" style="margin-top: 10px; margin-bottom: 17px">
-                        <dropdown-cmp *ngIf="isCombo(camposCreacion.types[key])" [id]="key"
-                        [title]="camposCreacion.text[key]" [url]="camposCreacion.types[key].url_get" [data]="camposCreacion.types[key].data"
-                        (selectionChanged)="handleSelection($event, 'crear')"></dropdown-cmp>
-                        
                     </div>
                 </div>
             </div> 
