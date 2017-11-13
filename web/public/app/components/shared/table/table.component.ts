@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { NgZone } from '@angular/core'
 import { DefaultServices } from '../defaultServices/defaultServices'
+import { ModalScheduleComponent } from '../modalSchedule/modal-schedule.component'
 
 var $:any;
 
@@ -20,6 +21,7 @@ export class TableComponent {
     @Input() urlPost:any;
     @Input() editableRows:boolean = false;
     @Input() deletableRows:boolean = false;
+    @Input() modifySchedule:boolean = false;
     @Input() editTitle: string = "Editar";
     @Input() createTitle: string = "Crear Nuevo";
     @Input() createTitleTooltip: string;
@@ -38,6 +40,7 @@ export class TableComponent {
     showModalEdicion:boolean = false;
     showModalCreacion:boolean = false;
     showModalEliminar:boolean = false;
+    showModalScheduler:boolean = false;
     isDataAvailable: boolean = false;
     reverseSort = false;
     createData:any = {};
@@ -117,6 +120,12 @@ export class TableComponent {
         }
     }
 
+    toggleModal(action, row = undefined) {
+        if (action = 'schedule'){
+            this.showModalScheduler = !this.showModalScheduler;            
+        }
+    }
+
     toogleModal(event, accion, row = undefined) {
         if (event.currentTarget === event.target) {
             if(accion=='editar') {
@@ -148,9 +157,11 @@ export class TableComponent {
                 }
                 this.showModalEdicion= !this.showModalEdicion;
             }
+
             if(accion=='crear') {
                 this.showModalCreacion= !this.showModalCreacion;
             }
+
             if(accion=='eliminar') {
                 if(row && row.Id != undefined) {
                     this.deleteId = row.Id;
@@ -158,6 +169,10 @@ export class TableComponent {
                     this.editData.id = undefined;
                 }
                 this.showModalEliminar= !this.showModalEliminar;
+            }
+
+            if(accion=='schedule') {
+                this.showModalScheduler = !this.showModalScheduler;
             }
         }
     }
@@ -206,6 +221,12 @@ export class TableComponent {
                 }
             );
             this.toogleModal(event, 'editar');
+        }
+    }
+
+    schedule(event) {
+        if(this.urlPost) {
+
         }
     }
 

@@ -51,8 +51,9 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let row of data">
-                        <td *ngIf="editableRows || deletableRows" style="width: 80px!important">
+                        <td *ngIf="editableRows || deletableRows" style="width: 120px!important">
                             <i *ngIf="editableRows" class="material-icons touchable" (click)="toogleModal($event, 'editar', row)">mode_edit</i>
+                            <i *ngIf="modifySchedule" class="material-icons touchable" (click)="modalSchedule.toggle($event, row.Id, row)">schedule</i>
                             <i *ngIf="deletableRows" class="material-icons touchable" (click)="toogleModal($event, 'eliminar', row)">delete</i>
                         </td>
                         <td *ngFor="let key of keys; let i = index">
@@ -166,3 +167,52 @@
         <button type="button" role="button" tabindex="0" class="swal2-confirm btn btn-success" (click)="eliminar($event)" >Aceptar</button>
     </div>
 </div>
+
+<div class="swal2-container swal2-fade swal2-shown" [ngClass]="{'hidden': !modalSchedule.isVisible() }" style="overflow-y: auto;" (click)="modalSchedule.toggle($event)">
+        <div role="dialog" aria-labelledby="modalTitleId" aria-describedby="modalContentId" class="swal2-modal swal2-show" tabindex="-1"
+            style="width: 80%; padding: 20px; background: rgb(255, 255, 255); display: block; min-height: 263px;">
+            <modal-schedule #modalSchedule></modal-schedule>
+        </div>
+</div>
+
+<!-- <div *ngIf="modifySchedule && isDataAvailable" class="swal2-container swal2-fade swal2-shown" [ngClass]="{'hidden': showModalScheduler==false}" style="overflow-y: auto;" (click)="toogleModal($event,'scheduler')">
+    <div role="dialog" aria-labelledby="modalTitleId" aria-describedby="modalContentId" class="swal2-modal swal2-show" tabindex="-1"
+        style="width: 80%; padding: 20px; background: rgb(255, 255, 255); display: block; min-height: 263px;">
+        <h2 class="swal2-title" id="modalTitleId">Horarios</h2>
+        <div id="modalContentId" class="swal2-content" style="display: block;">
+            <div class="row">
+
+                <div class="col-xs-12 col-md-6 col-lg-4 pull-left" *ngFor="let key of keysCreacion; let i = index">
+                    <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] != 'boolean' && camposCreacion.types[key] != 'date' && camposCreacion.types[key] != 'month'" class="form-group form-black label-floating is-empty" >
+                        <label class="control-label">{{camposCreacion.text[key]}}</label>
+                        <input [attr.type]="camposCreacion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="createData[key]">
+                    </div>
+                    <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] != 'boolean' && (camposCreacion.types[key] == 'date' || camposCreacion.types[key] == 'month')" 
+                            class="form-group form-black label-floating" >
+                        <label class="col-xs-3" style="padding-top:10px;">{{camposCreacion.text[key]}}:</label>
+                        <div class="col-xs-9">
+                            <input [attr.type]="camposCreacion.types[key]" class="form-control" style="text-transform:uppercase" [(ngModel)]="createData[key]">
+                        </div>
+                    </div>
+                    <div *ngIf="!isCombo(camposCreacion.types[key]) && camposCreacion.types[key] == 'boolean'" class="form-group form-black" style="margin-top: 25px; margin-bottom: 10px">
+                        <div class="checkbox">
+                            <label>
+                                <input name="optionsCheckboxes" type="checkbox" [(ngModel)]="createData[key]"><span class="checkbox-material"></span> {{camposCreacion.text[key]}}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group form-black" *ngIf="isCombo(camposCreacion.types[key])" style="margin-top: 10px; margin-bottom: 17px">
+                        <dropdown-cmp *ngIf="isCombo(camposCreacion.types[key])" [id]="key"
+                        [title]="camposCreacion.text[key]" [url]="camposCreacion.types[key].url_get" [data]="camposCreacion.types[key].data"
+                        (selectionChanged)="handleSelection($event, 'crear')"></dropdown-cmp>
+                        
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <hr class="swal2-spacer" style="display: block;">
+        <button type="button"
+            role="button" tabindex="0" class="swal2-cancel btn btn-danger" style="display: inline-block;" (click)="toogleModal($event,'schedule')" >Cancelar</button>
+        <button type="button" role="button" tabindex="0" class="swal2-confirm btn btn-success" (click)="schedule($event)" >Aceptar</button>
+    </div>
+</div> -->

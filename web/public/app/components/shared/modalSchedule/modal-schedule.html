@@ -1,0 +1,73 @@
+        <h2 class="swal2-title" id="modalTitleId">Horarios</h2>
+        <div id="modalContentId" class="swal2-content" style="display: block;">
+            
+            <div *ngIf="error">
+                <br />
+                <div class="row">
+                    <div class="col-md-12" style="display: block;">
+                        <span class="alert alert-danger"> {{error}} &nbsp;
+                                <i class="material-icons md-18 touchable" (click)="closeErrorMessage()">clear</i> 
+                        </span>
+                                               
+                    </div>
+                </div>
+                <br />
+            </div>
+
+            <div class="row" >
+                <div class="col-xs-12 col-md-6 col-lg-3 pull-left">
+                    <div class="form-group form-black label-floating">
+                        <label class="control-label">Día</label>
+                        <select placeholder="Seleccione un día de la semana" [(ngModel)]="currentTimeBlock.Weekday" class="form-control">
+                            <option *ngFor="let weekday of weekdays" [value]="weekday.index">{{ weekday.day }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-xs-12 col-md-6 col-lg-3 pull-left">
+                    <div class="form-group form-black label-floating">
+                        <label class="control-label">Desde: </label>
+                        <input [(ngModel)]="currentTimeBlock.TimeStart" placeholder="horario fin" class="form-control" (keyup.enter)="addTimeBlock()" />
+                    </div>
+                </div>
+                
+                <div class="col-xs-12 col-md-6 col-lg-3 pull-left">
+                    <div class="form-group form-black label-floating">
+                        <label class="control-label">Hasta: </label>
+                        <input [(ngModel)]="currentTimeBlock.TimeEnd" placeholder="horario fin" class="form-control" (keyup.enter)="addTimeBlock()" />
+                    </div>
+                </div>
+                
+                <div class="col-xs-12 col-md-6 col-lg-3 pull-left">
+                    <button class="btn btn-default" (click)="addTimeBlock()">Agregar</button>
+                </div>
+            </div>
+
+
+            <div class="row" style="overflow-y: scroll; height:300px; background-color:#fafafa">
+
+                <div *ngFor="let timeBlock of schedule.Hours | defaultorder ; let i = index">
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="col-md-12">
+                                    <span class="pull-left">{{timeBlock.GetDayName()}}</span>
+                                    <i class="material-icons md-18 touchable pull-right" (click)="removeTimeBlock(timeBlock)" >clear</i>
+                                </div>
+
+                                <div class="col-md-12">
+                                    {{timeBlock.GetTimeStart()}} a {{timeBlock.GetTimeEnd()}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <hr class="swal2-spacer" style="display: block;">
+        
+        <button type="button" role="button" tabindex="0" class="swal2-cancel btn btn-danger" style="display: inline-block;" (click)="toggle($event)" >Cancelar</button>
+        <button type="button" role="button" tabindex="0" class="swal2-confirm btn btn-success" (click)="updateSchedule($event)" >Aceptar</button>

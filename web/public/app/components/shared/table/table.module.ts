@@ -10,8 +10,10 @@ import { ButtonLineComponent } from '../../shared/buttonLine/buttonLine.componen
 import { DefaultServices } from '../../shared/defaultServices/defaultServices';
 import { DropdownServices } from '../../shared/dropdown/dropdownServices';
 
+import { ModalScheduleModule } from '../modalSchedule/modal-schedule.module';
+
 @NgModule({
-    imports: [ CommonModule, FormsModule, HttpModule ],
+    imports: [ CommonModule, FormsModule, HttpModule, ModalScheduleModule ],
     declarations: [ TableComponent, DropdownComponent, ButtonLineComponent ],
     exports: [ TableComponent ],
     providers: [ DropdownServices, DefaultServices ]

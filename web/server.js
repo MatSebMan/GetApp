@@ -54,6 +54,7 @@ app.use(router);
 /* Routes that can be accessed only by autheticated users (API routes) */
 app.use('/api/v1/', require("./routersHandlers/deaRoutesHandler").getRoutesHandler(express));
 app.use('/api/v1/', require("./routersHandlers/deaEventsHandler").getRoutesHandler(express));
+app.use('/api/v1/', require("./routersHandlers/deaScheduleHandler").getRoutesHandler(express));
 
 var server = require('http').createServer(app); 
 // var io = require('socket.io')(server);
