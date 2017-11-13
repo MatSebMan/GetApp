@@ -18,22 +18,28 @@ exports.getScheduleByIdDea = function(req, res) {
 }
 
 exports.editScheduleByIdDea = function(req, res){
-
-    let idDea = req.params.id
-
-    let fetchCurrentSchedule = "SELECT id FROM ScheduleAvailability WHERE iddea = $1"
-    let values = [idDea]
-
     try {
+        
         controllerHelper
-            .resolveQuery(fetchCurrentSchedule, values)
-            .catch( err => res.status(500).json(err.message))
-            .then( dbRes => 
-                {
-                    let scheduleHelper = new editSchedule.ScheduleHelper(idDea, dbRes.rows, req.body.content)
-                    scheduleHelper.defineOutdatedSchedule()
-                    updateSchedule(res, scheduleHelper)
-                })
+            .create()
+            .catch( err => res.status(500).json(500))
+            .then( dbHelper => {
+
+                let idDea = req.params.id
+                
+                let fetchCurrentSchedule = "SELECT id FROM ScheduleAvailability WHERE iddea = $1"
+                let values = [idDea]
+
+                dbHelper
+                    .query(fetchCurrentSchedule, values)
+                    .catch( err => res.status(500).json(err.message))
+                    .then( dbHelper => 
+                        {
+                            let scheduleHelper = new editSchedule.ScheduleHelper(idDea, dbHelper.result.rows, req.body.content)
+                            scheduleHelper.defineOutdatedSchedule()
+                            updateSchedule(res, scheduleHelper, dbHelper)
+                        })
+                    })
     }
 
     catch ( error ) {
@@ -41,7 +47,7 @@ exports.editScheduleByIdDea = function(req, res){
     }
 }
 
-var updateSchedule = function(res, scheduleHelper){
+var updateSchedule = function(res, scheduleHelper, dbHelper){
     
     if ( scheduleHelper.hasNextTimeBlock() ) {
 
@@ -52,35 +58,37 @@ var updateSchedule = function(res, scheduleHelper){
             let queryString = "INSERT INTO ScheduleAvailability ( iddea, weekday, starttime, endtime) VALUES ($1, $2, $3, $4)"
             let values = [scheduleHelper.getIdDea(), timeBlock.Weekday, timeBlock.TimeStart, timeBlock.TimeEnd]
     
-            controllerHelper
-                .resolveQuery(queryString, values)
+            dbHelper.query(queryString, values)
                 .catch( err => res.status(500).json(err.message))
-                .then( dbRes => updateSchedule(res, scheduleHelper) )
+                .then( dbHelper => updateSchedule(res, scheduleHelper, dbHelper) )
         }
         
-        else { updateSchedule(res, scheduleHelper) }
+        else { updateSchedule(res, scheduleHelper, dbHelper) }
     }
     
-    else { decideIfRemoveTimeBlockFromSchedule(res, scheduleHelper) }
+    else { decideIfRemoveTimeBlockFromSchedule(res, scheduleHelper, dbHelper) }
 }
 
-var decideIfRemoveTimeBlockFromSchedule = function(res, scheduleHelper ) {
+var decideIfRemoveTimeBlockFromSchedule = function(res, scheduleHelper, dbHelper ) {
 
     if ( scheduleHelper.hasNextOutdatedTimeBlockId() ) { 
 
-        removeFromSchedule(res, scheduleHelper) 
+        removeFromSchedule(res, scheduleHelper, dbHelper) 
     }
 
-    else { res.status(200).send() }
+    else {
+        dbHelper.commit()
+        res.status(200).send()
+    }
 }
 
-var removeFromSchedule = function(res, scheduleHelper) {
+var removeFromSchedule = function(res, scheduleHelper, dbHelper) {
 
     let queryString = "DELETE FROM ScheduleAvailability WHERE id = $1"
     let values = [scheduleHelper.nextOutdatedTimeBlockId()]
 
-    controllerHelper
-        .resolveQuery(queryString, values)
+    dbHelper
+        .query(queryString, values)
         .catch( err => res.status(500).json(err.message))
-        .then( dbRes => decideIfRemoveTimeBlockFromSchedule(res, scheduleHelper))
+        .then( dbRes => decideIfRemoveTimeBlockFromSchedule(res, scheduleHelper, dbHelper))
 }

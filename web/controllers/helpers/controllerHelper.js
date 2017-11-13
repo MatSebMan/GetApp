@@ -1,4 +1,5 @@
 var db = require('../../config_db').db
+var db_Helper = require('./dbHelper')
 
 exports.resolveGetJson = function(res, queryString, values) {
 
@@ -23,6 +24,19 @@ var getJSON = function( res, client, queryString, values ) {
                 res.status(500)
                 res.json(err.message)
             })
+}
+
+exports.create = function() {
+    return new Promise( function(resolve, reject){
+
+        db.connectDB("getapp")
+            .then( client => {
+                let dbHelper = new db_Helper.DbHelper(db, client)
+                dbHelper.begin()
+                resolve( dbHelper ) 
+            })
+            .catch( err => reject(err) )
+    })
 }
 
 exports.resolveQuery = function(queryString, values) {  

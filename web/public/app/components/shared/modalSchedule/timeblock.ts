@@ -11,7 +11,7 @@ export class TimeBlock {
 
     public TimeEnd : String
 
-    private static TimePattern = /^((0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])|24:00$/
+    private static TimePattern = /^((0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])$|^24:00$/
 
     public constructor() {
         this.Id = undefined

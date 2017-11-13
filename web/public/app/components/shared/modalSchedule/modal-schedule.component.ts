@@ -61,6 +61,7 @@ export class ModalScheduleComponent {
         }
 
         if ( this.modalVisible && id_dea != undefined ){
+            this.closeErrorMessage()
             this.loadSchedule(id_dea)
             this.idDea = id_dea
         }
