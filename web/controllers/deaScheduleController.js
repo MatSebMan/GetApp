@@ -76,10 +76,7 @@ var decideIfRemoveTimeBlockFromSchedule = function(res, scheduleHelper, dbHelper
         removeFromSchedule(res, scheduleHelper, dbHelper) 
     }
 
-    else {
-        dbHelper.commit()
-        res.status(200).send()
-    }
+    else { dbHelper.commitAndResponse(res) }
 }
 
 var removeFromSchedule = function(res, scheduleHelper, dbHelper) {

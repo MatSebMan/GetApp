@@ -1,6 +1,6 @@
 exports.DbHelper = class {
 
-    constructor(_db, _client){
+    constructor(_db, _client, _res){
 
         this.db = _db
         this.client = _client
@@ -8,7 +8,7 @@ exports.DbHelper = class {
     }
 
     begin() {
-        this.client.query("begin;")
+        return this.client.query("begin;")
     }
 
     query(queryString, values) {
@@ -26,20 +26,79 @@ exports.DbHelper = class {
                     })
 
                     .catch( err => {
-                        rollback()
-                        reject()
+                        console.log("error")
+                        console.log(err.stack)
+                        console.log(err.reason)
+                        thisClass.rollback()
+                        reject(err)
                     })
         })
     }
 
     commit() {
-        this.client.query("commit;")
-        this.db.disconnect(this.client)
+        let thisClass = this
+
+        return new Promise( function(resolve, reject){
+
+            thisClass.client
+                .query("commit;")
+                .then( response => { 
+                    thisClass.db.disconnect(this.client) 
+                    resolve(response)
+                })
+
+                .catch( error => {
+                    thisClass.db.disconnect(this.client)
+                    reject(error)
+                })
+        })  
+    }
+
+    commitAndResponse(res) {
+        this.client
+            .query("commit;")
+            .then( response => { 
+                this.db.disconnect(this.client) 
+                res.status(200).send()
+            })
+
+            .catch( error => {
+                this.db.disconnect(this.client)
+                res.status(500).send(error.message)
+            })
     }
 
     rollback() {
-        this.client.query("rollback;")
-        this.db.disconnect(this.client)
+        let thisClass = this
+        
+        return new Promise( function(resolve, reject){
+
+            thisClass.client
+                .query("rollback;")
+                .then( response => { 
+                    thisClass.db.disconnect(this.client) 
+                    resolve(response)
+                })
+
+                .catch( error => {
+                    thisClass.db.disconnect(this.client)
+                    reject(error)
+                })
+        })  
+    }
+
+    rollbackAndResponse(res) {
+        this.client
+            .query("rollback;")
+            .then( response => { 
+                this.db.disconnect(this.client) 
+                res.status(500).send("rollback")
+            })
+
+            .catch( error => {
+                this.db.disconnect(this.client)
+                res.status(500).send(error.message)
+            })
     }
 
 }

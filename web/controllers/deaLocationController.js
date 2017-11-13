@@ -1,4 +1,5 @@
 var db = require('../config_db').db;
+var controllerHelper = require('./helpers/controllerHelper')
 var TIPO_CENTRO = 0;
 
 exports.create = function(req, res) {
@@ -148,19 +149,37 @@ exports.edit = function(req, res) {
 
 exports.delete = function(req, res) {
     console.log('DELETE/deaList/'+req.params.id);
-    db.connect("getapp", function(client) {
-        // Delete query (parametrizada para evitar sql injection)
-        var queryString = 'DELETE FROM dea WHERE id = $1';
-        const values = [];
-        values.push(req.params.id);
-        client.query(queryString, values).then(dbRes => {
-            db.disconnect(client)
-            res.status(200).send();
-        }).catch(err => {
-            db.disconnect(client)
-            res.status(500).send(err.message);
-        });
-    }, function(err){
-        res.status(500).send(err.message);
-    });
+
+    try{
+        controllerHelper
+            .create()
+            .then( dbHelper => {
+    
+                let idDea = req.params.id
+                let queryString = "DELETE FROM ScheduleAvailability WHERE iddea = $1"
+                const values = [idDea]
+    
+                dbHelper
+                    .query(queryString, values)
+                    .then( dbHelper => deleteDea(req, res, dbHelper))
+                    .catch( err => res.status(500).send(err.message))
+            })
+            .catch( err => res.status(500).send(err.message))
+    }
+
+    catch(err) {
+        res.status(500).send()
+    }
+}
+
+var deleteDea = function(req, res, dbHelper) {
+
+    let queryString = 'DELETE FROM dea WHERE id = $1'
+    const values = []
+    values.push(req.params.id)
+
+    dbHelper
+        .query(queryString, values)
+        .then(dbHelper => dbHelper.commitAndResponse(res))
+        .catch( err => err.status(500).send(err.message))
 }
