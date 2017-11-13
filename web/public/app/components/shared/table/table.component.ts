@@ -159,6 +159,7 @@ export class TableComponent {
             }
 
             if(accion=='crear') {
+                this.createData = {};
                 this.showModalCreacion= !this.showModalCreacion;
             }
 
@@ -344,5 +345,41 @@ export class TableComponent {
 
     isEmpty(key) {           
         return ((!this.editData[key]) && (this.camposEdicion.types[key] != 'date'));
+    }
+
+    geolocalizar(data, key, campos) {
+        console.log('data');
+        console.log(data);
+        console.log('campos');
+        console.log(campos);
+        console.log('key');
+        console.log(key);
+
+        var url = 'https://maps.googleapis.com/maps/api/geocode/json?address=Argentina%20';
+        //+data.calle + ' ' + data.numero;
+        campos.geoloc[key].forEach(element => {
+            if(data[element] != undefined)
+                url += data[element] + '%20';
+        });
+        url += '&key=AIzaSyAXsFcYvoKDNREomDdq5lOhV4pS7AmZXvA';
+
+        console.log(url);
+
+        this.defaultService.getData(url).subscribe(
+            (res) => {
+                if(res.results.length == 0) {
+                    data.geoloc_info = 'No se encontraron resultados. Especifique mejor la dirección.';
+                } else if(res.results.length > 1) {
+                    data.geoloc_info = 'Demasiados resultados. Especifique mejor la dirección.';
+                }
+                else {
+                    data.latitud = res.results[0].geometry.location.lat;
+                    data.longitud = res.results[0].geometry.location.lng;
+                    data.geoloc_info = res.results[0].formatted_address;   
+                }
+            },
+            err => console.error("EL ERROR FUE: ", err)
+        );
+        
     }
 }
