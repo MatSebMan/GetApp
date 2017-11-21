@@ -1,0 +1,9 @@
+Node server running on port \\.\pipe\d8c5ec66-3097-4103-a30d-9807de519aeb
+Login:
+{ name: 'Test',
+  surname: 'Vittal',
+  role: 'admin',
+  pass: '123456',
+  username: 'test' }
+GET/deaList
+GET/deaList

@@ -4,6 +4,7 @@ var express = require("express"),
 	path = require('path'),
     bodyParser  = require("body-parser"),
     methodOverride = require("method-override"),
+    // formidable = require('express-formidable'),
     auth = require('./routes/auth.js'),
     db = require('./config_db').db;
 
@@ -24,6 +25,8 @@ var allowCrossDomain = function(req, res, next) {
 }
 
 app.use(allowCrossDomain);
+
+// app.use('/api/v1/deaState/', formidable());
 
 // HTML read
 var fileSystem = require("fs");

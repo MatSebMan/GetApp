@@ -13,6 +13,9 @@ exports.getRoutesHandler = function(express){
 		.put(controller.edit)
 		.delete(controller.delete);
 
+	routesHandler.route('/deaState/:id')
+		.put(controller.editState);
+
 	routesHandler.route('/deaLocation')
 		.get(controller.findNearestDeas);
 

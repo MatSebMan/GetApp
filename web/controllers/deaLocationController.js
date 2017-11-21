@@ -152,7 +152,31 @@ exports.edit = function(req, res) {
     }, function(err){
         res.status(500).send(err.stack);
     });
-    res.status(200).send("");
+    res.status(200).send();
+}
+
+exports.editState = function(req, res) {
+    console.log('PUT/deaState/'+req.params.id);
+    console.log(req.body);
+    db.connect("getapp", function(client) {
+        var queryString = 'UPDATE dea SET en_uso = $2 WHERE id = $1';
+        const values = [];
+        values.push(req.params.id);
+        values.push(req.body.en_uso);
+
+        client.query(queryString, values).then(dbRes => {
+            db.disconnect(client)
+            res.status(200).send();
+        }).catch(err => {
+            db.disconnect(client)
+            console.log(err);
+            console.log(err.stack)
+            res.status(500).send(err.stack);
+        });
+    }, function(err){
+        res.status(500).send(err.stack);
+    });
+    res.status(200).send();
 }
 
 exports.delete = function(req, res) {
