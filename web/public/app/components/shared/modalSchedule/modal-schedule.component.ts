@@ -58,7 +58,7 @@ export class ModalScheduleComponent {
         return this.modalVisible
     }
 
-    public toggle($event, id_dea, row = undefined){
+    public toggle(event, id_dea, row = undefined){
         if (event.currentTarget === event.target) {
             this.modalVisible = !this.modalVisible
         }
