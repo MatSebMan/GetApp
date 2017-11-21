@@ -31,6 +31,8 @@ export class ModalScheduleComponent {
 
     private defaultService: DefaultServices
 
+    private static LUNES_A_VIERNES: string = '7'
+
     private weekdays = [
         {index: '0', day: 'Domingo'}
         {index: '1', day: 'Lunes'}, 
@@ -39,6 +41,7 @@ export class ModalScheduleComponent {
         {index: '4', day: 'Jueves'},
         {index: '5', day: 'Viernes'},
         {index: '6', day: 'Sábado'},
+        {index: ModalScheduleComponent.LUNES_A_VIERNES, day: 'Lunes a Viernes'},
     ]
 
     public currentTimeBlock: TimeBlock
@@ -130,18 +133,56 @@ export class ModalScheduleComponent {
 
         this.closeErrorMessage()
 
+        if ( this.currentTimeBlock.Weekday.toString() == ModalScheduleComponent.LUNES_A_VIERNES ) 
+        {
+            this.addWeekTimeBlock()
+        }
+
+        else
+        {
+            this.addDayTimeBlock()
+        }
+
+    }
+    
+    private addDayTimeBlock() : void {
+
         try {
             this.currentTimeBlock.ValidateTimeStart()
             this.currentTimeBlock.ValidateTimeEnd()
-
             var timeBlock = new TimeBlock()
+    
             timeBlock.Weekday = this.currentTimeBlock.Weekday
             timeBlock.TimeStart = this.currentTimeBlock.TimeStart
             timeBlock.TimeEnd = this.currentTimeBlock.TimeEnd
-
+    
             this.schedule.Add(timeBlock)
         }
+    
+        catch( error ) {
+            this.showErrorMessage(error)
+        }
+    }
 
+    private addWeekTimeBlock() : void {
+        
+        try {
+
+            this.currentTimeBlock.ValidateTimeStart()
+            this.currentTimeBlock.ValidateTimeEnd()
+
+            for( let weekday = 1; weekday < 6; weekday++) {
+
+                var timeBlock = new TimeBlock()
+        
+                timeBlock.Weekday = weekday
+                timeBlock.TimeStart = this.currentTimeBlock.TimeStart
+                timeBlock.TimeEnd = this.currentTimeBlock.TimeEnd
+        
+                this.schedule.Add(timeBlock)
+            }
+        }
+    
         catch( error ) {
             this.showErrorMessage(error)
         }
