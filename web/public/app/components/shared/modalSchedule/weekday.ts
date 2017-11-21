@@ -1,19 +1,19 @@
 export enum Weekday {
-    Monday = 0,
-    Tuesday = 1,
-    Wednesday = 2,
-    Thrusday = 3,
-    Friday = 4,
-    Saturday = 5,
-    Sunday = 6,
+    Sunday = 0,
+    Monday = 1,
+    Tuesday = 2,
+    Wednesday = 3,
+    Thrusday = 4,
+    Friday = 5,
+    Saturday = 6,
 }
 
 export enum DiaDeSemana {
-    Lunes = 0,
-    Martes = 1,
-    Miércoles = 2,
-    Jueves = 3,
-    Viernes = 4,
-    Sábado = 5,
-    Domingo = 6,
+    Domingo = 0,
+    Lunes = 1,
+    Martes = 2,
+    Miércoles = 3,
+    Jueves = 4,
+    Viernes = 5,
+    Sábado = 6,
 }

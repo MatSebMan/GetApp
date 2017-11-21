@@ -41,16 +41,24 @@ exports.create = function(req, res) {
 
 exports.findNearestDeas = function(req, res) {
     console.log('GET/deaLocation');
+
+    let currentDate = new Date();
+
+    let currentDay = currentDate.getDay();
+    let currentTime = currentDate.toLocaleTimeString();
+
     db.connect("getapp", function(client) {
         if(!req.query.cantidad || !req.query.latitud || !req.query.longitud )
             res.send(500, "Parametros incorrectos");
         var queryString = 
-        'SELECT id,zona_protegida as nombre, ST_Y(location) as latitud, ST_X(location) as longitud FROM dea WHERE ST_Distance_Sphere(location,st_makepoint($2,$1))<1000 ORDER BY location <-> st_makepoint($2,$1) LIMIT $3';
+        'SELECT dea.id, dea.zona_protegida as nombre, ST_Y(dea.location) as latitud, ST_X(dea.location) as longitud FROM dea as dea, scheduleAvailability as sa WHERE ST_Distance_Sphere(dea.location,st_makepoint($2,$1))<1000 AND dea.id = sa.iddea AND sa.weekday = $5 AND sa.starttime <= $4 AND $4 < sa.endtime ORDER BY dea.location <-> st_makepoint($2,$1) LIMIT $3 ';
         console.log(queryString);
         const values = [];
         values.push(req.query.latitud);
         values.push(req.query.longitud);
         values.push(req.query.cantidad);
+        values.push(currentTime);
+        values.push(currentDay);
         client.query(queryString, values).then(dbRes => {
             db.disconnect(client)
             res.status(200).json(dbRes.rows);

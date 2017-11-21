@@ -32,13 +32,13 @@ export class ModalScheduleComponent {
     private defaultService: DefaultServices
 
     private weekdays = [
-        {index: '0', day: 'Lunes'}, 
-        {index: '1', day: 'Martes'},
-        {index: '2', day: 'Miércoles'},
-        {index: '3', day: 'Jueves'},
-        {index: '4', day: 'Viernes'},
-        {index: '5', day: 'Sábado'},
-        {index: '6', day: 'Domingo'}
+        {index: '0', day: 'Domingo'}
+        {index: '1', day: 'Lunes'}, 
+        {index: '2', day: 'Martes'},
+        {index: '3', day: 'Miércoles'},
+        {index: '4', day: 'Jueves'},
+        {index: '5', day: 'Viernes'},
+        {index: '6', day: 'Sábado'},
     ]
 
     public currentTimeBlock: TimeBlock
