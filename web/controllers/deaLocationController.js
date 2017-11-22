@@ -55,8 +55,10 @@ exports.findNearestDeas = function(req, res) {
         +'calle_nombre || \' \' || calle_numero as direccion, '
         +'ST_Y(dea.location) as latitud, ST_X(dea.location) as longitud FROM dea as dea, scheduleAvailability as sa '
         +'WHERE ST_Distance_Sphere(dea.location,st_makepoint($2,$1))<1000 AND dea.id = sa.iddea AND sa.weekday = $5 '
-        +'AND sa.starttime <= $4 AND $4 < sa.endtime ORDER BY dea.location <-> st_makepoint($2,$1) LIMIT $3 ';
-        console.log(queryString);
+        +'AND sa.starttime <= $4 AND $4 < sa.endtime '
+        +'AND dea.en_uso = \'false\' AND dea.activo = \'true\' '
+        +'ORDER BY dea.location <-> st_makepoint($2,$1) LIMIT $3 ';
+        // console.log(queryString);
         const values = [];
         values.push(req.query.latitud);
         values.push(req.query.longitud);
