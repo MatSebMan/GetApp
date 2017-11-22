@@ -8,3 +8,5 @@ logs/reporter.log
 .idea
 .idea/typescript-compiler.xml
 config_db.js
+iisnode/*
+config/secret.js

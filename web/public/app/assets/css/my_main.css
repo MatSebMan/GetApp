@@ -16,3 +16,7 @@ input[type=number]::-webkit-outer-spin-button {
 .color-vittal {
     color: rgb(51, 177, 166);
 }
+
+html,body,.main-panel,.main-content{
+    position:relative!important;
+}

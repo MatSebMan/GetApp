@@ -17,6 +17,16 @@ input[type=month]::-webkit-outer-spin-button {
     animation: showSweetAlert .3s;
 }
 
+.my-overlay {
+    position:fixed;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    background-color: rgba(0,0,0,.4);
+    height:10000%
+}
+
 .swal2-modal {
     background-color: #fff;
     font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
@@ -25,16 +35,16 @@ input[type=month]::-webkit-outer-spin-button {
     text-align: center;
     margin: auto;
     margin-top: 60px;
-    overflow-x: hidden;
-    overflow-y: auto;
     display: none;
     position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
-.swal2-container.swal2-shown {
+/* .swal2-container.swal2-shown {
     background-color: rgba(0,0,0,.4);
     height: 1000%;
-}
+} */
 .swal2-container.swal2-fade {
     transition: background-color .1s;
 }

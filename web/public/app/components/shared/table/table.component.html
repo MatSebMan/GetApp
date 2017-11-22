@@ -19,18 +19,18 @@
                 <thead>
                     <tr>
                         <th [attr.colspan]="keys.length">
-                            <button *ngIf="addItemOption"  _ngcontent-c4="" class="btn btn-simple btn-sm" 
+                            <button *ngIf="addItemOption"  class="btn btn-simple btn-sm" 
                             [ngClass]='buttonType()'
                              (click)="toogleModal($event,'crear')"
                             rel="tooltip" [attr.title]="createTitleTooltip?createTitleTooltip:createTitle" type="button">
-                                <i _ngcontent-c4="" class="material-icons">add</i>
+                                <i class="material-icons">add</i>
                                     {{createTitle}}
                             </button>
-                            <button *ngIf="exportableOption" _ngcontent-c4="" class="btn btn-simple btn-sm" 
+                            <button *ngIf="exportableOption" class="btn btn-simple btn-sm" 
                             [ngClass]='buttonType()'
                             rel="tooltip" title="Exportar a CSV" type="button"
                             (click)="export()">
-                                <i _ngcontent-c4="" class="material-icons">archive</i>
+                                <i class="material-icons">archive</i>
                                     Exportar
                             </button>
                             <span *ngIf='bodyButtons'>
@@ -66,7 +66,11 @@
         </div>
     </div>
 </div>
-<div *ngIf="camposEdicion && isDataAvailable" class="swal2-container swal2-fade swal2-shown" [ngClass]="{'hidden': showModalEdicion==false}" style="overflow-y: auto;" (click)="toogleModal($event,'editar')">
+
+<div *ngIf="camposEdicion && isDataAvailable" class="my-overlay" [ngClass]="{'hidden': showModalEdicion==false}" (click)="toogleModal($event,'editar')">
+    
+</div>
+<div *ngIf="camposEdicion && isDataAvailable" class="swal2-container swal2-fade" [ngClass]="{'hidden': showModalEdicion==false}" style="overflow-y: scroll;" (click)="toogleModal($event,'editar')">
     <div role="dialog" aria-labelledby="modalTitleId" aria-describedby="modalContentId" class="swal2-modal swal2-show" tabindex="-1"
         style="width: 80%; padding: 20px; background: rgb(255, 255, 255); display: block; min-height: 263px;">
         <h2 class="swal2-title" id="modalTitleId">{{editTitle}}</h2>
@@ -131,16 +135,18 @@
                 </div>
             </div> 
         </div>
-        <hr class="swal2-spacer" style="display: block;">
         <button type="button"
             role="button" tabindex="0" class="swal2-cancel btn btn-danger" style="display: inline-block;" (click)="toogleModal($event, 'editar')" >Cancelar</button>
         <button type="button" role="button" tabindex="0" class="swal2-confirm btn btn-success" (click)="editar($event)" >Aceptar</button>
     </div>
 </div>
 
-<div *ngIf="camposCreacion && isDataAvailable" class="swal2-container swal2-fade swal2-shown" [ngClass]="{'hidden': showModalCreacion==false}" style="overflow-y: auto;" (click)="toogleModal($event,'crear')">
+<div *ngIf="camposCreacion && isDataAvailable" class="my-overlay" [ngClass]="{'hidden': showModalCreacion==false}" (click)="toogleModal($event,'crear')">
+    
+</div>
+<div *ngIf="camposCreacion && isDataAvailable" class="swal2-container swal2-fade" [ngClass]="{'hidden': showModalCreacion==false}" style="overflow-y: scroll;" (click)="toogleModal($event,'crear')">
     <div role="dialog" aria-labelledby="modalTitleId" aria-describedby="modalContentId" class="swal2-modal swal2-show" tabindex="-1"
-        style="width: 80%; padding: 20px; background: rgb(255, 255, 255); display: block; min-height: 263px;">
+        style="width: 80%; padding: 20px; background: rgb(255, 255, 255); display: block; min-height: 263px; padding-bottom:10%;">
         <h2 class="swal2-title" id="modalTitleId">{{createTitle}}</h2>
         <div id="modalContentId" class="swal2-content" style="display: block;">
             <div class="row">
@@ -198,16 +204,15 @@
                 </div>
             </div> 
         </div>
-        <hr class="swal2-spacer" style="display: block;">
         <button type="button"
             role="button" tabindex="0" class="swal2-cancel btn btn-danger" style="display: inline-block;" (click)="toogleModal($event,'crear')" >Cancelar</button>
         <button type="button" role="button" tabindex="0" class="swal2-confirm btn btn-success" (click)="crear($event)" >Aceptar</button>
     </div>
 </div>
 
-<div *ngIf="isDataAvailable" class="swal2-container swal2-fade swal2-shown" [ngClass]="{'hidden': showModalEliminar==false}" style="overflow-y: auto;" (click)="toogleModal($event,'eliminar')">
+<div *ngIf="isDataAvailable" class="swal2-container swal2-fade swal2-shown" [ngClass]="{'hidden': showModalEliminar==false}" style="overflow-y: scroll;" (click)="toogleModal($event,'eliminar')">
     <div role="dialog" aria-labelledby="modalTitleId" aria-describedby="modalContentId" class="swal2-modal swal2-show" tabindex="-1"
-        style="width: 80%; padding: 20px; background: rgb(255, 255, 255); display: block; min-height: 263px;">
+    style="width: 80%; padding: 20px; background: rgb(255, 255, 255); display: block; min-height: 263px; padding-bottom:10%;">
         <h2 class="swal2-title" id="modalTitleId">Eliminar</h2>
         <div id="modalContentId" class="swal2-content" style="display: block;">
             <div class="row">
