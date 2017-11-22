@@ -22,8 +22,9 @@
     <string name="google_maps_key">AIzaSyAxm5ziuKwuf93BR2GQ_TmlQY19ubdybAo</string>
     <string name="server_address">http://getapp.vittal.com.ar</string>
     <string name="webAPI_port">4000</string>
-    <string name="webAPI_address">https://getapp.vittal.com.ar/api/v1/deaLocation?cantidad={cantidad}&amp;latitud={latitud}&amp;longitud={longitud}</string>
-
+    <string name="webAPI_address">https://getapp.vittal.com.ar/api/v1/</string>
+    <string name="lookup_service">deaLocation?cantidad={cantidad}&amp;latitud={latitud}&amp;longitud={longitud}</string>
+    <string name="use_service">deaState/{id}</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_deas">Map</string>
     <string name="title_activity_disclaimer">Recuerde que…</string>
