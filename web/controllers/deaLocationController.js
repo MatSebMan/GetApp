@@ -63,8 +63,14 @@ exports.findNearestDeas = function(req, res) {
         if(!req.query.cantidad || !req.query.latitud || !req.query.longitud )
             res.send(500, "Parametros incorrectos");
         var queryString = 
-        'SELECT dea.id, dea.zona_protegida as nombre, ST_Y(dea.location) as latitud, ST_X(dea.location) as longitud FROM dea as dea, scheduleAvailability as sa WHERE ST_Distance_Sphere(dea.location,st_makepoint($2,$1))<1000 AND dea.id = sa.iddea AND sa.weekday = $5 AND sa.starttime <= $4 AND $4 < sa.endtime ORDER BY dea.location <-> st_makepoint($2,$1) LIMIT $3 ';
-        console.log(queryString);
+        'SELECT dea.id, dea.zona_protegida as nombre, '
+        +'calle_nombre || \' \' || calle_numero as direccion, '
+        +'ST_Y(dea.location) as latitud, ST_X(dea.location) as longitud FROM dea as dea, scheduleAvailability as sa '
+        +'WHERE ST_Distance_Sphere(dea.location,st_makepoint($2,$1))<1000 AND dea.id = sa.iddea AND sa.weekday = $5 '
+        +'AND sa.starttime <= $4 AND $4 < sa.endtime '
+        +'AND dea.en_uso = \'false\' AND dea.activo = \'true\' '
+        +'ORDER BY dea.location <-> st_makepoint($2,$1) LIMIT $3 ';
+        // console.log(queryString);
         const values = [];
         values.push(req.query.latitud);
         values.push(req.query.longitud);
@@ -172,6 +178,30 @@ exports.edit = function(req, res) {
     catch(err) {
         res.status(500).send()
     }
+}
+
+exports.editState = function(req, res) {
+    console.log('PUT/deaState/'+req.params.id);
+    console.log(req.body);
+    db.connect("getapp", function(client) {
+        var queryString = 'UPDATE dea SET en_uso = $2 WHERE id = $1';
+        const values = [];
+        values.push(req.params.id);
+        values.push(req.body.en_uso);
+
+        client.query(queryString, values).then(dbRes => {
+            db.disconnect(client)
+            res.status(200).send();
+        }).catch(err => {
+            db.disconnect(client)
+            console.log(err);
+            console.log(err.stack)
+            res.status(500).send(err.stack);
+        });
+    }, function(err){
+        res.status(500).send(err.stack);
+    });
+    res.status(200).send();
 }
 
 exports.delete = function(req, res) {

@@ -12,6 +12,7 @@ public class GetAppLatLng {
     private String nombre;
     private Double latitud;
     private Double longitud;
+    private String direccion;
 
     public Integer getId() {
         return id;
@@ -27,5 +28,29 @@ public class GetAppLatLng {
 
     Double getLongitud() {
         return longitud;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 }

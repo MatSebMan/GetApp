@@ -44,10 +44,15 @@ exports.addEvent = function (dbHelper, username, eventTypeNumber, iddea) {
                 let dea = dbHelper.result.rows[0]
 
                 let fetchDeaProtectedZoneName = "INSERT INTO deaEvent (eventtype, iddea, deaprotectedzonename, deaLocation, eventtime, username) VALUES ($1, $2, $3, $4, clock_timestamp(), $5)"
-                let ubicacion = dea.localidad
+                let ubicacion = dea.calle_nombre
                 
                 if ( dea.calle_nombre != undefined && dea.calle_numero != undefined ) {
-                    ubicacion = dea.calle_nombre + ' ' + dea.calle_numero + ', ' + dea.localidad
+                    ubicacion = dea.calle_nombre + ' ' + dea.calle_numero 
+                }
+
+                if ( dea.localidad != undefined )
+                {
+                    ubicacion += ', ' + dea.localidad
                 }
             
                 let insertValues = [eventTypeNumber, dea.id, dea.zona_protegida, ubicacion, username ]
@@ -63,10 +68,15 @@ exports.addEventFromDEA = function (dbHelper, username, eventTypeNumber, dea) {
 
     let fetchDeaProtectedZoneName = "INSERT INTO deaEvent (eventtype, iddea, deaprotectedzonename, deaLocation, eventtime, username) VALUES ($1, $2, $3, $4, clock_timestamp(), $5)"
     
-    let ubicacion = dea.localidad
+    let ubicacion = dea.calle_nombre
     
     if ( dea.calle_nombre != undefined && dea.calle_numero != undefined ) {
-        ubicacion = dea.calle_nombre + ' ' + dea.calle_numero + ', ' + dea.localidad
+        ubicacion = dea.calle_nombre + ' ' + dea.calle_numero 
+    }
+
+    if ( dea.localidad != undefined )
+    {
+        ubicacion += ', ' + dea.localidad
     }
 
     let insertValues = [eventTypeNumber, dea.id, dea.zona_protegida, ubicacion, username ]

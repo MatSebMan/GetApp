@@ -4,6 +4,7 @@ var express = require("express"),
 	path = require('path'),
     bodyParser  = require("body-parser"),
     methodOverride = require("method-override"),
+    // formidable = require('express-formidable'),
     auth = require('./routes/auth.js'),
     db = require('./config_db').db;
 
@@ -25,6 +26,8 @@ var allowCrossDomain = function(req, res, next) {
 
 app.use(allowCrossDomain);
 
+// app.use('/api/v1/deaState/', formidable());
+
 // HTML read
 var fileSystem = require("fs");
 
@@ -32,7 +35,7 @@ var fileSystem = require("fs");
 // Only the requests that start with /api/v1/* will be checked for the token.
 // Any URL's that do not follow the below pattern should be avoided unless you 
 // are sure that authentication is not needed
-app.all('/api/v1/*', [require('./middlewares/validateRequest')]);
+// app.all('/api/v1/*', [require('./middlewares/validateRequest')]);
 app.all('/app/*', [require('./middlewares/validateRequest')]);
 
 

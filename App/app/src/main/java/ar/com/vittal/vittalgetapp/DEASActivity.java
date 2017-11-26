@@ -40,9 +40,9 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
     }
 
     @Override
-    public void drawResult(GetAppLatLng[] latLng) {
+    public void drawResult() {
         ArrayList<LatLng> destinations = new ArrayList<>();
-        for (GetAppLatLng gall : latLng)
+        for (GetAppLatLng gall : this.currentDEASFound)
         {
             destinations.add(new LatLng(gall.getLatitud(),gall.getLongitud()));
         }
@@ -53,7 +53,7 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
             this.lista = new ArrayList<>();
             for (int i = 0; i < result.size(); i++)
             {
-                lista.add(new DEASListObject(result.get(i), latLng[i]));
+                lista.add(new DEASListObject(result.get(i), this.currentDEASFound[i]));
             }
             list.setAdapter(new DEASArrayAdapter(this, R.layout.row_layout, lista));
             list.setOnItemClickListener(this);
@@ -74,8 +74,11 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
             startActivity(i);*/
 
             Intent intent = new Intent(this, DEARouteActivity.class);
-            intent.putExtra("Latitud", this.lista.get(position).getgALL().getLatitud());
-            intent.putExtra("Longitud", this.lista.get(position).getgALL().getLongitud());
+            intent.putExtra(MapListenerActivity.LATITUD, this.lista.get(position).getgALL().getLatitud());
+            intent.putExtra(MapListenerActivity.LONGITUD, this.lista.get(position).getgALL().getLongitud());
+            intent.putExtra(MapListenerActivity.NOMBRE, this.lista.get(position).getgALL().getNombre());
+            intent.putExtra(MapListenerActivity.DIRECCION, this.lista.get(position).getgALL().getDireccion());
+            intent.putExtra(MapListenerActivity.ID, this.lista.get(position).getgALL().getId());
             startActivity(intent);
         }
     }
@@ -103,7 +106,7 @@ public class DEASActivity extends MapListenerActivity implements OnMapReadyCallb
             this.context = context;
             for (int i = 0; i < objects.size(); i++)
             {
-                this.latLongMap.put(i, getAddress(objects.get(i).getDirResult()));
+                this.latLongMap.put(i, objects.get(i).getgALL().getDireccion());
                 this.results.put(i, objects.get(i));
             }
         }

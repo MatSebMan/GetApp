@@ -7,7 +7,6 @@ export var creacionDea = {
         numero: 'number',
         zona_protegida: 'text',        
         telefono: 'number',
-        horario: 'horario',
         referencia_interna: 'text',
         persona_contacto: 'text',
         geolocalizacion: 'geoloc'
@@ -18,11 +17,8 @@ export var creacionDea = {
         localidad: 'Localidad',
         calle: 'Calle',
         numero: 'Número',
-        // latitud: 'Latitud',
-        // longitud: 'Longitud',
         zona_protegida: 'Nombre Zona Protegida',
         telefono: 'Teléfono',
-        horario: 'Horario',
         referencia_interna: 'Referencia de ubicación',
         persona_contacto: 'Persona de Contacto',
         geolocalizacion: 'Localización'

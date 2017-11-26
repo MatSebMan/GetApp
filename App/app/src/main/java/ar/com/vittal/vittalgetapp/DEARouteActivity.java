@@ -4,15 +4,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.Marker;
 import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.LatLng;
 
 public class DEARouteActivity extends MapListenerActivity implements View.OnClickListener{
-
-    private LatLng latLng;
 
     @Override
     public Integer getQuantityOfDEASToSearch() {
@@ -27,17 +23,15 @@ public class DEARouteActivity extends MapListenerActivity implements View.OnClic
     }
 
     @Override
-    public void drawResult(GetAppLatLng[] latLng) {
+    public void drawResult() {
         DirectionsResult direction;
-        if (this.direction == null || (this.direction.lat == 0 && this.direction.lng == 0))
+        if (this.DEASelected == null || (this.DEASelected.getLatitud() == 0 && this.DEASelected.getLongitud() == 0))
         {
-            this.latLng = new com.google.maps.model.LatLng(latLng[0].getLatitud(),latLng[0].getLongitud());
-            direction = getRouteFromCurrentLocation(new com.google.maps.model.LatLng(latLng[0].getLatitud(),latLng[0].getLongitud()));
+            direction = getRouteFromCurrentLocation(new com.google.maps.model.LatLng(currentDEASFound[0].getLatitud(),currentDEASFound[0].getLongitud()));
         }
         else
         {
-            this.latLng = new com.google.maps.model.LatLng(this.direction.lat,this.direction.lng);
-            direction = getRouteFromCurrentLocation(this.direction);
+            direction = getRouteFromCurrentLocation(new com.google.maps.model.LatLng(this.DEASelected.getLatitud(),this.DEASelected.getLongitud()));
         }
         if (direction != null)
         {
@@ -58,18 +52,31 @@ public class DEARouteActivity extends MapListenerActivity implements View.OnClic
 
     private void navigate()
     {
-        Intent i = new Intent(Intent.ACTION_VIEW,
+        if (this.DEASelected == null || (this.DEASelected.getLatitud() == 0 && this.DEASelected.getLongitud() == 0))
+        {
+            mService.setDeaInUse(this.currentDEASFound[0].getId(), this);
+            Intent i = new Intent(Intent.ACTION_VIEW,
 
-                Uri.parse("google.navigation:ll=" + this.latLng.lat + "," + this.latLng.lng + "&mode=w"));
+                    Uri.parse("google.navigation:ll=" + this.currentDEASFound[0].getLatitud() + "," + this.currentDEASFound[0].getLongitud() + "&mode=w"));
 
-        startActivity(i);
+            startActivity(i);
+        }
+        else
+        {
+            mService.setDeaInUse(this.DEASelected.getId(), this);
+            Intent i = new Intent(Intent.ACTION_VIEW,
+
+                    Uri.parse("google.navigation:ll=" + this.DEASelected.getLatitud() + "," + this.DEASelected.getLongitud() + "&mode=w"));
+
+            startActivity(i);
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.listAllNearestDEAS:
-                this.direction = null;
+                this.currentDEASFound = null;
                 listAllNearestDEAS(v);
                 break;
         }

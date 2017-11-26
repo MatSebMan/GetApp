@@ -10,10 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -32,8 +30,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.maps.DirectionsApi;
 import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
@@ -43,9 +39,6 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
 
 import org.joda.time.DateTime;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,15 +50,19 @@ import java.util.concurrent.TimeUnit;
  * Created by mmanzano on 07/09/2017.
  */
 
-public abstract class MapListenerActivity extends FragmentActivity implements OnMapReadyCallback, OnCompleteListener<Location>, ServiceConnection, GoogleMap.OnMarkerClickListener
+public abstract class MapListenerActivity extends FragmentActivity implements OnMapReadyCallback, ServiceConnection, GoogleMap.OnMarkerClickListener
 {
 
     protected GoogleMap mMap;
 
-    protected com.google.maps.model.LatLng direction;
-
     public static final String LATITUD = "Latitud";
     public static final String LONGITUD = "Longitud";
+    public static final String ID = "Id";
+    public static final String NOMBRE = "Nombre";
+    public static final String DIRECCION = "Direccion";
+
+    GetAppLatLng DEASelected;
+    GetAppLatLng[] currentDEASFound;
 
 
     private Boolean mLocationPermissionGranted;
@@ -96,7 +93,6 @@ public abstract class MapListenerActivity extends FragmentActivity implements On
                 //sendResponse(new ResponseObject(ResponseObject.STATUS_OK, "mensaje", "onLocationResult"));
                 super.onLocationResult(locationResult);
                 Location location = locationResult.getLastLocation();
-                Toast.makeText(getApplicationContext(), "Cambio de ubicacion", Toast.LENGTH_SHORT).show();
                 if (mLastKnownLocation == null || (location != null && location.distanceTo(mLastKnownLocation) >= LOCATION_TRACKING_MIN_DISTANCE)) {
                     mLastKnownLocation = location;
                     lookupDEAS(getQuantityOfDEASToSearch());
@@ -112,7 +108,6 @@ public abstract class MapListenerActivity extends FragmentActivity implements On
         mService = ((LocalService.LocalBinder) service).getService();
         mBound = true;
         mService.prepare(this);
-        //mService.getLastKnownLocation(this);
         mService.startPeriodicLocationUpdate(mLocationCallback);
     }
 
@@ -126,8 +121,12 @@ public abstract class MapListenerActivity extends FragmentActivity implements On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.direction = new com.google.maps.model.LatLng(getIntent().getDoubleExtra(MapListenerActivity.LATITUD, 0),
-                getIntent().getDoubleExtra(MapListenerActivity.LONGITUD, 0));
+        this.DEASelected = new GetAppLatLng();
+        this.DEASelected.setId(getIntent().getIntExtra(MapListenerActivity.ID, 0));
+        this.DEASelected.setNombre(getIntent().getStringExtra(MapListenerActivity.NOMBRE));
+        this.DEASelected.setDireccion(getIntent().getStringExtra(MapListenerActivity.DIRECCION));
+        this.DEASelected.setLatitud(getIntent().getDoubleExtra(MapListenerActivity.LATITUD, 0));
+        this.DEASelected.setLongitud(getIntent().getDoubleExtra(MapListenerActivity.LONGITUD, 0));
 
         specificSettings();
 
@@ -224,47 +223,6 @@ public abstract class MapListenerActivity extends FragmentActivity implements On
         }
     }
 
-    public void refreshDeviceLocation() {
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
-        try {
-            if (mLocationPermissionGranted) {
-                Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
-                locationResult.addOnCompleteListener(this, this);
-            }
-        } catch (SecurityException e) {
-            Log.e("Exception: %s", e.getMessage());
-        }
-    }
-
-    /*Centra la cámara en el punto medio entre mi ubicación y la posicion media de todos los DEAs
-    public void centerCamera(GoogleMap mMap, ArrayList<LatLng> destination)
-    {
-        double latitude = 0.0;
-        double longitude = 0.0;
-        for (LatLng ll : destination)
-        {
-            latitude += ll.latitude;
-            longitude += ll.longitude;
-        }
-        latitude = latitude / destination.size();
-        longitude = longitude / destination.size();
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                // new LatLng((latitude + mLastKnownLocation.getLatitude())/2, (longitude + mLastKnownLocation.getLongitude())/2)
-                new LatLng(latitude, longitude), DEFAULT_ZOOM));
-    }
-
-    public void centerCamera(GoogleMap mMap, com.google.maps.model.LatLng destination)
-    {
-        ArrayList<LatLng> lista = new ArrayList<>();
-        lista.add(new LatLng(destination.lat, destination.lng));
-        centerCamera(mMap, lista);
-    }
-    */
-
     // Centra la cámara a mi ubicación
     public void centerCamera(GoogleMap mMap)
     {
@@ -321,7 +279,6 @@ public abstract class MapListenerActivity extends FragmentActivity implements On
             } else {
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
-                //mLastKnownLocation = null;
                 getLocationPermission();
             }
         } catch (SecurityException e)  {
@@ -369,13 +326,13 @@ public abstract class MapListenerActivity extends FragmentActivity implements On
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-    private void addMarkersToMap(DirectionsResult result, GoogleMap mMap) {
+    private void addMarkersToMap(DirectionsResult result, GoogleMap mMap, String direccion) {
         if (result.routes.length != 0)
         {
             mMap.addMarker(new MarkerOptions()
                     .icon(bitmapDescriptorFromVector(this, R.drawable.ic_map_marker))
                     .position(new LatLng(result.routes[0].legs[0].endLocation.lat,result.routes[0].legs[0].endLocation.lng))
-                    .title(getAddress(result))
+                    .title(direccion)
                     .snippet(getEndLocationTitle(result))).showInfoWindow();
         }
     }
@@ -401,11 +358,19 @@ public abstract class MapListenerActivity extends FragmentActivity implements On
     {
         if (mMap != null) {
             mMap.clear();
-            for (DirectionsResult dr : result) {
-                if (dr.routes.length != 0) {
-                    addMarkersToMap(dr, mMap);
+            for (int i = 0; i < result.size(); i++)
+            {
+                if (result.get(i).routes.length != 0) {
+                    if (this.DEASelected == null || (this.DEASelected.getLatitud() == 0 && this.DEASelected.getLongitud() == 0))
+                    {
+                        addMarkersToMap(result.get(i), mMap, this.currentDEASFound[i].getDireccion());
+                    }
+                    else
+                    {
+                        addMarkersToMap(result.get(i), mMap, this.DEASelected.getDireccion());
+                    }
                     if (result.size() == 1) {
-                        addPolyline(dr, mMap);
+                        addPolyline(result.get(i), mMap);
                     }
                 }
             }
@@ -425,84 +390,24 @@ public abstract class MapListenerActivity extends FragmentActivity implements On
         mapa.put(ATRIBUTO_CANTIDAD, ammount.toString());
         mapa.put(ATRIBUTO_LATITUD, String.valueOf(mLastKnownLocation.getLatitude()));
         mapa.put(ATRIBUTO_LONGITUD, String.valueOf(mLastKnownLocation.getLongitude()));
-        new HttpRequestTask(this).execute(mapa);
-    }
-
-    private class HttpRequestTask extends AsyncTask<HashMap<String, String>, Void, GetAppLatLng[]> {
-
-        private MapListenerActivity _activity;
-
-        public HttpRequestTask(MapListenerActivity mLA)
-        {
-            this._activity = mLA;
-        }
-
-        @Override
-        protected GetAppLatLng[] doInBackground(HashMap<String, String>... params) {
-            try {
-                final String url = _activity.getString(R.string.webAPI_address);
-                RestTemplate restTemplate = new RestTemplate();
-                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                GetAppLatLng getAppLatLng[] = restTemplate.getForObject(url, GetAppLatLng[].class, params[0]);
-                return getAppLatLng;
-            } catch (ResourceAccessException rae) {
-                handleResult(null, "Servidor inaccesible");
-                //_activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "lookupDEAS", "Servidor inaccesible"));
-                //Log.e("LocationUtilities", rae.getMessage(), rae);
-            } catch (Exception e)
-            {
-                handleResult(null, e.getMessage());
-                //_activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "lookupDEAS", e.getMessage()));
-                //Log.e("LocationUtilities", e.getMessage(), e);
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(GetAppLatLng[] latLng)
-        {
-            if (latLng == null || latLng.length == 0)
-            {
-                handleResult(null, "No se encontraron DEAS cerca");
-                //_activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "lookupDEAS", null, "No se encontraron DEAS cerca"));
-            }
-            else
-            {
-                handleResult(latLng, "Ok");
-                //_activity.sendResponse(new ResponseObject(ResponseObject.STATUS_OK, "lookupDEAS", latLng));
-                //_activity.lookupReady(latLng);
-            }
-        }
-
+        mService.lookupDEAS(ammount, mLastKnownLocation, this);
     }
 
     public void handleResult(GetAppLatLng[] latLng, String mensaje)
     {
         if (latLng != null)
         {
-            drawResult(latLng);
+            this.currentDEASFound = latLng;
+            drawResult();
         }
         else
         {
+            this.currentDEASFound = null;
             //Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
     }
 
-    public abstract void drawResult(GetAppLatLng[] latLng);
-
-    @Override
-    public void onComplete(@NonNull Task<Location> task) {
-        /*if (task.isSuccessful() && task.getResult() != null) {
-            // Set the map's camera position to the current location of the device.
-            mLastKnownLocation = task.getResult();
-            //this.sendResponse(new ResponseObject(ResponseObject.STATUS_OK, "refreshDeviceLocation", mLastKnownLocation));
-        } else {
-            mLastKnownLocation = null;
-            //this.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "refreshDeviceLocation", "Error al obtener su ubicación"));
-        }*/
-        //_activity.locationReady();
-    }
+    public abstract void drawResult();
 }
