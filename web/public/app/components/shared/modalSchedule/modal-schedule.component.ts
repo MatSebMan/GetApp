@@ -34,7 +34,7 @@ export class ModalScheduleComponent {
     private static LUNES_A_VIERNES: string = '7'
 
     private weekdays = [
-        {index: '0', day: 'Domingo'}
+        {index: '0', day: 'Domingo'},
         {index: '1', day: 'Lunes'}, 
         {index: '2', day: 'Martes'},
         {index: '3', day: 'Miércoles'},

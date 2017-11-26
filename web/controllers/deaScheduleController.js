@@ -1,6 +1,8 @@
 var db = require('../config_db').db;
 var controllerHelper = require('./helpers/controllerHelper')
+var deaEventsController = require('./deaEventsController')
 var editSchedule = require('./helpers/scheduleHelper')
+var eventEnum = require('./helpers/deaEventsTypes')
 
 exports.getScheduleByIdDea = function(req, res) {
 
@@ -21,7 +23,7 @@ exports.editScheduleByIdDea = function(req, res){
     try {
         
         controllerHelper
-            .create()
+            .create(res)
             .catch( err => res.status(500).json(500))
             .then( dbHelper => {
 
@@ -76,7 +78,7 @@ var decideIfRemoveTimeBlockFromSchedule = function(res, scheduleHelper, dbHelper
         removeFromSchedule(res, scheduleHelper, dbHelper) 
     }
 
-    else { dbHelper.commitAndResponse(res) }
+    else { deaEventsController.addEvent(dbHelper, '', eventEnum.deaEventType.MODIFICACION_HORARIA, scheduleHelper.getIdDea() ) }
 }
 
 var removeFromSchedule = function(res, scheduleHelper, dbHelper) {
