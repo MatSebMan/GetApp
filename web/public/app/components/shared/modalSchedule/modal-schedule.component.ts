@@ -35,7 +35,11 @@ export class ModalScheduleComponent {
 
     private weekdays = [
         {index: '0', day: 'Domingo'},
+<<<<<<< HEAD
+        {index: '1', day: 'Lunes'}, 
+=======
         {index: '1', day: 'Lunes'},
+>>>>>>> ff7e232a1788e92d50b7ce0106d14c888b442be2
         {index: '2', day: 'Martes'},
         {index: '3', day: 'Miércoles'},
         {index: '4', day: 'Jueves'},

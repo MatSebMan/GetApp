@@ -15,7 +15,7 @@ import { ModalScheduleModule } from '../modalSchedule/modal-schedule.module';
 @NgModule({
     imports: [ CommonModule, FormsModule, HttpModule, ModalScheduleModule ],
     declarations: [ TableComponent, DropdownComponent, ButtonLineComponent ],
-    exports: [ TableComponent ],
+    exports: [ TableComponent, ModalScheduleModule ],
     providers: [ DropdownServices, DefaultServices ]
 })
 

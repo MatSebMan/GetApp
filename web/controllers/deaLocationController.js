@@ -1,5 +1,7 @@
 var db = require('../config_db').db;
 var controllerHelper = require('./helpers/controllerHelper')
+var deaEventsController = require('./deaEventsController')
+var eventEnum = require('./helpers/deaEventsTypes')
 var TIPO_CENTRO = 0;
 
 exports.create = function(req, res) {
@@ -9,36 +11,46 @@ exports.create = function(req, res) {
     if(!req.body.zona_protegida || !req.body.latitud || !req.body.longitud )
         res.send(500);
 
-    db.connect("getapp", function(client) {
-        const queryString = 'INSERT INTO dea('
-        +'zona_protegida,location,activo,provincia,localidad,partido,calle_nombre,calle_numero,telefono,referencia_interna,persona_contacto'
-        +') VALUES($1,ST_MakePoint($3,$2),false,$4,$5,$6,$7,$8,$9,$10,$11)';
-        const values = [];
-        values.push(req.body.zona_protegida);
-        values.push(req.body.latitud);
-        values.push(req.body.longitud);
-        values.push(req.body.provincia);
-        values.push(req.body.localidad);
-        values.push(req.body.partido);
-        values.push(req.body.calle);
-        values.push(req.body.numero);
-        values.push(req.body.telefono);
-        values.push(req.body.referencia_interna);
-        values.push(req.body.persona_contacto);
+    else{
 
-        client.query(queryString, values, dbRes => {
-            db.disconnect(client)
-            res.status(200).send();
-        },err => {
-            db.disconnect(client)
+        controllerHelper.create(res)
+        
+        .catch( err => {
             console.log(err.message);
             res.status(500).send(err.message);
-        });
-    }, function(err){
-        res.status(500).send(err.message);
-    });
+        })
+        
+        .then( dbHelper => {
+            
+            const queryString = 'INSERT INTO dea('
+            +'zona_protegida,location,activo,provincia,localidad,partido,calle_nombre,calle_numero,telefono,referencia_interna,persona_contacto'
+            +') VALUES($1,ST_MakePoint($3,$2),false,$4,$5,$6,$7,$8,$9,$10,$11) returning id';
+            
+            const values = [];
+            values.push(req.body.zona_protegida);
+            values.push(req.body.latitud);
+            values.push(req.body.longitud);
+            values.push(req.body.provincia);
+            values.push(req.body.localidad);
+            values.push(req.body.partido);
+            values.push(req.body.calle);
+            values.push(req.body.numero);
+            values.push(req.body.telefono);
+            values.push(req.body.referencia_interna);
+            values.push(req.body.persona_contacto);
+            
+            dbHelper.doQuery(queryString, values)
+                .catch( dbHelper => {
+                    dbHelper.responseWithError()
+                })
+                
+                .then( dbHelper => {
+                    deaEventsController.addEvent(dbHelper, '', eventEnum.deaEventType.CREACION, dbHelper.result.rows[0].id)
+                })
+        })
+    }
 };
-
+    
 exports.findNearestDeas = function(req, res) {
     console.log('GET/deaLocation');
 
@@ -127,38 +139,45 @@ exports.findById = function(req, res) {
 exports.edit = function(req, res) {
     console.log('PUT/deaList/'+req.params.id);
     console.log(req.body);
-    db.connect("getapp", function(client) {
-        var queryString = 'UPDATE dea SET (zona_protegida,location,activo,en_uso,provincia,localidad,partido,calle_nombre,calle_numero,telefono,referencia_interna,persona_contacto) '
-        +'= ($2,ST_MakePoint($4,$3),$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) WHERE id = $1';
-        const values = [];
-        values.push(req.params.id);
-        values.push(req.body.zona_protegida);
-        values.push(req.body.latitud);
-        values.push(req.body.longitud);
-        values.push(req.body.activo);
-        values.push(req.body.en_uso);
-        values.push(req.body.provincia);
-        values.push(req.body.localidad);
-        values.push(req.body.partido);
-        values.push(req.body.calle);
-        values.push(req.body.numero);
-        values.push(req.body.telefono);
-        values.push(req.body.referencia_interna);
-        values.push(req.body.persona_contacto);
 
-        client.query(queryString, values).then(dbRes => {
-            db.disconnect(client)
-            res.status(200).send();
-        }).catch(err => {
-            db.disconnect(client)
-            console.log(err);
-            console.log(err.stack)
-            res.status(500).send(err.stack);
-        });
-    }, function(err){
-        res.status(500).send(err.stack);
-    });
-    res.status(200).send();
+    try{
+        controllerHelper
+            .create(res)
+            .then( dbHelper => {
+    
+                var queryString = 'UPDATE dea SET (zona_protegida,location,activo,en_uso,provincia,localidad,partido,calle_nombre,calle_numero,telefono,referencia_interna,persona_contacto) '
+                +'= ($2,ST_MakePoint($4,$3),$5,$6,$7,$8,$9,$10,$11,$12,$13,$14) WHERE id = $1';
+                
+                const values = [];
+                values.push(req.params.id);
+                values.push(req.body.zona_protegida);
+                values.push(req.body.latitud);
+                values.push(req.body.longitud);
+                values.push(req.body.activo);
+                values.push(req.body.en_uso);
+                values.push(req.body.provincia);
+                values.push(req.body.localidad);
+                values.push(req.body.partido);
+                values.push(req.body.calle);
+                values.push(req.body.numero);
+                values.push(req.body.telefono);
+                values.push(req.body.referencia_interna);
+                values.push(req.body.persona_contacto);
+    
+                dbHelper
+                    .doQuery(queryString, values)
+                    .catch( dbHelper => dbHelper.responseWithError() )
+                    .then( dbHelper => {
+                        deaEventsController.addEvent(dbHelper, '', eventEnum.deaEventType.MODIFICACION, req.params.id)                                    
+                    })
+            })
+
+            .catch( err => res.status(500).send(err.message))
+    }
+
+    catch(err) {
+        res.status(500).send()
+    }
 }
 
 exports.editState = function(req, res) {
@@ -190,7 +209,7 @@ exports.delete = function(req, res) {
 
     try{
         controllerHelper
-            .create()
+            .create(res)
             .then( dbHelper => {
     
                 let idDea = req.params.id
@@ -212,12 +231,19 @@ exports.delete = function(req, res) {
 
 var deleteDea = function(req, res, dbHelper) {
 
-    let queryString = 'DELETE FROM dea WHERE id = $1'
+    let queryString = 'DELETE FROM dea WHERE id = $1 RETURNING *'
     const values = []
     values.push(req.params.id)
 
     dbHelper
-        .query(queryString, values)
-        .then(dbHelper => dbHelper.commitAndResponse(res))
-        .catch( err => err.status(500).send(err.message))
+        .doQuery(queryString, values)
+
+        .catch( dbHelper =>{
+            dbHelper.responseWithError() 
+        })
+            
+        .then(dbHelper => {
+            deaEventsController.addEventFromDEA(dbHelper, '', eventEnum.deaEventType.ELIMINACION, dbHelper.result.rows[0])            
+        })
+
 }

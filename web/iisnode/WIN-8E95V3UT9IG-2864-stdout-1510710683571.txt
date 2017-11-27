@@ -1,3 +1,0 @@
-Node server running on port \\.\pipe\fa41a172-b31f-47ce-90d3-b94e3e7a682a
-GET/deaLocation
-SELECT id,zona_protegida as nombre, ST_Y(location) as latitud, ST_X(location) as longitud FROM dea WHERE  activo = 'true' AND en_uso = 'false' AND ST_Distance_Sphere(location,st_makepoint($2,$1))<1000 ORDER BY location <-> st_makepoint($2,$1) LIMIT $3

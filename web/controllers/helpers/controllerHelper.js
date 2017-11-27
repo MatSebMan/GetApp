@@ -26,12 +26,12 @@ var getJSON = function( res, client, queryString, values ) {
             })
 }
 
-exports.create = function() {
+exports.create = function(res) {
     return new Promise( function(resolve, reject){
 
         db.connectDB("getapp")
             .then( client => {
-                let dbHelper = new db_Helper.DbHelper(db, client)
+                let dbHelper = new db_Helper.DbHelper(db, client, res)
                 dbHelper.begin()
                 resolve( dbHelper ) 
             })
