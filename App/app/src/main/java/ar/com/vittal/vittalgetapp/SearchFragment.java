@@ -1,13 +1,13 @@
 package ar.com.vittal.vittalgetapp;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,7 +17,7 @@ import android.view.ViewGroup;
  * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,14 +64,10 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        Button button = (Button) view.findViewById(R.id.searchForHospitals);
+        button.setOnClickListener(this);
+        return view;
     }
 
     @Override
@@ -91,6 +87,18 @@ public class SearchFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.searchForHospitals:
+                searchForHospitals(v);
+                break;
+            /*case R.id.listAllNearestDEAS:
+                listAllNearestDEAS(v);
+                break;*/
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -102,7 +110,14 @@ public class SearchFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
+        void onSearchForHospitalsPressed(View view, Class clas);
+    }
+
+    public void searchForHospitals(View view)
+    {
+        if (mListener != null) {
+            mListener.onSearchForHospitalsPressed(view, SearchActivity.class);
+        }
     }
 }

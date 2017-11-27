@@ -52,12 +52,12 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
                             .replace(R.id.content, HomeFragment.newInstance("Home", ""))
                             .commit();
                     return true;
-                /*case R.id.navigation_buscador:
+                case R.id.navigation_buscador:
                     mgr = getFragmentManager();
                     mgr.beginTransaction()
                             .replace(R.id.content, SearchFragment.newInstance("Search", ""))
                             .commit();
-                    return true;*/
+                    return true;
                 case R.id.navigation_instrucciones:
                     mgr = getFragmentManager();
                     mgr.beginTransaction()
@@ -90,6 +90,11 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
     @Override
     public void onGoToNearestDEAPressed(View view, Class clas) {
         this.intent = new Intent(this, DEARouteActivity.class);
+        displayLocationSettingsRequest(this);
+    }
+
+    public void onSearchForHospitalsPressed(View view, Class clas){
+        this.intent = new Intent(this, SearchActivity.class);
         displayLocationSettingsRequest(this);
     }
 
@@ -181,11 +186,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.OnFr
                 }
             }
         }
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
     @Override

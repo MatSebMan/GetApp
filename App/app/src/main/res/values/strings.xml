@@ -4,6 +4,7 @@
     <string name="title_activity_main">vittal getapp</string>
     <string name="main_navigation_home_label">Home</string>
     <string name="main_navigation_instrucciones_label">Instrucciones</string>
+    <string name="main_navigation_buscador_label">Search</string>
     <string name="main_button_IDMC_label">Ir al DEA mas cercano</string>
     <string name="main_button_IDMC_description">Muestra la ruta al DEA mas cercano</string>
     <string name="main_button_VOD_label">Ver otros DEAs</string>
