@@ -42,7 +42,6 @@ import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -50,7 +49,7 @@ import java.util.concurrent.TimeUnit;
  * Created by mmanzano on 07/09/2017.
  */
 
-public abstract class MapListenerActivity extends FragmentActivity implements OnMapReadyCallback, ServiceConnection, GoogleMap.OnMarkerClickListener
+public abstract class MapListenerActivity extends FragmentActivity implements OnMapReadyCallback, ServiceConnection, GoogleMap.OnMarkerClickListener, LocalServiceHandler<GetAppLatLng[]>
 {
 
     protected GoogleMap mMap;
@@ -113,7 +112,6 @@ public abstract class MapListenerActivity extends FragmentActivity implements On
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        Toast.makeText(MapListenerActivity.this, "Disconnected", Toast.LENGTH_LONG).show();
         mBound = false;
     }
 
@@ -386,11 +384,11 @@ public abstract class MapListenerActivity extends FragmentActivity implements On
 
     public void lookupDEAS(Integer ammount)
     {
-        HashMap<String, String> mapa = new HashMap<>();
-        mapa.put(ATRIBUTO_CANTIDAD, ammount.toString());
-        mapa.put(ATRIBUTO_LATITUD, String.valueOf(mLastKnownLocation.getLatitude()));
-        mapa.put(ATRIBUTO_LONGITUD, String.valueOf(mLastKnownLocation.getLongitude()));
-        mService.lookupDEAS(ammount, mLastKnownLocation, this);
+        Comunicator comunicator = new Comunicator(Comunicator.GET, getString(R.string.webAPI_address) + getString(R.string.lookup_service));
+        comunicator.addParam(ATRIBUTO_CANTIDAD, ammount.toString());
+        comunicator.addParam(ATRIBUTO_LATITUD, String.valueOf(mLastKnownLocation.getLatitude()));
+        comunicator.addParam(ATRIBUTO_LONGITUD, String.valueOf(mLastKnownLocation.getLongitude()));
+        mService.sendRequest(this, comunicator);
     }
 
     public void handleResult(GetAppLatLng[] latLng, String mensaje)

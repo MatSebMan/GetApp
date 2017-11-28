@@ -9,16 +9,17 @@
     <string name="main_button_IDMC_description">Muestra la ruta al DEA mas cercano</string>
     <string name="main_button_VOD_label">Ver otros DEAs</string>
     <string name="main_button_VOD_description">Muestra en un mapa los DEAs mas cercanos</string>
-    <string name="main_button_NTD_label">Ir al DEA</string>
+    <string name="main_button_NTD_label">Ir</string>
     <string name="main_button_NTD_description">Muestra en un mapa la navegacion al DEA</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="main_information_title">¿Que hacer en caso de observar un infarto?</string>
-    <string name="main_information_step1">1) Detectar que no esta consciente</string>
-    <string name="main_information_step2">2) Detectar que no respira</string>
-    <string name="main_information_step3">3) Llamar al</string>
+    <string name="main_information_title">INSTRUCCIONES</string>
+    <string name="main_information_subtitle">¿Que hacer en caso de observar un infarto?</string>
+    <string name="main_information_step1">1- Detectar que no esta consciente</string>
+    <string name="main_information_step2">2- Detectar que no respira</string>
+    <string name="main_information_step3">3- Llamar al</string>
     <string name="main_information_call_link">107</string>
-    <string name="main_information_step4">4) Iniciar masaje cardíaco, hasta que llegue el DEA o la ambulancia</string>
+    <string name="main_information_step4">4- Iniciar masaje cardíaco, hasta que llegue el DEA o la ambulancia</string>
 
     <string name="google_maps_key">AIzaSyAxm5ziuKwuf93BR2GQ_TmlQY19ubdybAo</string>
     <string name="server_address">http://getapp.vittal.com.ar</string>
@@ -29,6 +30,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_deas">Map</string>
     <string name="title_activity_disclaimer">Recuerde que…</string>
+    <string name="disclaimer_title">IMPORTANTE</string>
     <string name="disclaimer_button_text">Continuar</string>
     <string name="disclaimer_terms_agreement">Acepto los</string>
     <string name="disclaimer_terms_link">terminos y condiciones</string>

@@ -18,6 +18,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -29,6 +30,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 
 public class LocalService extends Service {
@@ -42,15 +44,6 @@ public class LocalService extends Service {
     private static final float ACCEPTED_ACCURACY = 50f;
     private static final long AGENT_LOCATION_TRACKING_UPDATE_INTERVAL = 60;
     private static final long EXPIRATION_DURATION = 60;
-    private static final String ATRIBUTO_CANTIDAD = "cantidad";
-    private static final String ATRIBUTO_LATITUD = "latitud";
-    private static final String ATRIBUTO_LONGITUD = "longitud";
-    private static final String ATRIBUTO_ID = "id";
-    private static final String URL = "URL";
-    private static final String TYPE = "tipo";
-    private static final String GET = "get";
-    private static final String POST = "post";
-    private static final String DELETE = "delete";
 
     public LocalService() {}
 
@@ -99,51 +92,41 @@ public class LocalService extends Service {
                 });
     }
 
-    public void lookupDEAS(Integer ammount, Location mLastKnownLocation, MapListenerActivity mLA)
+    public void sendRequest(LocalServiceHandler lSH, Comunicator comunicator)
     {
-        Comunicator comunicator = new Comunicator(Comunicator.GET, getString(R.string.webAPI_address) + getString(R.string.lookup_service));
-        comunicator.addParam(ATRIBUTO_CANTIDAD, ammount.toString());
-        comunicator.addParam(ATRIBUTO_LATITUD, String.valueOf(mLastKnownLocation.getLatitude()));
-        comunicator.addParam(ATRIBUTO_LONGITUD, String.valueOf(mLastKnownLocation.getLongitude()));
-        new HttpRequestTask(mLA).execute(comunicator);
+        new HttpRequestTask<GetAppLatLng[]>(lSH, GetAppLatLng[].class).execute(comunicator);
     }
 
-    public void setDeaInUse(Integer idDEA, MapListenerActivity mLA)
-    {
-        Comunicator comunicator = new Comunicator(Comunicator.PUT, getString(R.string.webAPI_address) + getString(R.string.use_service));
-        comunicator.addParam(ATRIBUTO_ID, "" + idDEA);
-        comunicator.setObject(new InUseDEA(true));
-        new HttpRequestTask(mLA).execute(comunicator);
-    }
+    private class HttpRequestTask<T> extends AsyncTask<Comunicator, Void, T> {
 
-    private class HttpRequestTask extends AsyncTask<Comunicator, Void, GetAppLatLng[]> {
-
-        private MapListenerActivity _activity;
+        private LocalServiceHandler _activity;
         private Comunicator comunicator;
+        private Class<T> _class;
 
-        public HttpRequestTask(MapListenerActivity mLA)
+        public HttpRequestTask(LocalServiceHandler lSH, Class<T> clas)
         {
-            this._activity = mLA;
+            this._activity = lSH;
+            this._class = clas;
         }
 
         @Override
-        protected GetAppLatLng[] doInBackground(Comunicator... params) {
+        protected T doInBackground(Comunicator... params) {
             try {
                 comunicator = params[0];
                 RestTemplate restTemplate = new RestTemplate();
                 restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-                GetAppLatLng[] response = null;
+                T response = null;
 
 
                 if (comunicator.getInteractionType() == Comunicator.GET)
                 {
                     response = restTemplate.getForObject(comunicator.getUrl(),
-                            GetAppLatLng[].class,
+                            _class,
                             comunicator.getParameters());
                 }
                 else if (comunicator.getInteractionType() == Comunicator.POST)
                 {
-                    response = restTemplate.postForObject(comunicator.getUrl(), comunicator.getObject(), GetAppLatLng[].class, comunicator.getParameters());
+                    response = restTemplate.postForObject(comunicator.getUrl(), comunicator.getObject(), _class, comunicator.getParameters());
                 }
                 else if (comunicator.getInteractionType() == Comunicator.PUT)
                 {
@@ -173,20 +156,23 @@ public class LocalService extends Service {
         }
 
         @Override
-        protected void onPostExecute(GetAppLatLng[] latLng)
+        protected void onPostExecute(T latLng)
         {
-            if(comunicator.getInteractionType() == Comunicator.GET)
+            if (latLng instanceof GetAppLatLng[])
             {
-                if (latLng == null || latLng.length == 0)
+                if(comunicator.getInteractionType() == Comunicator.GET)
                 {
-                    _activity.handleResult(null, "No se encontraron DEAS cerca");
-                    //_activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "lookupDEAS", null, "No se encontraron DEAS cerca"));
-                }
-                else
-                {
-                    _activity.handleResult(latLng, "Ok");
-                    //_activity.sendResponse(new ResponseObject(ResponseObject.STATUS_OK, "lookupDEAS", latLng));
-                    //_activity.lookupReady(latLng);
+                    if (latLng == null || ((GetAppLatLng[])latLng).length == 0)
+                    {
+                        _activity.handleResult(null, "No se encontraron DEAS cerca");
+                        //_activity.sendResponse(new ResponseObject(ResponseObject.STATUS_ERROR, "lookupDEAS", null, "No se encontraron DEAS cerca"));
+                    }
+                    else
+                    {
+                        _activity.handleResult(((GetAppLatLng[])latLng), "Ok");
+                        //_activity.sendResponse(new ResponseObject(ResponseObject.STATUS_OK, "lookupDEAS", latLng));
+                        //_activity.lookupReady(latLng);
+                    }
                 }
             }
         }

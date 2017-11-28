@@ -59,10 +59,6 @@ public class DisclaimerActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_disclaimer);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.title_activity_disclaimer);
-        setSupportActionBar(toolbar);
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), this);
@@ -131,7 +127,7 @@ public class DisclaimerActivity extends AppCompatActivity {
 
                 TextView linktext =(TextView)rootView.findViewById(R.id.disclaimer_terms_link);
                 linktext.setMovementMethod(LinkMovementMethod.getInstance());
-                String text = "<a href='https://www.pokemon.com/es/pokedex/arbok'> " + getString(R.string.disclaimer_terms_link) + " </a>";
+                String text = "<a href='http://vittal.com.ar/terminos-y-condiciones-idoc/'> " + getString(R.string.disclaimer_terms_link) + " </a>";
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                     linktext.setText(Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY));
                 } else {
@@ -141,9 +137,7 @@ public class DisclaimerActivity extends AppCompatActivity {
             }
             if(page != 3)
             {
-                CheckBox checkBox = (CheckBox) rootView.findViewById(R.id.disclaimer_checkbox);
                 checkBox.setVisibility(CheckBox.INVISIBLE);
-                Button button = (Button) rootView.findViewById(R.id.disclaimer_button);
                 button.setVisibility(Button.INVISIBLE);
             }
             return rootView;

@@ -1,7 +1,13 @@
 package ar.com.vittal.vittalgetapp;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -17,26 +23,32 @@ import com.google.android.gms.location.places.PlaceFilter;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
-public class SearchActivity extends FragmentActivity implements OnMapReadyCallback {
+public class SearchActivity extends FragmentActivity implements OnMapReadyCallback, ServiceConnection, LocalServiceHandler<GetAppLatLng>{
 
     private GeoDataClient mGeoDataClient;
     private PlaceDetectionClient mPlaceDetectionClient;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private Boolean mLocationPermissionGranted;
+    private LatLng mLastKnownLocation;
 
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private static final int DEFAULT_ZOOM = 15;
     private static final int M_MAX_ENTRIES = 20;
 
     private GoogleMap mMap;
+    LocalService mService;
+    boolean mBound = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +62,18 @@ public class SearchActivity extends FragmentActivity implements OnMapReadyCallba
 
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        mLastKnownLocation = null;
+
+        mFusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                if (task != null && task.isSuccessful())
+                {
+                    mLastKnownLocation = new LatLng(task.getResult().getLatitude(), task.getResult().getLongitude());
+                }
+            }
+        });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -82,8 +106,8 @@ public class SearchActivity extends FragmentActivity implements OnMapReadyCallba
             // Get the likely places - that is, the businesses and other points of interest that
             // are the best match for the device's current location.
             ArrayList<String> ids = new ArrayList<>();
-            ids.add(Integer.toString(Place.TYPE_RESTAURANT));
-            PlaceFilter placeFilter = new PlaceFilter(false, ids);
+            //ids.add("" + Place.TYPE_ESTABLISHMENT);
+            PlaceFilter placeFilter = new PlaceFilter(Boolean.TRUE, ids);
             @SuppressWarnings("MissingPermission") final Task<PlaceLikelihoodBufferResponse> placeResult =
                     mPlaceDetectionClient.getCurrentPlace(placeFilter);
             placeResult.addOnCompleteListener
@@ -93,18 +117,10 @@ public class SearchActivity extends FragmentActivity implements OnMapReadyCallba
                             if (task.isSuccessful() && task.getResult() != null) {
                                 PlaceLikelihoodBufferResponse likelyPlaces = task.getResult();
 
-                                // Set the count, handling cases where less than 5 entries are returned.
-                                int count;
-                                if (likelyPlaces.getCount() < M_MAX_ENTRIES) {
-                                    count = likelyPlaces.getCount();
-                                } else {
-                                    count = M_MAX_ENTRIES;
-                                }
-
                                 for (PlaceLikelihood pLikehood : likelyPlaces)
                                 {
                                     String markerSnippet = "";
-                                    if (pLikehood.getPlace() != null)
+                                    if (pLikehood.getPlace() != null && pLikehood.getPlace().getPlaceTypes().contains(Place.TYPE_ESTABLISHMENT))
                                     {
                                         markerSnippet = markerSnippet + "\n" + pLikehood.getPlace();
 
@@ -118,7 +134,10 @@ public class SearchActivity extends FragmentActivity implements OnMapReadyCallba
                                 }
 
                                 // Position the map's camera at the location of the marker.
-                                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markerLatLng, DEFAULT_ZOOM));
+                                if (mLastKnownLocation != null)
+                                {
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLastKnownLocation, DEFAULT_ZOOM));
+                                }
                                 // Release the place likelihood buffer, to avoid memory leaks.
                                 likelyPlaces.release();
 
@@ -169,5 +188,50 @@ public class SearchActivity extends FragmentActivity implements OnMapReadyCallba
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+        mService = ((LocalService.LocalBinder) iBinder).getService();
+        mBound = true;
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
+        mBound = false;
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        Intent intent = new Intent(this, LocalService.class);
+        bindService(intent, this, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        if (mBound)
+        {
+            unbindService(this);
+            mBound = false;
+        }
+    }
+
+    public void lookupHospitals(Location mLastKnownLocation)
+    {
+        Comunicator comunicator = new Comunicator(Comunicator.GET, "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={location}&radius={radius}&types={types}&sensor={sensor}&key={key}");
+        comunicator.addParam("location", String.valueOf(mLastKnownLocation.getLatitude()) + "," + String.valueOf(mLastKnownLocation.getLongitude()));
+        comunicator.addParam("radius", "" + 500);
+        comunicator.addParam("types", "grocery_or_supermarket");
+        comunicator.addParam("sensor", "true");
+        mService.sendRequest(this, comunicator);
+    }
+
+    @Override
+    public void handleResult(GetAppLatLng object, String message) {
+
     }
 }

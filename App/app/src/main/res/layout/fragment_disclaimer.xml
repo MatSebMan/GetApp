@@ -1,41 +1,60 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="ar.com.vittal.vittalgetapp.DisclaimerActivity$PlaceholderFragment">
+    tools:context="ar.com.vittal.vittalgetapp.DisclaimerActivity$PlaceholderFragment"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/disclaimer_text"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-    <CheckBox
-        android:id="@+id/disclaimer_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/disclaimer_text"
-        android:text="@string/disclaimer_terms_agreement"
-        android:visibility="invisible"/>
+        <TextView style="@style/DisclaimerTitle"
+            android:id="@+id/disclaimer_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/disclaimer_title" />
 
-    <TextView style="@style/LinedText"
-        android:id="@+id/disclaimer_terms_link"
-        android:layout_toRightOf="@id/disclaimer_checkbox"
-        android:layout_toEndOf="@id/disclaimer_checkbox"
-        android:layout_alignBaseline="@id/disclaimer_checkbox"
-        android:text="@string/disclaimer_terms_link"
-        android:visibility="invisible"/>
+        <TextView style="@style/DisclaimerTitle"
+            android:id="@+id/disclaimer_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/disclaimer_title"/>
 
-    <Button
-        android:id="@+id/disclaimer_button"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_below="@id/disclaimer_checkbox"
-        android:layout_centerHorizontal="true"
-        android:text="@string/disclaimer_button_text"
-        android:visibility="invisible"/>
+    </RelativeLayout>
 
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center">
+
+        <CheckBox
+            android:id="@+id/disclaimer_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/disclaimer_terms_agreement"
+            android:visibility="invisible"/>
+
+        <TextView style="@style/LinedText"
+            android:id="@+id/disclaimer_terms_link"
+            android:layout_toRightOf="@id/disclaimer_checkbox"
+            android:layout_toEndOf="@id/disclaimer_checkbox"
+            android:layout_alignBaseline="@id/disclaimer_checkbox"
+            android:text="@string/disclaimer_terms_link"
+            android:visibility="invisible"/>
+
+        <Button
+            android:id="@+id/disclaimer_button"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@id/disclaimer_checkbox"
+            android:layout_centerHorizontal="true"
+            android:text="@string/disclaimer_button_text"
+            android:visibility="invisible"/>
+
+    </RelativeLayout>
+</FrameLayout>

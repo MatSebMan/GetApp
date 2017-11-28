@@ -6,15 +6,22 @@
 
     <TextView style="@style/InformationTitle"
         android:id="@+id/informationTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/main_information_title" />
+
+    <TextView style="@style/InformationSubtitle"
+        android:id="@+id/informationSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/informationTitle"
+        android:text="@string/main_information_subtitle" />
 
     <TextView style="@style/InformationText"
         android:id="@+id/informationStep1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/informationTitle"
+        android:layout_below="@id/informationSubtitle"
         android:text="@string/main_information_step1" />
 
     <TextView style="@style/InformationText"
@@ -29,14 +36,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/informationStep2"
-        android:text="@string/main_information_step3" />
+        android:text="@string/main_information_step3"
+        android:paddingRight="0dp"/>
 
     <TextView style="@style/LinedText"
         android:id="@+id/informationCallLink"
         android:textSize="24sp"
         android:layout_toEndOf="@id/informationStep3"
         android:layout_toRightOf="@id/informationStep3"
-        android:layout_alignBaseline="@id/informationStep3" />
+        android:layout_alignBaseline="@id/informationStep3"
+        android:paddingRight="30dp"/>
 
     <TextView style="@style/InformationText"
         android:id="@+id/informationStep4"

@@ -5,9 +5,10 @@
     tools:context="ar.com.vittal.vittalgetapp.HomeFragment">
 
     <ImageView
+        android:contentDescription="BackgroundVittal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_map2"
+        android:src="@drawable/ic_main_background"
         android:scaleType = "centerCrop"/>
 
     <!-- TODO: Update blank fragment layout -->
@@ -16,8 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="104dp"
         android:layout_gravity="center_vertical"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/main_button_IDMC_description"
-        android:text="@string/main_button_IDMC_label"
-        android:onClick="goToNearestDEA"/>
+        android:onClick="goToNearestDEA" />
 
 </FrameLayout>

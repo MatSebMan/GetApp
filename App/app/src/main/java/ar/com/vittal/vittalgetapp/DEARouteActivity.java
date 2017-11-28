@@ -10,6 +10,8 @@ import com.google.maps.model.DirectionsResult;
 
 public class DEARouteActivity extends MapListenerActivity implements View.OnClickListener{
 
+    private static final String ATRIBUTO_ID = "id";
+
     @Override
     public Integer getQuantityOfDEASToSearch() {
         return DEAS_CANT_MIN;
@@ -50,11 +52,19 @@ public class DEARouteActivity extends MapListenerActivity implements View.OnClic
         navigate();
     }
 
+    private void setDeaInUse(Integer idDEA)
+    {
+        Comunicator comunicator = new Comunicator(Comunicator.PUT, getString(R.string.webAPI_address) + getString(R.string.use_service));
+        comunicator.addParam(ATRIBUTO_ID, "" + idDEA);
+        comunicator.setObject(new InUseDEA(true));
+        mService.sendRequest(this, comunicator);
+    }
+
     private void navigate()
     {
         if (this.DEASelected == null || (this.DEASelected.getLatitud() == 0 && this.DEASelected.getLongitud() == 0))
         {
-            mService.setDeaInUse(this.currentDEASFound[0].getId(), this);
+            setDeaInUse(this.currentDEASFound[0].getId());
             Intent i = new Intent(Intent.ACTION_VIEW,
 
                     Uri.parse("google.navigation:ll=" + this.currentDEASFound[0].getLatitud() + "," + this.currentDEASFound[0].getLongitud() + "&mode=w"));
@@ -63,7 +73,7 @@ public class DEARouteActivity extends MapListenerActivity implements View.OnClic
         }
         else
         {
-            mService.setDeaInUse(this.DEASelected.getId(), this);
+            setDeaInUse(this.DEASelected.getId());
             Intent i = new Intent(Intent.ACTION_VIEW,
 
                     Uri.parse("google.navigation:ll=" + this.DEASelected.getLatitud() + "," + this.DEASelected.getLongitud() + "&mode=w"));

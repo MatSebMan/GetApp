@@ -2,10 +2,14 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorListDEABackground">#FFFFFF</color>
-    <color name="colorListDEADireccion">#000000</color>
-    <color name="colorListDEADistancia">#7D7D7D</color>
-    <color name="colorListDEARazonSocial">#7D7D7D</color>
-    <color name="colorInstructionsTitle">#000000</color>
+    <color name="colorAccent">#00B09B</color>
+    <color name="colorListDEABackground">#00B09B</color>
+    <color name="colorListDEADireccion">#FFFFFF</color>
+    <color name="colorListDEADistancia">#FFFFFF</color>
+    <color name="colorListDEARazonSocial">#FFFFFF</color>
+    <color name="colorInstructionsTitle">#0056B8</color>
+    <color name="colorInstructionsText">#1161BD</color>
+    <color name="colorHud">#0056B8</color>
+    <color name="colorHud2">#EFF3F7</color>
+    <color name="colorDisclaimerBox">#FFFFFF</color>
 </resources>

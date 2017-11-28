@@ -7,6 +7,8 @@
     android:orientation="vertical"
     tools:context="ar.com.vittal.vittalgetapp.MainActivity">
 
+    <include layout="@layout/hud"/>
+
     <FrameLayout
         android:id="@+id/content"
         android:layout_width="match_parent"

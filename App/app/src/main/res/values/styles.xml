@@ -15,12 +15,13 @@
         <item name="android:weightSum">3</item>
     </style>
 
-    <style name="ListaDEASDirecion">
+    <style name="ListaDEASDireccion">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/colorListDEADireccion</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ListaDEASDistancia">
@@ -41,12 +42,26 @@
 
     <style name="InformationTitle">
         <item name="android:textColor">@color/colorInstructionsTitle</item>
-        <item name="android:textSize">36sp</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">10dp</item>
+    </style>
+
+    <style name="InformationSubtitle">
+        <item name="android:textColor">@color/colorInstructionsTitle</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
     </style>
 
     <style name="InformationText">
         <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/colorInstructionsText</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingLeft">30dp</item>
+        <item name="android:paddingRight">30dp</item>
     </style>
 
     <style name="LinedText">
@@ -57,12 +72,20 @@
         <item name="android:linksClickable">true</item>
     </style>
 
+    <style name="DisclaimerTitle">
+        <item name="android:textColor">@color/colorInstructionsTitle</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">10dp</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
